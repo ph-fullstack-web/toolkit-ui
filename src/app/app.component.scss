@@ -1,0 +1,18 @@
+.empty-row,
+.loading {
+  vertical-align: middle;
+
+  td {
+    text-align: center;
+    font-size: 20px;
+    border-bottom: 0px;
+  }
+}
+
+.empty-row {
+  height: 100px;
+}
+
+.loading {
+  height: 200px;
+}
