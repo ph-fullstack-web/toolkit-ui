@@ -2,7 +2,8 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
+    "rootDir": ".",
+    "baseUrl": "src",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
@@ -19,10 +20,30 @@
     "target": "ES2022",
     "module": "ES2022",
     "useDefineForClassFields": false,
-    "lib": [
-      "ES2022",
-      "dom"
-    ]
+    "lib": ["ES2022", "dom"],
+    "typeRoots": ["node_modules/@types"],
+    "paths": {
+      "assets/*": ["assets/*"],
+      "environments/*": ["environments/*"],
+      "styles/*": ["styles/*"],
+      "constants": ["app/core/constants/index.ts"],
+      "enums": ["app/core/enums/index.ts"],
+      "guards": ["app/core/guards/index.ts"],
+      "interceptors": ["app/core/interceptors/index.ts"],
+      "mocks": ["app/core/mocks/index.ts"],
+      "models": ["app/core/models/index.ts"],
+      "resolvers": ["app/core/resolvers/index.ts"],
+      "services": ["app/core/services/index.ts"],
+      "utils": ["app/core/utils/index.ts"],
+      "atoms": ["app/shared/components/atoms/index.ts"],
+      "molecules": ["app/shared/components/molecules/index.ts"],
+      "organisms": ["app/shared/components/organisms/index.ts"],
+      "pipes": ["app/shared/pipes/index.ts"],
+      "directives": ["app/shared/directives/index.ts"],
+      "core/*": ["app/core/*"],
+      "features/*": ["app/features/*"],
+      "shared/*": ["app/shared/*"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
