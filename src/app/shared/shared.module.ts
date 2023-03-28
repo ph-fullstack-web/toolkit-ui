@@ -10,12 +10,14 @@ import {
   LoaderComponent,
   NoResultComponent,
 } from 'atoms';
-import { ArticleCommentComponent, ArticleMetaComponent, FooterComponent, HeaderComponent } from 'molecules';
+import { ArticleCommentComponent, ArticleMetaComponent } from 'molecules';
 import {
   ArticleListComponent,
   ArticlePreviewComponent,
   ProfileArticlesComponent,
   ProfileFavoritesComponent,
+  FooterComponent,
+  HeaderComponent,
 } from 'organisms';
 
 import { ShowAuthedDirective } from 'directives';
