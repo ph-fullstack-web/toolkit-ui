@@ -1,14 +1,10 @@
 <div class="article-meta">
-    <!--TODO: update once routing has been setup-->
-    <a>
-        <!-- <a [routerLink]="['/profile', article.author.username]"> -->
+    <a [routerLink]="['/profile', article.author.username]">
         <img [src]="article.author.image" />
     </a>
 
     <div class="info">
-        <a class="author">
-            <!--TODO: update once routing has been setup-->
-            <!-- <a class="author" [routerLink]="['/profile', article.author.username]"> -->
+        <a class="author" [routerLink]="['/profile', article.author.username]">
             {{ article.author.username }}
         </a>
         <span class="date">

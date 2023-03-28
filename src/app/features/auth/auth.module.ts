@@ -1,19 +1,16 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { AuthRoutingModule } from './auth-routing.module';
+import { SharedModule } from 'shared/shared.module';
+
 import { AuthPageComponent } from './auth-page/auth-page.component';
 import { AuthTemplateComponent } from './auth-template/auth-template.component';
 
+import { NoAuthGuard } from 'guards';
 
 @NgModule({
-  declarations: [
-    AuthPageComponent,
-    AuthTemplateComponent
-  ],
-  imports: [
-    CommonModule,
-    AuthRoutingModule
-  ]
+  imports: [SharedModule, AuthRoutingModule],
+  declarations: [AuthPageComponent, AuthTemplateComponent],
+  providers: [NoAuthGuard],
 })
-export class AuthModule { }
+export class AuthModule {}

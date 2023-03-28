@@ -3,9 +3,7 @@ import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angul
 import { map, Observable, take } from 'rxjs';
 import { UserService } from 'services';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class NoAuthGuard implements CanActivate {
   constructor(private userService: UserService) {}
 

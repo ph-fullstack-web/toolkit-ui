@@ -3,7 +3,7 @@
 
 <app-loader message="Loading articles..." [loading]="!loading"></app-loader>
 
-<app-no-result message="No articles are here... yet." [resultCount]="results.length"></app-no-result>
+<app-no-result message="No articles are here... yet." [hidden]="loading || results.length > 0"></app-no-result>
 
 <nav [hidden]="loading || totalPages.length <= 1">
     <ul class="pagination">

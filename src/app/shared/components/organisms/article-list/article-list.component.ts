@@ -5,10 +5,8 @@ import { ArticlesService } from 'services';
 @Component({
   selector: 'app-article-list',
   templateUrl: './article-list.component.html',
-  styleUrls: ['./article-list.component.scss'],
 })
 export class ArticleListComponent {
-  // TODO: move service to page
   constructor(private articlesService: ArticlesService) {}
 
   @Input()

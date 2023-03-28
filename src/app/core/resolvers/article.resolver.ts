@@ -6,7 +6,7 @@ import { catchError } from 'rxjs/operators';
 import { Article } from 'models';
 import { ArticlesService } from 'services';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ArticleResolver implements Resolve<Article> {
   constructor(private articlesService: ArticlesService, private router: Router) {}
 

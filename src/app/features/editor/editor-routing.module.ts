@@ -1,10 +1,29 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 
-const routes: Routes = [];
+import { EditorPageComponent } from './editor-page/editor-page.component';
+
+import { AuthGuard } from 'guards';
+import { EditableArticleResolver } from 'resolvers';
+
+const routes: Routes = [
+  {
+    path: '',
+    component: EditorPageComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: ':slug',
+    component: EditorPageComponent,
+    canActivate: [AuthGuard],
+    resolve: {
+      article: EditableArticleResolver,
+    },
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class EditorRoutingModule { }
+export class EditorRoutingModule {}

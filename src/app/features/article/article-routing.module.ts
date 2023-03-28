@@ -1,10 +1,22 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 
-const routes: Routes = [];
+import { ArticlePageComponent } from './article-page/article-page.component';
+
+import { ArticleResolver } from 'resolvers';
+
+const routes: Routes = [
+  {
+    path: ':slug',
+    component: ArticlePageComponent,
+    resolve: {
+      article: ArticleResolver,
+    },
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class ArticleRoutingModule { }
+export class ArticleRoutingModule {}

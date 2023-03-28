@@ -1,10 +1,22 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 
-const routes: Routes = [];
+import { HomePageComponent } from './home-page/home-page.component';
+
+import { HomeAuthResolver } from 'resolvers';
+
+const routes: Routes = [
+  {
+    path: '',
+    component: HomePageComponent,
+    resolve: {
+      isAuthenticated: HomeAuthResolver,
+    },
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class HomeRoutingModule { }
+export class HomeRoutingModule {}

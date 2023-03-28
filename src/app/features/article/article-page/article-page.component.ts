@@ -7,7 +7,6 @@ import { ArticlesService, CommentsService, UserService } from 'services';
 @Component({
   selector: 'app-article-page',
   templateUrl: './article-page.component.html',
-  styleUrls: ['./article-page.component.scss'],
 })
 export class ArticlePageComponent implements OnInit {
   article!: Article;

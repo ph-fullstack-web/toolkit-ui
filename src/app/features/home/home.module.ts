@@ -1,19 +1,16 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { HomeRoutingModule } from './home-routing.module';
-import { HomeTemplateComponent } from './home-template/home-template.component';
-import { HomePageComponent } from './home-page/home-page.component';
+import { SharedModule } from 'shared/shared.module';
 
+import { HomePageComponent } from './home-page/home-page.component';
+import { HomeTemplateComponent } from './home-template/home-template.component';
+
+import { HomeAuthResolver } from 'resolvers';
 
 @NgModule({
-  declarations: [
-    HomeTemplateComponent,
-    HomePageComponent
-  ],
-  imports: [
-    CommonModule,
-    HomeRoutingModule
-  ]
+  imports: [SharedModule, HomeRoutingModule],
+  declarations: [HomePageComponent, HomeTemplateComponent],
+  providers: [HomeAuthResolver],
 })
-export class HomeModule { }
+export class HomeModule {}
