@@ -14,7 +14,7 @@ export class ArticlePageComponent implements OnInit {
   canModify: boolean = false;
   comments: Comment[] = [];
   commentControl = new UntypedFormControl();
-  commentFormErrors = {};
+  commentFormErrors = { errors: {} };
   isSubmitting = false;
   isDeleting = false;
 
@@ -71,7 +71,7 @@ export class ArticlePageComponent implements OnInit {
 
   addComment() {
     this.isSubmitting = true;
-    this.commentFormErrors = {};
+    this.commentFormErrors = { errors: {} };
 
     const commentBody = this.commentControl.value;
     this.commentsService.add(this.article.slug, commentBody).subscribe(

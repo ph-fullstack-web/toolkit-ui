@@ -3,7 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
-import { FavoriteButtonComponent, ListErrorsComponent, LoaderComponent, NoResultComponent } from 'atoms';
+import {
+  FavoriteButtonComponent,
+  FollowButtonComponent,
+  ListErrorsComponent,
+  LoaderComponent,
+  NoResultComponent,
+} from 'atoms';
 import { ArticleCommentComponent, ArticleMetaComponent, FooterComponent, HeaderComponent } from 'molecules';
 import {
   ArticleListComponent,
@@ -14,11 +20,11 @@ import {
 
 import { ShowAuthedDirective } from 'directives';
 import { MarkdownPipe } from 'pipes';
-import { FollowButtonComponent } from './components/atoms/follow-button/follow-button.component';
 
 const modules = [CommonModule, FormsModule, ReactiveFormsModule, RouterModule];
 const components = [
   FavoriteButtonComponent,
+  FollowButtonComponent,
   ListErrorsComponent,
   LoaderComponent,
   NoResultComponent,

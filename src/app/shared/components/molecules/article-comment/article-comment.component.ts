@@ -13,8 +13,7 @@ export class ArticleCommentComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription = new Subscription();
 
-  @Input()
-  comment!: Comment;
+  @Input() comment!: Comment;
   @Output() deleteComment = new EventEmitter<boolean>();
 
   canModify: boolean = false;
