@@ -14,10 +14,10 @@ describe('UserService', () => {
             HttpClient,
             HttpHandler
         ]});
+        service = TestBed.inject(UserService);
     });
 
     it('getCurrentUser should return non null value', () => {
-        service = TestBed.inject(UserService);
         expect(service.getCurrentUser()).not.toBeNull();
     }) 
 
