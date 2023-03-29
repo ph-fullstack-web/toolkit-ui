@@ -13,9 +13,5 @@ export class ConsultantService {
 
   getConsultants(managerId?: string): Observable<ConsultantsWithReviewer[]> {
     return of(mockConsultantsWithReviewers);
-    // const params = managerId ? { managerId } : undefined;
-    // return this.http.get<ConsultantsWithReviewer[]>('/api/consultant/reviewers', {
-    //   params,
-    // });
   }
 }

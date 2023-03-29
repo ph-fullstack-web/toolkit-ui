@@ -10,14 +10,6 @@ const routes: Routes = [
     path: 'profile',
     loadChildren: () => import('./features/profile/profile.module').then((m) => m.ProfileModule),
   },
-  {
-    path: 'editor',
-    loadChildren: () => import('./features/editor/editor.module').then((m) => m.EditorModule),
-  },
-  {
-    path: 'article',
-    loadChildren: () => import('./features/article/article.module').then((m) => m.ArticleModule),
-  },
 ];
 
 @NgModule({
