@@ -9,8 +9,7 @@ import { HomeTemplateComponent } from './home-template/home-template.component';
 import { HomeAuthResolver } from 'resolvers';
 
 @NgModule({
-  imports: [SharedModule, HomeRoutingModule],
-  declarations: [HomePageComponent, HomeTemplateComponent],
-  providers: [HomeAuthResolver],
+    imports: [SharedModule, HomeRoutingModule, HomePageComponent, HomeTemplateComponent],
+    providers: [HomeAuthResolver]
 })
 export class HomeModule {}

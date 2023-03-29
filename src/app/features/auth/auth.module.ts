@@ -9,8 +9,7 @@ import { AuthTemplateComponent } from './auth-template/auth-template.component';
 import { NoAuthGuard } from 'guards';
 
 @NgModule({
-  imports: [SharedModule, AuthRoutingModule],
-  declarations: [AuthPageComponent, AuthTemplateComponent],
-  providers: [NoAuthGuard],
+    imports: [SharedModule, AuthRoutingModule, AuthPageComponent, AuthTemplateComponent],
+    providers: [NoAuthGuard]
 })
 export class AuthModule {}

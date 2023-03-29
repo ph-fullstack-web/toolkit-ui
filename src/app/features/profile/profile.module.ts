@@ -9,8 +9,7 @@ import { ProfileTemplateComponent } from './profile-template/profile-template.co
 import { ProfileResolver } from 'resolvers';
 
 @NgModule({
-  imports: [SharedModule, ProfileRoutingModule],
-  declarations: [ProfilePageComponent, ProfileTemplateComponent],
-  providers: [ProfileResolver],
+    imports: [SharedModule, ProfileRoutingModule, ProfilePageComponent, ProfileTemplateComponent],
+    providers: [ProfileResolver]
 })
 export class ProfileModule {}

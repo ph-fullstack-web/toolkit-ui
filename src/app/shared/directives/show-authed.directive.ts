@@ -2,7 +2,10 @@ import { Directive, Input, OnInit, TemplateRef, ViewContainerRef } from '@angula
 
 import { UserService } from 'services';
 
-@Directive({ selector: '[appShowAuthed]' })
+@Directive({
+    selector: '[appShowAuthed]',
+    standalone: true
+})
 export class ShowAuthedDirective implements OnInit {
   constructor(
     private templateRef: TemplateRef<any>,

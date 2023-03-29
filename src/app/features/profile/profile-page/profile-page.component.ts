@@ -4,10 +4,13 @@ import { map, switchMap } from 'rxjs';
 
 import { Profile, User } from 'models';
 import { UserService } from 'services';
+import { ProfileTemplateComponent } from '../profile-template/profile-template.component';
 
 @Component({
-  selector: 'app-profile-page',
-  templateUrl: './profile-page.component.html',
+    selector: 'app-profile-page',
+    templateUrl: './profile-page.component.html',
+    standalone: true,
+    imports: [ProfileTemplateComponent]
 })
 export class ProfilePageComponent {
   constructor(private route: ActivatedRoute, private userService: UserService) {}

@@ -7,7 +7,6 @@ import { SettingsPageComponent } from './settings-page/settings-page.component';
 import { SettingsTemplateComponent } from './settings-template/settings-template.component';
 
 @NgModule({
-  imports: [SharedModule, SettingsRoutingModule],
-  declarations: [SettingsPageComponent, SettingsTemplateComponent],
+    imports: [SharedModule, SettingsRoutingModule, SettingsPageComponent, SettingsTemplateComponent]
 })
 export class SettingsModule {}

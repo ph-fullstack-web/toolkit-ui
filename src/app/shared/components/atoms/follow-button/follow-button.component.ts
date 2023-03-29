@@ -6,10 +6,13 @@ import { of } from 'rxjs';
 
 import { Profile } from 'models';
 import { ProfilesService, UserService } from 'services';
+import { NgClass } from '@angular/common';
 
 @Component({
-  selector: 'app-follow-button',
-  templateUrl: './follow-button.component.html',
+    selector: 'app-follow-button',
+    templateUrl: './follow-button.component.html',
+    standalone: true,
+    imports: [NgClass]
 })
 export class FollowButtonComponent {
   constructor(private profilesService: ProfilesService, private router: Router, private userService: UserService) {}

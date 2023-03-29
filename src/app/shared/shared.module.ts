@@ -22,8 +22,7 @@ const pipes = [MarkdownPipe];
 const directives = [ShowAuthedDirective];
 
 @NgModule({
-  declarations: [...components, ...pipes, ...directives, FollowButtonComponent],
-  imports: [...modules],
-  exports: [...modules, ...components, ...pipes, ...directives],
+    imports: [...modules, ...components, ...pipes, ...directives, FollowButtonComponent],
+    exports: [...modules, ...components, ...pipes, ...directives]
 })
 export class SharedModule {}
