@@ -5,7 +5,9 @@ import { take } from 'rxjs/operators';
 
 import { UserService } from 'services';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class HomeAuthResolver implements Resolve<boolean> {
   constructor(private userService: UserService) {}
 
