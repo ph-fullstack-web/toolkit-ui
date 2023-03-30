@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angular/router';
 import { map, Observable, take } from 'rxjs';
-import { UserService } from 'services';
+
+import { UserService } from '@services';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class NoAuthGuard implements CanActivate {
   constructor(private userService: UserService) {}

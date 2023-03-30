@@ -1,13 +1,14 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Errors } from 'models';
-import { ListErrorsComponent } from '../../../shared/components/atoms/list-errors/list-errors.component';
+
+import { Errors } from '@models';
+import { ListErrorsComponent } from '@atoms';
 
 @Component({
-    selector: 'app-settings-template',
-    templateUrl: './settings-template.component.html',
-    standalone: true,
-    imports: [ListErrorsComponent, FormsModule, ReactiveFormsModule]
+  selector: 'app-settings-template',
+  templateUrl: './settings-template.component.html',
+  standalone: true,
+  imports: [ListErrorsComponent, FormsModule, ReactiveFormsModule],
 })
 export class SettingsTemplateComponent {
   @Input() settingsForm!: UntypedFormGroup;

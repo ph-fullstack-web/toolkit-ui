@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
-import { NoAuthGuard } from 'guards';
-import { HomeAuthResolver, ProfileResolver } from 'resolvers';
+
+import { NoAuthGuard } from '@guards';
+import { HomeAuthResolver, ProfileResolver } from '@resolvers';
 
 export const APP_ROUTES: Routes = [
   {

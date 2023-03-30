@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
-import { ConsultantsWithReviewer } from 'models';
-import { mockConsultantsWithReviewers } from '../mocks/consultantsWithReviewer';
+import { mockConsultantsWithReviewers } from '@mocks';
+import { ConsultantsWithReviewer } from '@models';
 
 @Injectable({
   providedIn: 'root',

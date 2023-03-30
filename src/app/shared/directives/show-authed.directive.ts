@@ -1,10 +1,10 @@
 import { Directive, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 
-import { UserService } from 'services';
+import { UserService } from '@services';
 
 @Directive({
-    selector: '[appShowAuthed]',
-    standalone: true
+  selector: '[appShowAuthed]',
+  standalone: true,
 })
 export class ShowAuthedDirective implements OnInit {
   constructor(

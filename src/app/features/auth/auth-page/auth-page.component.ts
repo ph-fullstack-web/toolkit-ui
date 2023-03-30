@@ -2,15 +2,16 @@ import { Component } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Errors } from 'models';
-import { UserService } from 'services';
+import { Errors } from '@models';
+import { UserService } from '@services';
+
 import { AuthTemplateComponent } from '../auth-template/auth-template.component';
 
 @Component({
-    selector: 'app-auth-page',
-    templateUrl: './auth-page.component.html',
-    standalone: true,
-    imports: [AuthTemplateComponent]
+  selector: 'app-auth-page',
+  templateUrl: './auth-page.component.html',
+  standalone: true,
+  imports: [AuthTemplateComponent],
 })
 export class AuthPageComponent {
   authType: string = '';

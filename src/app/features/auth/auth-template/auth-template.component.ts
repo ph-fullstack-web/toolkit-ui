@@ -1,16 +1,16 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-import { Errors } from 'models';
-import { ListErrorsComponent } from '../../../shared/components/atoms/list-errors/list-errors.component';
 import { RouterLink } from '@angular/router';
 import { NgIf } from '@angular/common';
 
+import { ListErrorsComponent } from '@atoms';
+import { Errors } from '@models';
+
 @Component({
-    selector: 'app-auth-template',
-    templateUrl: './auth-template.component.html',
-    standalone: true,
-    imports: [NgIf, RouterLink, ListErrorsComponent, FormsModule, ReactiveFormsModule]
+  selector: 'app-auth-template',
+  templateUrl: './auth-template.component.html',
+  standalone: true,
+  imports: [NgIf, RouterLink, ListErrorsComponent, FormsModule, ReactiveFormsModule],
 })
 export class AuthTemplateComponent {
   @Input() title!: string;

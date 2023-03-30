@@ -1,18 +1,18 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { NgClass } from '@angular/common';
 import { Router } from '@angular/router';
 
 import { concatMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 
-import { Profile } from 'models';
-import { ProfilesService, UserService } from 'services';
-import { NgClass } from '@angular/common';
+import { Profile } from '@models';
+import { ProfilesService, UserService } from '@services';
 
 @Component({
-    selector: 'app-follow-button',
-    templateUrl: './follow-button.component.html',
-    standalone: true,
-    imports: [NgClass]
+  selector: 'app-follow-button',
+  templateUrl: './follow-button.component.html',
+  standalone: true,
+  imports: [NgClass],
 })
 export class FollowButtonComponent {
   constructor(private profilesService: ProfilesService, private router: Router, private userService: UserService) {}

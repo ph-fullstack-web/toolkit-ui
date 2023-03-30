@@ -1,11 +1,11 @@
 import { enableProdMode, importProvidersFrom } from '@angular/core';
-
-import { environment } from 'environments/environment';
-import { AppComponent } from './app/app.component';
-import { SharedModule } from 'shared/shared.module';
-import { CoreModule } from 'core/core.module';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { PreloadAllModules, provideRouter, withPreloading } from '@angular/router';
+
+import { CoreModule } from '@core/core.module';
+import { environment } from '@environments/environment';
+
+import { AppComponent } from './app/app.component';
 import { APP_ROUTES } from 'app/app.routes';
 
 if (environment.production) {
@@ -14,7 +14,7 @@ if (environment.production) {
 
 const bootstrapPromise = bootstrapApplication(AppComponent, {
   providers: [
-    importProvidersFrom(BrowserModule, CoreModule, SharedModule),
+    importProvidersFrom(BrowserModule, CoreModule),
     provideRouter(APP_ROUTES, withPreloading(PreloadAllModules)),
   ],
 });

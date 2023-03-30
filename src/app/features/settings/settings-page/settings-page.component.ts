@@ -2,15 +2,16 @@ import { Component } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { Errors, User } from 'models';
-import { UserService } from 'services';
+import { Errors, User } from '@models';
+import { UserService } from '@services';
+
 import { SettingsTemplateComponent } from '../settings-template/settings-template.component';
 
 @Component({
-    selector: 'app-settings-page',
-    templateUrl: './settings-page.component.html',
-    standalone: true,
-    imports: [SettingsTemplateComponent]
+  selector: 'app-settings-page',
+  templateUrl: './settings-page.component.html',
+  standalone: true,
+  imports: [SettingsTemplateComponent],
 })
 export class SettingsPageComponent {
   user: User = {} as User;
