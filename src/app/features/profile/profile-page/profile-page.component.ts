@@ -1,39 +1,28 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { map, switchMap } from 'rxjs';
+import { ActivatedRoute, Data } from '@angular/router';
+import { combineLatest, map, Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
 
 import { Profile, User } from 'models';
-import { UserService } from 'services';
+import { RootState } from 'store';
+import { fromAuth } from 'store/auth';
 
 @Component({
   selector: 'app-profile-page',
   templateUrl: './profile-page.component.html',
 })
 export class ProfilePageComponent {
-  constructor(private route: ActivatedRoute, private userService: UserService) {}
+  constructor(private route: ActivatedRoute, private store: Store<RootState>) {}
 
-  profile!: Profile;
-  currentUser!: User;
-  isUser: boolean = false;
+  profile$!: Observable<Profile>;
+  currentUser$!: Observable<User | null>;
+  isUser$!: Observable<boolean>;
 
   ngOnInit() {
-    this.route.data
-      .pipe(
-        map((data: any) => data.profile as Profile),
-        switchMap((profile: Profile) => {
-          this.profile = profile;
-
-          // Load the current user's data.
-          return this.userService.currentUser;
-        })
-      )
-      .subscribe((user: User) => {
-        this.currentUser = user;
-        this.isUser = this.currentUser.username === this.profile?.username;
-      });
-  }
-
-  onToggleFollowing(following: boolean) {
-    this.profile.following = following;
+    this.profile$ = this.route.data.pipe(map((data: Data) => data['profile'] as Profile));
+    this.currentUser$ = this.store.select(fromAuth.selectCurrentUser);
+    this.isUser$ = combineLatest([this.profile$, this.currentUser$]).pipe(
+      map(([profile, currentUser]) => currentUser?.username === profile!.username)
+    );
   }
 }

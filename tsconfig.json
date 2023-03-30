@@ -42,7 +42,9 @@
       "directives": ["app/shared/directives/index.ts"],
       "core/*": ["app/core/*"],
       "features/*": ["app/features/*"],
-      "shared/*": ["app/shared/*"]
+      "shared/*": ["app/shared/*"],
+      "store": ["app/store/index.ts"],
+      "store/auth": ["app/store/auth/index.ts"]
     }
   },
   "angularCompilerOptions": {

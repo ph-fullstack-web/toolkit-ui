@@ -7,10 +7,11 @@ import { AuthModule, HomeModule } from './features';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { RootStoreModule } from 'store';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, CoreModule, SharedModule, AuthModule, HomeModule, AppRoutingModule],
+  imports: [BrowserModule, CoreModule, SharedModule, AuthModule, HomeModule, AppRoutingModule, RootStoreModule],
   providers: [],
   bootstrap: [AppComponent],
 })

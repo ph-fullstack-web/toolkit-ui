@@ -1,21 +1,25 @@
 import { Component } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { RootState } from 'app/store/root-state';
 
-import { Errors, User } from 'models';
-import { UserService } from 'services';
+import { Errors } from 'models';
+import { Observable } from 'rxjs';
+import * as AuthActions from '../../../store/auth/auth.actions';
+import { authFeature as fromAuth } from '../../../store/auth/auth.reducers';
 
 @Component({
   selector: 'app-settings-page',
   templateUrl: './settings-page.component.html',
 })
 export class SettingsPageComponent {
-  user: User = {} as User;
-  settingsForm: UntypedFormGroup;
-  errors: Errors = { errors: {} };
-  isSubmitting = false;
+  settingsForm!: UntypedFormGroup;
+  errors$!: Observable<Errors | null>;
+  isLoading$!: Observable<boolean>;
 
-  constructor(private router: Router, private userService: UserService, private fb: UntypedFormBuilder) {
+  constructor(private store: Store<RootState>, private fb: UntypedFormBuilder) {}
+
+  ngOnInit() {
     // create form group using the form builder
     this.settingsForm = this.fb.group({
       image: '',
@@ -26,36 +30,23 @@ export class SettingsPageComponent {
     });
     // Optional: subscribe to changes on the form
     // this.settingsForm.valueChanges.subscribe(values => this.updateUser(values));
-  }
 
-  ngOnInit() {
-    // Make a fresh copy of the current user's object to place in editable form fields
-    Object.assign(this.user, this.userService.getCurrentUser());
-    // Fill the form
-    this.settingsForm.patchValue(this.user);
+    this.store.select(fromAuth.selectCurrentUser).subscribe({
+      next: (user) => this.settingsForm.patchValue(user!),
+    });
+
+    this.errors$ = this.store.select(fromAuth.selectAttemptAuthErrors);
+    this.isLoading$ = this.store.select(fromAuth.selectIsLoading);
   }
 
   logout() {
-    this.userService.purgeAuth();
-    this.router.navigateByUrl('/');
+    this.store.dispatch(AuthActions.purgeAuth());
   }
 
   submitForm() {
-    this.isSubmitting = true;
-
     // update the model
-    this.updateUser(this.settingsForm.value);
+    const user = this.settingsForm.value;
 
-    this.userService.update(this.user).subscribe(
-      (updatedUser) => this.router.navigateByUrl('/profile/' + updatedUser.username),
-      (err) => {
-        this.errors = err;
-        this.isSubmitting = false;
-      }
-    );
-  }
-
-  updateUser(values: Object) {
-    Object.assign(this.user, values);
+    this.store.dispatch(AuthActions.updateUser({ user }));
   }
 }

@@ -2,16 +2,19 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Article } from 'models';
-import { ArticlesService, UserService } from 'services';
+import { ArticlesService } from 'services';
 import { of } from 'rxjs';
-import { concatMap, tap } from 'rxjs/operators';
+import { exhaustMap, tap } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { RootState } from 'store';
+import { AuthSelectors } from 'store/auth';
 
 @Component({
   selector: 'app-favorite-button',
   templateUrl: './favorite-button.component.html',
 })
 export class FavoriteButtonComponent {
-  constructor(private articlesService: ArticlesService, private router: Router, private userService: UserService) {}
+  constructor(private articlesService: ArticlesService, private router: Router, private store: Store<RootState>) {}
 
   @Input()
   article!: Article;
@@ -21,9 +24,10 @@ export class FavoriteButtonComponent {
   toggleFavorite() {
     this.isSubmitting = true;
 
-    this.userService.isAuthenticated
+    this.store
+      .select(AuthSelectors.isAuthenticated)
       .pipe(
-        concatMap((authenticated) => {
+        exhaustMap((authenticated) => {
           // Not authenticated? Push to login screen
           if (!authenticated) {
             this.router.navigateByUrl('/login');

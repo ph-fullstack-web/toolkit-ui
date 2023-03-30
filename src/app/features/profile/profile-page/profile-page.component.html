@@ -1,1 +1,5 @@
-<app-profile-template [profile]="profile" [currentUser]="currentUser" [isUser]="isUser"></app-profile-template>
+<app-profile-template
+  [profile]="(profile$ | async)!"
+  [currentUser]="(currentUser$ | async)!"
+  [isUser]="(isUser$ | async)!"
+></app-profile-template>

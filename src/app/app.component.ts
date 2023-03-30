@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-
-import { UserService } from 'services';
+import { Store } from '@ngrx/store';
+import { RootState } from 'store';
+import { AuthActions } from 'store/auth';
 
 @Component({
   selector: 'app-root',
@@ -8,9 +9,9 @@ import { UserService } from 'services';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  constructor(private userService: UserService) {}
+  constructor(private store: Store<RootState>) {}
 
   ngOnInit() {
-    this.userService.populate();
+    this.store.dispatch(AuthActions.populateUser());
   }
 }

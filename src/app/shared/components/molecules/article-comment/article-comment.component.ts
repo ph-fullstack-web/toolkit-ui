@@ -1,15 +1,17 @@
 import { Component, EventEmitter, Input, Output, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
 
-import { User, Comment } from 'models';
-import { UserService } from 'services';
+import { Comment } from 'models';
+import { fromAuth } from 'store/auth';
+import { RootState } from 'store';
 
 @Component({
   selector: 'app-article-comment',
   templateUrl: './article-comment.component.html',
 })
 export class ArticleCommentComponent implements OnInit, OnDestroy {
-  constructor(private userService: UserService) {}
+  constructor(private store: Store<RootState>) {}
 
   private subscription: Subscription = new Subscription();
 
@@ -20,8 +22,9 @@ export class ArticleCommentComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // Load the current user's data
-    this.subscription = this.userService.currentUser.subscribe((userData: User) => {
-      this.canModify = userData.username === this.comment.author.username;
+
+    this.subscription = this.store.select(fromAuth.selectCurrentUser).subscribe((userData) => {
+      this.canModify = userData?.username === this.comment.author.username;
     });
   }
 

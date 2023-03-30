@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+
+import { RootState } from 'store';
 import { Article, User, Comment } from 'models';
-import { ArticlesService, CommentsService, UserService } from 'services';
+import { ArticlesService, CommentsService } from 'services';
+import { fromAuth } from 'store/auth';
 
 @Component({
   selector: 'app-article-page',
@@ -23,7 +27,7 @@ export class ArticlePageComponent implements OnInit {
     private articlesService: ArticlesService,
     private commentsService: CommentsService,
     private router: Router,
-    private userService: UserService
+    private store: Store<RootState>
   ) {}
 
   ngOnInit() {
@@ -36,9 +40,9 @@ export class ArticlePageComponent implements OnInit {
     });
 
     // Load the current user's data
-    this.userService.currentUser.subscribe((userData: User) => {
-      this.currentUser = userData;
 
+    this.store.select(fromAuth.selectCurrentUser).subscribe((user) => {
+      this.currentUser = user!;
       this.canModify = this.currentUser.username === this.article.author.username;
     });
   }
