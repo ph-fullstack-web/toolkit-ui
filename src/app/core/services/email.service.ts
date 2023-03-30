@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { SendEmailToReviewersData, SendEmailToReviewersResponse } from 'models';
+import { SendEmailToReviewersData, SendEmailToReviewersResponse } from '@models';
 
 @Injectable({
   providedIn: 'root',

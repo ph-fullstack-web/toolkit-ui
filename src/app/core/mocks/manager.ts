@@ -1,5 +1,5 @@
-import { Manager } from 'models';
-import { mockConsultants } from 'mocks';
+import { Manager } from '@models';
+import { mockConsultants } from '@mocks';
 
 export const mockManagers: Manager[] = [
   {

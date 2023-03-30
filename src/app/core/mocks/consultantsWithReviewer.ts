@@ -1,5 +1,5 @@
-import { ConsultantsWithReviewer } from 'models';
-import { mockConsultantReviewers, mockManagers } from 'mocks';
+import { ConsultantsWithReviewer } from '@models';
+import { mockConsultantReviewers, mockConsultants, mockManagers } from '@mocks';
 
 export const mockConsultantsWithReviewers: ConsultantsWithReviewer[] = [
   {
@@ -8,7 +8,13 @@ export const mockConsultantsWithReviewers: ConsultantsWithReviewer[] = [
     firstName: 'Meegin',
     lastName: 'bmeegin0@unc.edu',
     managerId: 'eed0e9b7-532f-4fb1-86a3-964aed9b8777',
-    manager: mockManagers[0],
+    manager: {
+      managerId: 'cba25f38-625e-412e-b303-272f10bc79e9',
+      managerEmail: 'ryacobsohn0@alibaba.com',
+      firstName: 'Yacobsohn',
+      lastName: 'ryacobsohn0@youtube.com',
+      consultants: mockConsultants.slice(0, 2),
+    },
     consultantReviewers: mockConsultantReviewers,
   },
   {
@@ -17,7 +23,13 @@ export const mockConsultantsWithReviewers: ConsultantsWithReviewer[] = [
     firstName: 'Sherrott',
     lastName: 'csherrott1@nytimes.com',
     managerId: '63df56ef-55a5-4b56-92c4-5ca12848a511',
-    manager: mockManagers[0],
+    manager: {
+      managerId: 'cba25f38-625e-412e-b303-272f10bc79e9',
+      managerEmail: 'ryacobsohn0@alibaba.com',
+      firstName: 'Yacobsohn',
+      lastName: 'ryacobsohn0@youtube.com',
+      consultants: mockConsultants.slice(0, 2),
+    },
     consultantReviewers: mockConsultantReviewers,
   },
   {
@@ -26,7 +38,13 @@ export const mockConsultantsWithReviewers: ConsultantsWithReviewer[] = [
     firstName: 'Gouldbourn',
     lastName: 'agouldbourn2@paginegialle.it',
     managerId: 'd51f9b87-7697-4959-8376-8a0bb758a7f6',
-    manager: mockManagers[1],
+    manager: {
+      managerId: '0fc96dbf-5694-46ca-854c-ae43374058fd',
+      managerEmail: 'dtaylor1@51.la',
+      firstName: 'Taylor',
+      lastName: 'ftaylor1@xing.com',
+      consultants: mockConsultants.slice(2, 5),
+    },
     consultantReviewers: [],
   },
   {
@@ -35,7 +53,13 @@ export const mockConsultantsWithReviewers: ConsultantsWithReviewer[] = [
     firstName: 'Doblin',
     lastName: 'bdoblin3@dailymotion.com',
     managerId: 'a1161d84-7cc6-4fc2-9af4-d53920ff40c6',
-    manager: mockManagers[1],
+    manager: {
+      managerId: '0fc96dbf-5694-46ca-854c-ae43374058fd',
+      managerEmail: 'dtaylor1@51.la',
+      firstName: 'Taylor',
+      lastName: 'ftaylor1@xing.com',
+      consultants: mockConsultants.slice(2, 5),
+    },
     consultantReviewers: [],
   },
   {
@@ -44,7 +68,13 @@ export const mockConsultantsWithReviewers: ConsultantsWithReviewer[] = [
     firstName: 'Behan',
     lastName: 'pbehan4@jimdo.com',
     managerId: '1601ca9b-57f4-4952-8d45-d3825f752e0c',
-    manager: mockManagers[1],
+    manager: {
+      managerId: '0fc96dbf-5694-46ca-854c-ae43374058fd',
+      managerEmail: 'dtaylor1@51.la',
+      firstName: 'Taylor',
+      lastName: 'ftaylor1@xing.com',
+      consultants: mockConsultants.slice(2, 5),
+    },
     consultantReviewers: [],
   },
 ];

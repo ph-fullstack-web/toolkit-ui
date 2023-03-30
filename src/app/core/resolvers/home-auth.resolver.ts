@@ -4,10 +4,12 @@ import { Store } from '@ngrx/store';
 import { take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
-import { AuthSelectors } from 'store/auth';
-import { RootState } from 'store';
+import { RootState } from '@app/store';
+import { AuthSelectors } from '@app/store/auth';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class HomeAuthResolver implements Resolve<boolean> {
   constructor(private store: Store<RootState>) {}
 

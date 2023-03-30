@@ -6,12 +6,17 @@ import { RootState } from 'app/store/root-state';
 import { authFeature as fromAuth } from 'app/store/auth/auth.reducers';
 import * as AuthActions from 'app/store/auth/auth.actions';
 
-import { AuthType, Errors } from 'models';
+import { AuthType, Errors } from '@models';
 import { Observable } from 'rxjs';
+
+import { AuthTemplateComponent } from '../auth-template/auth-template.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-auth-page',
   templateUrl: './auth-page.component.html',
+  standalone: true,
+  imports: [AuthTemplateComponent, CommonModule],
 })
 export class AuthPageComponent {
   authType!: AuthType;

@@ -1,16 +1,21 @@
 import { Component } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { RootState } from 'app/store/root-state';
+import { CommonModule } from '@angular/common';
 
-import { Errors } from 'models';
+import { RootState } from '@app/store';
+
 import { Observable } from 'rxjs';
-import * as AuthActions from '../../../store/auth/auth.actions';
-import { authFeature as fromAuth } from '../../../store/auth/auth.reducers';
+import { AuthActions, fromAuth } from '@app/store/auth';
+import { Errors } from '@models';
+
+import { SettingsTemplateComponent } from '../settings-template/settings-template.component';
 
 @Component({
   selector: 'app-settings-page',
   templateUrl: './settings-page.component.html',
+  standalone: true,
+  imports: [SettingsTemplateComponent, CommonModule],
 })
 export class SettingsPageComponent {
   settingsForm!: UntypedFormGroup;

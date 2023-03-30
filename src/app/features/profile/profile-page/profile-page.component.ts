@@ -3,13 +3,18 @@ import { ActivatedRoute, Data } from '@angular/router';
 import { combineLatest, map, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
-import { Profile, User } from 'models';
-import { RootState } from 'store';
-import { fromAuth } from 'store/auth';
+import { RootState } from '@app/store';
+import { fromAuth } from '@app/store/auth';
+import { Profile, User } from '@models';
+
+import { ProfileTemplateComponent } from '../profile-template/profile-template.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-profile-page',
   templateUrl: './profile-page.component.html',
+  standalone: true,
+  imports: [ProfileTemplateComponent, CommonModule],
 })
 export class ProfilePageComponent {
   constructor(private route: ActivatedRoute, private store: Store<RootState>) {}

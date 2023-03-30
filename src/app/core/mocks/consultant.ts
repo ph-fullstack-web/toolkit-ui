@@ -1,4 +1,4 @@
-import { Consultant } from 'models';
+import { Consultant } from '@models';
 
 export const mockConsultants: Consultant[] = [
   {

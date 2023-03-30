@@ -3,9 +3,9 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, exhaustMap, map, of, tap } from 'rxjs';
 
-import { Errors, User } from 'models';
-import { ApiService, JwtService } from 'services';
-import * as AuthActions from './auth.actions';
+import { Errors, User } from '@models';
+import { ApiService, JwtService } from '@services';
+import { AuthActions } from '@app/store/auth';
 
 @Injectable()
 export class AuthEffects {
@@ -76,14 +76,16 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(AuthActions.updateUser),
-        exhaustMap(({ user }) =>
-          this.apiService.put('/user', { user }).pipe(
+        exhaustMap(({ user }) => {
+          console.log(user);
+          return this.apiService.put('/user', { user }).pipe(
             map((data: { user: User }) => {
+              console.log(data);
               return AuthActions.updateUserSuccess({ user: data.user });
             }),
             catchError((errors: Errors) => of(AuthActions.updateUserFailure({ errors })))
-          )
-        )
+          );
+        })
       ),
     { useEffectsErrorHandler: false }
   );

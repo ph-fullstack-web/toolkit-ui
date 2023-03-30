@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { AuthType, Credentials, Errors, User } from 'models';
+import { AuthType, Credentials, Errors, User } from '@models';
 
 export const attemptAuth = createAction(
   '[Auth] Attempt Authentication',

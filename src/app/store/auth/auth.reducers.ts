@@ -1,5 +1,5 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
-import { Errors, User } from 'models';
+import { Errors, User } from '@models';
 import * as AuthActions from './auth.actions';
 
 export interface State {

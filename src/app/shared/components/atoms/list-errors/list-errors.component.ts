@@ -1,10 +1,13 @@
 import { Component, Input } from '@angular/core';
+import { NgIf, NgFor } from '@angular/common';
 
-import { Errors } from 'models';
+import { Errors } from '@models';
 
 @Component({
   selector: 'app-list-errors',
   templateUrl: './list-errors.component.html',
+  standalone: true,
+  imports: [NgIf, NgFor],
 })
 export class ListErrorsComponent {
   formattedErrors: Array<string> = [];

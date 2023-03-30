@@ -1,10 +1,13 @@
 import { Directive, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 import { Store } from '@ngrx/store';
 
-import { AuthSelectors } from 'store/auth';
-import { RootState } from 'app/store/root-state';
+import { RootState } from '@app/store';
+import { AuthSelectors } from '@app/store/auth';
 
-@Directive({ selector: '[appShowAuthed]' })
+@Directive({
+  selector: '[appShowAuthed]',
+  standalone: true,
+})
 export class ShowAuthedDirective implements OnInit {
   constructor(
     private templateRef: TemplateRef<any>,

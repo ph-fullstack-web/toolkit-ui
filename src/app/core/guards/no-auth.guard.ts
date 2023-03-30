@@ -3,10 +3,12 @@ import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angul
 import { map, Observable, take } from 'rxjs';
 import { Store } from '@ngrx/store';
 
-import { AuthSelectors } from 'store/auth';
-import { RootState } from 'app/store/root-state';
+import { RootState } from '@app/store';
+import { AuthSelectors } from '@app/store/auth';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class NoAuthGuard implements CanActivate {
   constructor(private store: Store<RootState>) {}
 
