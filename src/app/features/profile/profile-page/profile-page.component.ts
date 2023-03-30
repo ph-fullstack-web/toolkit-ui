@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Data } from '@angular/router';
 import { combineLatest, map, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 import { RootState } from '@app/store';
 import { fromAuth } from '@app/store/auth';
@@ -14,7 +14,7 @@ import { ProfileTemplateComponent } from '../profile-template/profile-template.c
   selector: 'app-profile-page',
   templateUrl: './profile-page.component.html',
   standalone: true,
-  imports: [ProfileTemplateComponent, CommonModule],
+  imports: [ProfileTemplateComponent, AsyncPipe],
 })
 export class ProfilePageComponent {
   constructor(private route: ActivatedRoute, private store: Store<RootState>) {}

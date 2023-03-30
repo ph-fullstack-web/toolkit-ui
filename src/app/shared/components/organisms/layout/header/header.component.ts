@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { RootState } from 'app/store/root-state';
 import { Observable } from 'rxjs';
-import { CommonModule, NgIf } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 import { fromAuth } from '@app/store/auth';
@@ -13,7 +13,7 @@ import { User } from '@models';
   selector: 'app-header',
   templateUrl: './header.component.html',
   standalone: true,
-  imports: [RouterLink, ShowAuthedDirective, RouterLinkActive, NgIf, CommonModule],
+  imports: [RouterLink, ShowAuthedDirective, RouterLinkActive, NgIf, AsyncPipe],
 })
 export class HeaderComponent implements OnInit {
   constructor(private store: Store<RootState>) {}

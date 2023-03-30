@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -14,7 +14,7 @@ import { AuthTemplateComponent } from '../auth-template/auth-template.component'
   selector: 'app-auth-page',
   templateUrl: './auth-page.component.html',
   standalone: true,
-  imports: [AuthTemplateComponent, CommonModule],
+  imports: [AuthTemplateComponent, AsyncPipe],
 })
 export class AuthPageComponent {
   authType!: AuthType;

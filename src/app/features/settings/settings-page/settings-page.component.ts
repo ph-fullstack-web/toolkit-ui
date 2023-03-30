@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Observable, take } from 'rxjs';
 
 import { RootState } from '@app/store';
@@ -13,7 +13,7 @@ import { SettingsTemplateComponent } from '../settings-template/settings-templat
   selector: 'app-settings-page',
   templateUrl: './settings-page.component.html',
   standalone: true,
-  imports: [SettingsTemplateComponent, CommonModule],
+  imports: [SettingsTemplateComponent, AsyncPipe],
 })
 export class SettingsPageComponent {
   settingsForm!: UntypedFormGroup;
