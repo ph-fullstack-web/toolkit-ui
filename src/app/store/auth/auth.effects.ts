@@ -26,9 +26,7 @@ export class AuthEffects {
           const path = authType === 'register' ? '' : authType;
 
           return this.apiService.post(`/users/${path}`, { user: payload.credentials }).pipe(
-            tap((data) => {
-              this.jwtService.saveToken(data.user.token);
-            }),
+            tap((data) => this.jwtService.saveToken(data.user.token)),
             map((data) => AuthActions.attemptAuthSuccess({ user: data.user })),
             catchError((errors: Errors) => of(AuthActions.attemptAuthFailure({ errors })))
           );
@@ -79,10 +77,7 @@ export class AuthEffects {
         exhaustMap(({ user }) => {
           console.log(user);
           return this.apiService.put('/user', { user }).pipe(
-            map((data: { user: User }) => {
-              console.log(data);
-              return AuthActions.updateUserSuccess({ user: data.user });
-            }),
+            map((data: { user: User }) => AuthActions.updateUserSuccess({ user: data.user })),
             catchError((errors: Errors) => of(AuthActions.updateUserFailure({ errors })))
           );
         })
@@ -95,7 +90,6 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(AuthActions.updateUserSuccess),
         tap(({ user }) => {
-          console.log(user);
           this.router.navigateByUrl(`/profile/${user.username}`);
         })
       ),

@@ -8,8 +8,7 @@ import { RootState } from '@app/store';
 import { Observable } from 'rxjs';
 import { AuthActions, fromAuth } from '@app/store/auth';
 import { Errors } from '@models';
-
-import { SettingsTemplateComponent } from '../settings-template/settings-template.component';
+import { SettingsTemplateComponent } from '../settings-template/settings-template.component'; 
 
 @Component({
   selector: 'app-settings-page',
