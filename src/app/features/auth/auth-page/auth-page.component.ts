@@ -1,16 +1,14 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { RootState } from 'app/store/root-state';
-import { authFeature as fromAuth } from 'app/store/auth/auth.reducers';
-import * as AuthActions from 'app/store/auth/auth.actions';
-
-import { AuthType, Errors } from '@models';
 import { Observable } from 'rxjs';
 
+import { RootState } from '@app/store';
+import { fromAuth, AuthActions } from '@app/store/auth';
+import { AuthType, Errors } from '@models';
 import { AuthTemplateComponent } from '../auth-template/auth-template.component';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-auth-page',

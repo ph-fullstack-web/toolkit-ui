@@ -74,13 +74,12 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(AuthActions.updateUser),
-        exhaustMap(({ user }) => {
-          console.log(user);
-          return this.apiService.put('/user', { user }).pipe(
+        exhaustMap(({ user }) =>
+          this.apiService.put('/user', { user }).pipe(
             map((data: { user: User }) => AuthActions.updateUserSuccess({ user: data.user })),
             catchError((errors: Errors) => of(AuthActions.updateUserFailure({ errors })))
-          );
-        })
+          )
+        )
       ),
     { useEffectsErrorHandler: false }
   );

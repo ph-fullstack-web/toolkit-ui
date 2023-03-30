@@ -20,10 +20,10 @@ export const authFeature = createFeature({
   name: featureName,
   reducer: createReducer(
     initialState,
-    on(AuthActions.attemptAuth, AuthActions.updateUser, AuthActions.populateUser, (state) => {
-      console.log(state);
-      return { ...state, isLoading: true };
-    }),
+    on(AuthActions.attemptAuth, AuthActions.updateUser, AuthActions.populateUser, (state) => ({
+      ...state,
+      isLoading: true,
+    })),
     on(
       AuthActions.attemptAuthSuccess,
       AuthActions.updateUserSuccess,

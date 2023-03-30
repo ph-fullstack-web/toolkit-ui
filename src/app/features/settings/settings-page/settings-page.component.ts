@@ -2,13 +2,12 @@ import { Component } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { CommonModule } from '@angular/common';
+import { Observable, take } from 'rxjs';
 
 import { RootState } from '@app/store';
-
-import { Observable } from 'rxjs';
 import { AuthActions, fromAuth } from '@app/store/auth';
 import { Errors } from '@models';
-import { SettingsTemplateComponent } from '../settings-template/settings-template.component'; 
+import { SettingsTemplateComponent } from '../settings-template/settings-template.component';
 
 @Component({
   selector: 'app-settings-page',
@@ -35,9 +34,12 @@ export class SettingsPageComponent {
     // Optional: subscribe to changes on the form
     // this.settingsForm.valueChanges.subscribe(values => this.updateUser(values));
 
-    this.store.select(fromAuth.selectCurrentUser).subscribe({
-      next: (user) => this.settingsForm.patchValue(user!),
-    });
+    this.store
+      .select(fromAuth.selectCurrentUser)
+      .pipe(take(1))
+      .subscribe({
+        next: (user) => this.settingsForm.patchValue(user!),
+      });
 
     this.errors$ = this.store.select(fromAuth.selectAttemptAuthErrors);
     this.isLoading$ = this.store.select(fromAuth.selectIsLoading);
