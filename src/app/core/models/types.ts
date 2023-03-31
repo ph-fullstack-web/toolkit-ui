@@ -45,7 +45,3 @@ export type SendEmailToReviewersResponse = {
     sentMessage: string;
   }[];
 };
-
-
-export type AuthType = "login" | "register";
-export type Credentials = { email: string, password: string }
