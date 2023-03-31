@@ -11,11 +11,12 @@ export class LocalStoreFactoryService {
     TModel extends LocalModel,
     TLocalStore extends LocalStore<TState, TModel>
   >(storeName: StoreName): TLocalStore {
+    const storeProviders = this.getStoreProviders();
     const injector = Injector.create({
       parent: this.injector,
-      providers: [],
+      providers: storeProviders,
     });
-    const storeProviders = this.getStoreProviders();
+
     const stores = storeProviders.map(({ provide }) => injector.get(provide) as TLocalStore);
 
     return stores.find((store) => store.name === storeName)!;
