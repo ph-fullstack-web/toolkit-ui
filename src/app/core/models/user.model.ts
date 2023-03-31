@@ -5,3 +5,7 @@ export interface User {
   bio: string;
   image: string;
 }
+
+export interface UserResponse {
+  user: User;
+}

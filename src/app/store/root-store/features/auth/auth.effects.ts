@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, exhaustMap, map, of, tap } from 'rxjs';
 
-import { Errors, User } from '@models';
+import { AttemptAuthPayload, Errors, UserResponse } from '@models';
 import { ApiService, JwtService } from '@services';
 import { AuthActions } from '@app/store/auth';
 
@@ -21,13 +21,13 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(AuthActions.attemptAuth),
         map((action) => action.payload),
-        exhaustMap((payload) => {
+        exhaustMap((payload: AttemptAuthPayload) => {
           const authType = payload.authType;
           const path = authType === 'register' ? '' : authType;
 
           return this.apiService.post(`/users/${path}`, { user: payload.credentials }).pipe(
-            tap((data) => this.jwtService.saveToken(data.user.token)),
-            map((data) => AuthActions.attemptAuthSuccess({ user: data.user })),
+            tap((data: UserResponse) => this.jwtService.saveToken(data.user.token)),
+            map((data: UserResponse) => AuthActions.attemptAuthSuccess({ user: data.user })),
             catchError((errors: Errors) => of(AuthActions.attemptAuthFailure({ errors })))
           );
         })
@@ -54,7 +54,7 @@ export class AuthEffects {
           }
 
           return this.apiService.get('/user').pipe(
-            map((data) => AuthActions.populateUserSuccess({ user: data.user })),
+            map((data: UserResponse) => AuthActions.populateUserSuccess({ user: data.user })),
             catchError(() => of(AuthActions.purgeAuth()))
           );
         })
@@ -70,13 +70,22 @@ export class AuthEffects {
     )
   );
 
+  purgeAuthSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.purgeAuthSuccess),
+        tap(() => this.router.navigateByUrl('/'))
+      ),
+    { dispatch: false }
+  );
+
   updateUser$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(AuthActions.updateUser),
         exhaustMap(({ user }) =>
           this.apiService.put('/user', { user }).pipe(
-            map((data: { user: User }) => AuthActions.updateUserSuccess({ user: data.user })),
+            map((data: UserResponse) => AuthActions.updateUserSuccess({ user: data.user })),
             catchError((errors: Errors) => of(AuthActions.updateUserFailure({ errors })))
           )
         )
@@ -88,8 +97,8 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(AuthActions.updateUserSuccess),
-        tap(({ user }) => {
-          this.router.navigateByUrl(`/profile/${user.username}`);
+        tap((data: UserResponse) => {
+          this.router.navigateByUrl(`/profile/${data.user.username}`);
         })
       ),
     { dispatch: false }

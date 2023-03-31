@@ -42,8 +42,9 @@
       "@core/*": [ "app/core/*" ],
       "@features/*": [ "app/features/*" ],
       "@shared/*": [ "app/shared/*" ],
-      "@app/store": [ "app/store/index.ts" ],
-      "@app/store/auth": [ "app/store/auth/index.ts" ]
+      "@app/store": [ "app/store/root-store/index.ts" ],
+      "@app/store/auth": [ "app/store/root-store/features/auth/index.ts" ],
+      "@app/store/local": ["app/store/component-store/index.ts"]
     }
   },
   "angularCompilerOptions": {

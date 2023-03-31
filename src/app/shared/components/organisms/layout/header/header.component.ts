@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { RootState } from 'app/store/root-state';
+import { RootState } from '@app/store';
 import { Observable } from 'rxjs';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';

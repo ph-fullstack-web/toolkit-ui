@@ -4,7 +4,7 @@ import { RouterLink } from '@angular/router';
 import { NgIf } from '@angular/common';
 
 import { ListErrorsComponent } from '@atoms';
-import { Errors } from '@models';
+import { AuthType, Errors } from '@models';
 
 @Component({
   selector: 'app-auth-template',
@@ -14,7 +14,7 @@ import { Errors } from '@models';
 })
 export class AuthTemplateComponent {
   @Input() title!: string;
-  @Input() authType!: string;
+  @Input() authType!: AuthType;
   @Input() errors: Errors = { errors: {} };
   @Input() authForm!: UntypedFormGroup;
   @Input() isSubmitting: boolean = false;

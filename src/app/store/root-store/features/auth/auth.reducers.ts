@@ -1,6 +1,6 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
-import { Errors, User } from '@models';
-import * as AuthActions from './auth.actions';
+import { AttemptAuthError, Errors, User } from '@models';
+import { AuthActions } from '@app/store/auth';
 
 export interface State {
   currentUser: User | null;
@@ -14,13 +14,11 @@ const initialState: State = {
   isLoading: false,
 };
 
-const featureName = 'auth';
-
 export const authFeature = createFeature({
-  name: featureName,
+  name: 'auth',
   reducer: createReducer(
     initialState,
-    on(AuthActions.attemptAuth, AuthActions.updateUser, AuthActions.populateUser, (state) => ({
+    on(AuthActions.attemptAuth, AuthActions.updateUser, AuthActions.populateUser, (state: State) => ({
       ...state,
       isLoading: true,
     })),
@@ -35,13 +33,13 @@ export const authFeature = createFeature({
         isLoading: false,
       })
     ),
-    on(AuthActions.attemptAuthFailure, AuthActions.updateUserFailure, (state, payload) => ({
+    on(AuthActions.attemptAuthFailure, AuthActions.updateUserFailure, (state: State, payload: AttemptAuthError) => ({
       ...state,
       currentUser: null,
       attemptAuthErrors: payload.errors,
       isLoading: false,
     })),
-    on(AuthActions.purgeAuthSuccess, (state) => ({
+    on(AuthActions.purgeAuthSuccess, (state: State) => ({
       ...state,
       currentUser: null,
       isLoading: false,
@@ -49,5 +47,11 @@ export const authFeature = createFeature({
   ),
 });
 
-export const { name, reducer, selectAuthState, selectCurrentUser, selectAttemptAuthErrors, selectIsLoading } =
-  authFeature;
+export const {
+  name: featureName,
+  reducer,
+  selectAuthState,
+  selectCurrentUser,
+  selectAttemptAuthErrors,
+  selectIsLoading,
+} = authFeature;

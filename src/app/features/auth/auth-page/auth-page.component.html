@@ -1,6 +1,6 @@
 <app-auth-template
   title="{{ title }}"
-  authType="{{ authType }}"
+  [authType]="authType"
   [errors]="(errors$ | async)!"
   [authForm]="authForm"
   [isSubmitting]="(isLoading$ | async)!"
