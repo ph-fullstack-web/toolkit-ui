@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { BaseLocalStore, ModelId, StoreName } from '@app/store/local';
 import { Profile } from '@models';
-import { Observable, map } from 'rxjs';
+import { Observable, Subscription, map } from 'rxjs';
 
 export type ProfileId = ModelId<string>;
 export interface ProfileLocalModel extends Profile {
@@ -29,15 +29,15 @@ export class ProfileStore extends BaseLocalStore<ProfileLocalModel> {
     return this.getItemSync(id);
   }
 
-  addProfile(model: ProfileLocalModel) {
-    this.addItem(model);
+  addProfile(model: ProfileLocalModel): Subscription {
+    return this.addItem(model);
   }
 
-  updateProfile(model: ProfileLocalModel) {
-    this.updateItem(model);
+  updateProfile(model: ProfileLocalModel): Subscription {
+    return this.updateItem(model);
   }
 
-  deleteProfile(id: ProfileId) {
-    this.deleteItem(id);
+  deleteProfile(id: ProfileId): Subscription {
+    return this.deleteItem(id);
   }
 }
