@@ -28,9 +28,11 @@ describe('JwtService', () => {
   }); 
 
   it ('destroyToken should remove mocked token', () => {
-    service = TestBed.inject(JwtService);
-    service.destroyToken();
-    expect(window.localStorage['jwtToken']).toBeNull;
+      service = TestBed.inject(JwtService);
+      service.destroyToken();
+      let xxx = window.localStorage['jwtToken'];
+      console.log({xxx});
+      expect(window.localStorage['jwtToken']).toBeUndefined();
   }); 
 
 });
