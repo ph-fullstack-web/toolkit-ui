@@ -46,7 +46,7 @@ export class AuthPageComponent {
     });
 
     this.isLoading$ = this.store.select(fromAuth.selectIsLoading);
-    this.errors$ = this.store.select(fromAuth.selectAttemptAuthErrors);
+    this.errors$ = this.store.select(fromAuth.selectAuthErrors);
   }
 
   submitForm() {

@@ -18,8 +18,11 @@ export class LocalStoreFactory {
     });
 
     const stores = storeProviders.map(({ provide }) => injector.get(provide) as TLocalStore);
+    const store = stores.find((store) => store.name === storeName)!;
 
-    return stores.find((store) => store.name === storeName)!;
+    store.initializeState();
+
+    return store;
   }
 
   private getStoreProviders(): ConstructorProvider[] {

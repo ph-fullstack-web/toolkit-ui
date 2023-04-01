@@ -4,13 +4,13 @@ import { AuthActions } from '@app/store/auth';
 
 export interface State {
   currentUser: User | null;
-  attemptAuthErrors: Errors | null;
+  authErrors: Errors | null;
   isLoading: boolean;
 }
 
 const initialState: State = {
   currentUser: null,
-  attemptAuthErrors: null,
+  authErrors: null,
   isLoading: false,
 };
 
@@ -29,14 +29,14 @@ export const authFeature = createFeature({
       (state, payload) => ({
         ...state,
         currentUser: payload.user,
-        attemptAuthErrors: null,
+        authErrors: null,
         isLoading: false,
       })
     ),
     on(AuthActions.attemptAuthFailure, AuthActions.updateUserFailure, (state: State, payload: AuthError) => ({
       ...state,
       currentUser: null,
-      attemptAuthErrors: payload.errors,
+      authErrors: payload.errors,
       isLoading: false,
     })),
     on(AuthActions.purgeAuthSuccess, (state: State) => ({
@@ -52,6 +52,6 @@ export const {
   reducer,
   selectAuthState,
   selectCurrentUser,
-  selectAttemptAuthErrors,
+  selectAuthErrors,
   selectIsLoading,
 } = authFeature;

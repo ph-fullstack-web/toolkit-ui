@@ -7,9 +7,6 @@ export abstract class BaseLocalStore<TModel extends LocalModel>
   extends ComponentStore<LocalState<TModel>>
   implements LocalStore<LocalState<TModel>, TModel>
 {
-  constructor(initialState: LocalState<TModel>) {
-    super(initialState);
-  }
   abstract name: StoreName;
 
   readonly localState$: Observable<LocalState<TModel>> = this.state$;
@@ -23,6 +20,10 @@ export abstract class BaseLocalStore<TModel extends LocalModel>
         subs.unsubscribe();
       }
     });
+  }
+
+  initializeState(): void {
+    this.setState({ list: [] });
   }
 
   getItem(id: TModel['id']): Observable<TModel | undefined> {

@@ -11,13 +11,7 @@ export interface ProfileLocalModel extends Profile {
 
 @Injectable()
 export class ProfileStore extends BaseLocalStore<ProfileLocalModel> {
-  constructor() {
-    super({ list: [] });
-
-    this.profiles$ = this.state$.pipe(map((state) => state.list));
-  }
-
-  profiles$!: Observable<ProfileLocalModel[]>;
+  profiles$: Observable<ProfileLocalModel[]> = this.state$.pipe(map((state) => state.list));
 
   override name: StoreName = 'profile';
 

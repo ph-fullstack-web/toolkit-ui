@@ -19,6 +19,7 @@ export interface LocalStore<TState extends LocalState<LocalModel>, TModel extend
 
   name: StoreName;
 
+  initializeState(): void;
   getItem(id: TModel['id']): Observable<TModel | undefined>;
   getItemSync(id: TModel['id']): TModel | undefined;
   addItem(model: TModel): Subscription | void;
