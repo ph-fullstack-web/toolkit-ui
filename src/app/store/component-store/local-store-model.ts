@@ -24,6 +24,6 @@ export interface LocalStore<TState extends LocalState<LocalModel>, TModel extend
   getItemSync(id: TModel['id']): TModel | undefined;
   addItem(model: TModel): Subscription | void;
   updateItem(model: TModel): Subscription | void;
-  updatePartial(props: Record<string, unknown>): Subscription | void;
+  updatePartial(props: Partial<TState>): Subscription | void;
   deleteItem(id: TModel['id']): Subscription | void;
 }
