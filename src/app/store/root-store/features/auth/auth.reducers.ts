@@ -1,5 +1,5 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
-import { AttemptAuthError, Errors, User } from '@models';
+import { AuthError, Errors, User } from '@models';
 import { AuthActions } from '@app/store/auth';
 
 export interface State {
@@ -33,7 +33,7 @@ export const authFeature = createFeature({
         isLoading: false,
       })
     ),
-    on(AuthActions.attemptAuthFailure, AuthActions.updateUserFailure, (state: State, payload: AttemptAuthError) => ({
+    on(AuthActions.attemptAuthFailure, AuthActions.updateUserFailure, (state: State, payload: AuthError) => ({
       ...state,
       currentUser: null,
       attemptAuthErrors: payload.errors,
