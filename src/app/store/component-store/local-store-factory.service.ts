@@ -3,7 +3,7 @@ import { Injectable, Injector, ConstructorProvider, Type } from '@angular/core';
 import { LocalModel, LocalState, LocalStore, ProfileStore, StoreName } from '@app/store/local';
 
 @Injectable()
-export class LocalStoreFactoryService {
+export class LocalStoreFactory {
   constructor(private injector: Injector) {}
 
   createInstance<

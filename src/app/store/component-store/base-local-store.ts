@@ -34,7 +34,7 @@ export abstract class BaseLocalStore<TModel extends LocalModel>
 
     copiedList[itemIndex] = item;
 
-    return { list: copiedList };
+    return { ...state, list: copiedList };
   });
 
   updatePartial(props: Record<string, unknown>): void | Subscription {
@@ -47,6 +47,6 @@ export abstract class BaseLocalStore<TModel extends LocalModel>
 
     copiedList.splice(itemIndex);
 
-    return { list: copiedList };
+    return { ...state, list: copiedList };
   });
 }
