@@ -4,6 +4,7 @@ import { fromAuth, AuthEffects } from './features/auth';
 import { UIEffects } from './features/ui';
 
 export * from './features/';
+export * from './app-store';
 export * from './root-state';
 
 export const rootReducerMap: ActionReducerMap<RootState> = {

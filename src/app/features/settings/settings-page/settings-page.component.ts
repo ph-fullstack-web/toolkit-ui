@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
 import { AsyncPipe } from '@angular/common';
 import { Observable, take } from 'rxjs';
 
-import { RootState } from '@app/store';
+import { AppStore } from '@app/store';
 import { AuthActions, fromAuth } from '@app/store/auth';
 import { Errors } from '@models';
 import { SettingsTemplateComponent } from '../settings-template/settings-template.component';
@@ -20,7 +19,7 @@ export class SettingsPageComponent {
   errors$!: Observable<Errors | null>;
   isLoading$!: Observable<boolean>;
 
-  constructor(private store: Store<RootState>, private fb: UntypedFormBuilder) {}
+  constructor(private store: AppStore, private fb: UntypedFormBuilder) {}
 
   ngOnInit() {
     // create form group using the form builder

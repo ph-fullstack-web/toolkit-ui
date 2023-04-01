@@ -1,11 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
 import { exhaustMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 
-import { RootState } from '@app/store';
+import { AppStore } from '@app/store';
 import { AuthSelectors } from '@app/store/auth';
 import { Profile } from '@models';
 import { ProfilesService } from '@services';
@@ -17,7 +16,7 @@ import { ProfilesService } from '@services';
   imports: [NgClass],
 })
 export class FollowButtonComponent {
-  constructor(private profilesService: ProfilesService, private router: Router, private store: Store<RootState>) {}
+  constructor(private profilesService: ProfilesService, private router: Router, private store: AppStore) {}
 
   @Input() profile!: Profile;
   @Output() toggle = new EventEmitter<boolean>();

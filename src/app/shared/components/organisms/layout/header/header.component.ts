@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { RootState } from '@app/store';
+import { AppStore } from '@app/store';
 import { Observable } from 'rxjs';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
@@ -16,7 +15,7 @@ import { User } from '@models';
   imports: [RouterLink, ShowAuthedDirective, RouterLinkActive, NgIf, AsyncPipe],
 })
 export class HeaderComponent implements OnInit {
-  constructor(private store: Store<RootState>) {}
+  constructor(private store: AppStore) {}
 
   currentUser$!: Observable<User>;
 

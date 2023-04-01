@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { RootState } from '@app/store';
+import { AppStore } from '@app/store';
 import { AuthActions } from '@app/store/auth';
 import { RouterOutlet } from '@angular/router';
 
@@ -14,7 +13,7 @@ import { FooterComponent, HeaderComponent } from '@organisms';
   imports: [FooterComponent, HeaderComponent, RouterOutlet],
 })
 export class AppComponent implements OnInit {
-  constructor(private store: Store<RootState>) {}
+  constructor(private store: AppStore) {}
 
   ngOnInit() {
     this.store.dispatch(AuthActions.populateUser());

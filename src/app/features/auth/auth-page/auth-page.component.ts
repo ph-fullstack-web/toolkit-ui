@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 
-import { RootState } from '@app/store';
+import { AppStore } from '@app/store';
 import { fromAuth, AuthActions } from '@app/store/auth';
 import { AuthType, Errors } from '@models';
 import { AuthTemplateComponent } from '../auth-template/auth-template.component';
@@ -23,12 +22,7 @@ export class AuthPageComponent {
   isLoading$!: Observable<boolean>;
   authForm: UntypedFormGroup;
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private store: Store<RootState>,
-    private fb: UntypedFormBuilder
-  ) {
+  constructor(private route: ActivatedRoute, private store: AppStore, private fb: UntypedFormBuilder) {
     // use FormBuilder to create a form group
     this.authForm = this.fb.group({
       email: ['', Validators.required],

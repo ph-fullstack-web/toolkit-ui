@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Data } from '@angular/router';
 import { combineLatest, map, Observable } from 'rxjs';
-import { Store } from '@ngrx/store';
 import { AsyncPipe } from '@angular/common';
 
-import { RootState } from '@app/store';
+import { AppStore } from '@app/store';
 import { fromAuth } from '@app/store/auth';
 import { Profile, User } from '@models';
 
@@ -17,7 +16,7 @@ import { ProfileTemplateComponent } from '../profile-template/profile-template.c
   imports: [ProfileTemplateComponent, AsyncPipe],
 })
 export class ProfilePageComponent {
-  constructor(private route: ActivatedRoute, private store: Store<RootState>) {}
+  constructor(private route: ActivatedRoute, private store: AppStore) {}
 
   profile$!: Observable<Profile>;
   currentUser$!: Observable<User | null>;
