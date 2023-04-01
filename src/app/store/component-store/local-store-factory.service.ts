@@ -1,4 +1,4 @@
-import { Injectable, Injector, ConstructorProvider, Type } from '@angular/core';
+import { Injectable, Injector, ConstructorProvider, Type, Provider } from '@angular/core';
 
 import { LocalModel, LocalState, LocalStore, ProfileStore, StoreName } from '@app/store/local';
 
@@ -7,9 +7,9 @@ export class LocalStoreFactory {
   constructor(private injector: Injector) {}
 
   createInstance<
-    TState extends LocalState<LocalModel>,
-    TModel extends LocalModel,
-    TLocalStore extends LocalStore<TState, TModel>
+    TLocalStore extends LocalStore<TState, TModel>,
+    TState extends LocalState<LocalModel> = LocalState<LocalModel>,
+    TModel extends LocalModel = LocalModel
   >(storeName: StoreName): TLocalStore {
     const storeProviders = this.getStoreProviders();
     const injector = Injector.create({
@@ -29,3 +29,5 @@ export class LocalStoreFactory {
     return storeTypes.map((type) => ({ provide: type as Type<Function> }));
   }
 }
+
+export const provideLocalStoreFactory = (): Provider => LocalStoreFactory;

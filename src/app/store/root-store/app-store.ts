@@ -1,6 +1,9 @@
 import { Store } from '@ngrx/store';
-import { RootState } from './root-state';
-import { Injectable } from '@angular/core';
+import { Injectable, Provider } from '@angular/core';
 
-@Injectable({ providedIn: 'root' })
+import { RootState } from './root-state';
+
+@Injectable()
 export class AppStore extends Store<RootState> {}
+
+export const provideAppStore = (): Provider => AppStore;

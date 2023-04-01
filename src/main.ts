@@ -11,7 +11,7 @@ import { environment } from '@environments/environment';
 
 import { AppComponent } from './app/app.component';
 import { APP_ROUTES } from 'app/app.routes';
-import { rootReducerMap, effects, RootState } from '@app/store';
+import { rootReducerMap, effects, RootState, provideAppStore } from '@app/store';
 
 if (environment.production) {
   enableProdMode();
@@ -24,6 +24,7 @@ const bootstrapPromise = bootstrapApplication(AppComponent, {
     provideRouter(APP_ROUTES, withPreloading(PreloadAllModules)),
 
     /** ngrx related providers */
+    provideAppStore(),
     provideStore<RootState>(rootReducerMap),
     provideRouterStore(),
     provideStoreDevtools({ logOnly: environment.production }),

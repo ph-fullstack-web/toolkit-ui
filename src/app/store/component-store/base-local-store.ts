@@ -15,6 +15,16 @@ export abstract class BaseLocalStore<TModel extends LocalModel>
   readonly localState$: Observable<LocalState<TModel>> = this.state$;
   readonly list$: Observable<TModel[]> = this.select((state) => state.list);
 
+  protected subscriptions: Subscription[] = [];
+
+  protected unsubscribeAll(): void {
+    this.subscriptions.forEach((subs) => {
+      if (!subs.closed) {
+        subs.unsubscribe();
+      }
+    });
+  }
+
   getItem(id: TModel['id']): Observable<TModel | undefined> {
     return this.select((state) => state.list.find((item) => item.id === id));
   }
@@ -23,30 +33,50 @@ export abstract class BaseLocalStore<TModel extends LocalModel>
     return this.get((state) => state.list.find((item) => item.id === id));
   }
 
-  addItem = this.updater((state: LocalState<TModel>, item: TModel) => ({
-    ...state,
-    list: [...state.list, item],
-  }));
+  addItem(model: TModel): Subscription {
+    const createSubscription = this.updater((state: LocalState<TModel>, item: TModel) => ({
+      ...state,
+      list: [...state.list, item],
+    }));
 
-  updateItem = this.updater((state: LocalState<TModel>, item: TModel) => {
-    const copiedList = state.list.slice();
-    const itemIndex = copiedList.indexOf(item);
+    return this.executeCommand(createSubscription.bind(this, model));
+  }
 
-    copiedList[itemIndex] = item;
+  updateItem(model: TModel): Subscription {
+    const createSubscription = this.updater((state: LocalState<TModel>, item: TModel) => {
+      const copiedList = state.list.slice();
+      const itemIndex = copiedList.indexOf(item);
 
-    return { ...state, list: copiedList };
-  });
+      copiedList[itemIndex] = item;
 
-  updatePartial(props: Record<string, unknown>): void | Subscription {
+      return { ...state, list: copiedList };
+    });
+
+    return this.executeCommand(createSubscription.bind(this, model));
+  }
+
+  updatePartial(props: Record<string, unknown>): void {
     this.patchState(props);
   }
 
-  deleteItem = this.updater((state: LocalState<TModel>, id: TModel['id']) => {
-    const copiedList = state.list.slice();
-    const itemIndex = copiedList.findIndex((item) => item.id === id);
+  deleteItem(id: TModel['id']): Subscription {
+    const createSubscription = this.updater((state: LocalState<TModel>, id: TModel['id']) => {
+      const copiedList = state.list.slice();
+      const itemIndex = copiedList.findIndex((item) => item.id === id);
 
-    copiedList.splice(itemIndex);
+      copiedList.splice(itemIndex);
 
-    return { ...state, list: copiedList };
-  });
+      return { ...state, list: copiedList };
+    });
+
+    return this.executeCommand(createSubscription.bind(this, id));
+  }
+
+  private executeCommand(createSubscription: () => Subscription) {
+    const subscription = createSubscription();
+
+    this.subscriptions.push(subscription);
+
+    return subscription;
+  }
 }
