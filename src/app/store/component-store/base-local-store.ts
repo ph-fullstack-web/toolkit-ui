@@ -63,7 +63,7 @@ export abstract class BaseLocalStore<TState extends LocalState<LocalModel>, TMod
       const copiedList = state.list.slice();
       const itemIndex = copiedList.findIndex((item) => item.id === id);
 
-      copiedList.splice(itemIndex);
+      copiedList.splice(itemIndex, 1);
 
       return { ...state, list: copiedList };
     });
