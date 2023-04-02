@@ -27,13 +27,13 @@ export class LocalStoreFactory {
 
   private getStoreProvider(storeName: StoreName): ConstructorProvider {
     /** Add store & derived store class type pair in this map.. */
-    const storeMap = new Map<StoreName, Function>([
+    const storeProviderMap = new Map<StoreName, Function>([
       ['profile', ProfileStore],
       /** This is a test store */
       ['add-more-here', ProfileStore],
     ]);
 
-    return { provide: storeMap.get(storeName) as Type<Function> };
+    return { provide: storeProviderMap.get(storeName) as Type<Function> };
   }
 }
 
