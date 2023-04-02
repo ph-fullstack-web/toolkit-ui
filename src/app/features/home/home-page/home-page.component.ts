@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Data } from '@angular/router';
+import { Observable, map } from 'rxjs';
 
 import { HomeTemplateComponent } from '../home-template/home-template.component';
 
@@ -12,11 +13,9 @@ import { HomeTemplateComponent } from '../home-template/home-template.component'
 export class HomePageComponent {
   constructor(private route: ActivatedRoute) {}
 
-  isAuthenticated: boolean = false;
+  isAuthenticated$!: Observable<boolean>;
 
   ngOnInit() {
-    this.route.data.subscribe((data: any) => {
-      this.isAuthenticated = data.isAuthenticated as boolean;
-    });
+    this.isAuthenticated$ = this.route.data.pipe(map((data: Data) => data['isAuthenticated']));
   }
 }

@@ -1,41 +1,52 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
-import { TestBed } from "@angular/core/testing";
-import { ActivatedRoute } from "@angular/router";
-import { HomeTemplateComponent } from "../home-template/home-template.component";
-import { HomePageComponent } from "./home-page.component";
-import { MockActivatedRoute } from "@mocks";
-import { MockComponent } from "ng-mocks";
-import { of } from "rxjs";
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RunHelpers, TestScheduler } from 'rxjs/testing';
+import { ActivatedRoute } from '@angular/router';
+import { MockComponent } from 'ng-mocks';
+
+import { HomeTemplateComponent } from '../home-template/home-template.component';
+import { MockActivatedRoute } from '@mocks';
+
+import { HomePageComponent } from './home-page.component';
 
 describe('HomePageComponent', () => {
+  let component: HomePageComponent;
+  let fixture: ComponentFixture<HomePageComponent>;
+  let activatedRouteStub: MockActivatedRoute;
 
-    let component: HomePageComponent;
-    let activatedRouteStub: MockActivatedRoute;
-  
-    beforeEach(() => {
+  const testScheduler = new TestScheduler((actual, expected) => {
+    expect(actual).toEqual(expected);
+  });
 
-        activatedRouteStub = new MockActivatedRoute();
-        TestBed.overrideComponent(HomePageComponent, {
-            set: {
-                imports: [MockComponent(HomeTemplateComponent)],
-                schemas: [CUSTOM_ELEMENTS_SCHEMA],
-                providers: [
-                    { provide: ActivatedRoute, useValue: activatedRouteStub}
-                ]
-            }
-        }).compileComponents();
+  beforeEach(() => {
+    activatedRouteStub = new MockActivatedRoute();
+    TestBed.overrideComponent(HomePageComponent, {
+      set: {
+        imports: [MockComponent(HomeTemplateComponent)],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+        providers: [{ provide: ActivatedRoute, useValue: activatedRouteStub }],
+      },
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(HomePageComponent);
+    component = fixture.componentInstance;
+  });
+
+  it('should create an instance', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should subscribe to route data and to check user authenticity', (done: DoneFn) => {
+    testScheduler.run((helpers: RunHelpers) => {
+      const { cold, expectObservable, flush } = helpers;
+      const isAuthenticated = true;
+
+      activatedRouteStub.data = cold('a|', { a: { isAuthenticated } });
+      fixture.detectChanges();
+      flush();
+
+      expectObservable(component.isAuthenticated$).toBe('a|', { a: isAuthenticated });
+      done();
     });
-
-    it('should create an instance', () => {
-        component = TestBed.createComponent(HomePageComponent).componentInstance;
-        expect(component).toBeTruthy();
-    });
-
-    it('should assign correct isAuthenticated value', () => {
-        activatedRouteStub.data = of({isAuthenticated: true});
-        component = TestBed.createComponent(HomePageComponent).componentInstance;
-        component.ngOnInit();
-        expect(component.isAuthenticated).toEqual(true);
-    });
-
-})
+  });
+});

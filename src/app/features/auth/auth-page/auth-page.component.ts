@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { ActivatedRoute, UrlSegment } from '@angular/router';
+import { Observable, map, tap } from 'rxjs';
 
 import { AppStore } from '@app/store';
 import { fromAuth, AuthActions } from '@app/store/auth';
@@ -13,45 +13,44 @@ import { AuthTemplateComponent } from '../auth-template/auth-template.component'
   selector: 'app-auth-page',
   templateUrl: './auth-page.component.html',
   standalone: true,
-  imports: [AuthTemplateComponent, AsyncPipe],
+  imports: [AuthTemplateComponent, AsyncPipe, NgIf],
 })
 export class AuthPageComponent {
-  authType!: AuthType;
-  title: string = '';
+  authType$!: Observable<AuthType>;
+  title$!: Observable<string>;
   errors$!: Observable<Errors | null>;
   isLoading$!: Observable<boolean>;
-  authForm: UntypedFormGroup;
+  authForm!: UntypedFormGroup;
 
-  constructor(private route: ActivatedRoute, private store: AppStore, private fb: UntypedFormBuilder) {
-    // use FormBuilder to create a form group
-    this.authForm = this.fb.group({
-      email: ['', Validators.required],
-      password: ['', Validators.required],
-    });
-  }
+  constructor(private route: ActivatedRoute, private store: AppStore, private fb: UntypedFormBuilder) {}
 
   ngOnInit() {
-    // you would normally unsubscribe from this observable subscription
-    // the active route observables are exemptions from unsubribe always rule
-    // see notes on: https://angular.io/guide/router#observable-parammap-and-component-reuse
-    this.route.url.subscribe((data) => {
-      // Get the last piece of the URL (it's either 'login' or 'register')
-      this.authType = data[data.length - 1].path as AuthType;
-      // Set a title for the page accordingly
-      this.title = this.authType === 'login' ? 'Sign in' : 'Sign up';
-      // add form control for username if this is the register page
-      if (this.authType === 'register') {
-        this.authForm.addControl('username', new UntypedFormControl());
-      }
-    });
+    this.initializeForm();
+    this.initializeObservables();
+  }
 
+  submitForm(authType: AuthType) {
+    this.store.dispatch(AuthActions.attemptAuth({ payload: { authType, credentials: this.authForm.value } }));
+  }
+
+  private initializeObservables() {
+    this.authType$ = this.route.url.pipe(
+      map((data: UrlSegment[]) => data[data.length - 1].path as AuthType),
+      tap((authType: AuthType) => {
+        if (authType === 'register') {
+          this.authForm.addControl('username', new UntypedFormControl());
+        }
+      })
+    );
+    this.title$ = this.authType$.pipe(map((authType: AuthType) => (authType === 'login' ? 'Sign in' : 'Sign up')));
     this.isLoading$ = this.store.select(fromAuth.selectIsLoading);
     this.errors$ = this.store.select(fromAuth.selectAuthErrors);
   }
 
-  submitForm() {
-    this.store.dispatch(
-      AuthActions.attemptAuth({ payload: { authType: this.authType, credentials: this.authForm.value } })
-    );
+  private initializeForm() {
+    this.authForm = this.fb.group({
+      email: ['', Validators.required],
+      password: ['', Validators.required],
+    });
   }
 }
