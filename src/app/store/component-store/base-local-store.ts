@@ -24,12 +24,16 @@ export abstract class BaseLocalStore<TState extends LocalState<LocalModel>, TMod
     });
   }
 
-  getItem(id: TModel['id']): Observable<TModel | undefined> {
-    return this.select((state) => state.list.find((item) => item.id === id) as TModel);
+  getItem<TResult>(idOrProjector: TModel['id'] | ((state: TState) => TResult)): Observable<TResult | undefined> {
+    if (typeof idOrProjector === 'function') {
+      return this.select(idOrProjector);
+    }
+
+    return this.select((state: TState) => state.list.find((item) => item.id === idOrProjector) as TResult);
   }
 
   getItemSync(id: TModel['id']): TModel | undefined {
-    return this.get((state) => state.list.find((item) => item.id === id) as TModel);
+    return this.get((state: TState) => state.list.find((item) => item.id === id) as TModel);
   }
 
   addItem(model: TModel): Subscription {

@@ -20,7 +20,7 @@ export interface LocalStore<TState extends LocalState<LocalModel>, TModel extend
   name: StoreName;
 
   initializeState(): void;
-  getItem(id: TModel['id']): Observable<TModel | undefined>;
+  getItem<TResult>(id: TModel['id'] | ((s: TState) => TResult)): Observable<TResult | undefined>;
   getItemSync(id: TModel['id']): TModel | undefined;
   addItem(model: TModel): Subscription | void;
   updateItem(model: TModel): Subscription | void;
