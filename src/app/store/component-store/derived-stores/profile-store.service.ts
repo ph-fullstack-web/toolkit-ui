@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subscription, map } from 'rxjs';
+import { Observable, Subscription, combineLatest, map } from 'rxjs';
 
 import { BaseLocalStore, LocalState, ModelId, StoreName } from '@app/store/local';
 import { Profile } from '@models';
@@ -25,6 +25,12 @@ export class ProfileStore extends BaseLocalStore<State, ProfileLocalModel> {
 
   override initializeState(): void {
     this.setState({ list: [], selectedId: '' });
+  }
+
+  getSelectedItem(): Observable<ProfileLocalModel> {
+    return combineLatest([this.list$, this.select((state) => state.selectedId)]).pipe(
+      map(([list, selectedId]) => list.find((item) => item.id === selectedId) as ProfileLocalModel)
+    );
   }
 
   getProfile(id: ProfileId): Observable<ProfileLocalModel | undefined> {
