@@ -31,7 +31,6 @@ describe('JwtService', () => {
       service = TestBed.inject(JwtService);
       service.destroyToken();
       let xxx = window.localStorage['jwtToken'];
-      console.log({xxx});
       expect(window.localStorage['jwtToken']).toBeUndefined();
   }); 
 
