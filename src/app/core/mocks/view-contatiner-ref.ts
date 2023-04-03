@@ -19,10 +19,11 @@ export class MockViewContainerRef<C> extends ViewContainerRef {
     get length(): number {
         throw new Error("Method not implemented.");
     }
-    createEmbeddedView<C>(templateRef: TemplateRef<C>, context?: C | undefined, options?: { index?: number | undefined; injector?: Injector | undefined; } | undefined): EmbeddedViewRef<C>;
-    createEmbeddedView<C>(templateRef: TemplateRef<C>, context?: C | undefined, index?: number | undefined): EmbeddedViewRef<C>;
+    
+    //createEmbeddedView<C>(templateRef: TemplateRef<C>, context?: C | undefined, options?: { index?: number | undefined; injector?: Injector | undefined; } | undefined): EmbeddedViewRef<C>;
+   // createEmbeddedView<C>(templateRef: TemplateRef<C>, context?: C | undefined, index?: number | undefined): EmbeddedViewRef<C>;
     createEmbeddedView(templateRef: unknown, context?: unknown, index?: unknown): EmbeddedViewRef<C> | EmbeddedViewRef<C> {
-        throw new Error("Method not implemented.");
+        return jasmine.createSpyObj('EmbeddedViewRef', ['rootNodes']);
     }
     createComponent<C>(componentType: Type<C>, options?: { index?: number | undefined; injector?: Injector | undefined; ngModuleRef?: NgModuleRef<unknown> | undefined; environmentInjector?: EnvironmentInjector | NgModuleRef<unknown> | undefined; projectableNodes?: Node[][] | undefined; } | undefined): ComponentRef<C>;
     createComponent<C>(componentFactory: ComponentFactory<C>, index?: number | undefined, injector?: Injector | undefined, projectableNodes?: any[][] | undefined, environmentInjector?: EnvironmentInjector | NgModuleRef<any> | undefined): ComponentRef<C>;
