@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subscription, combineLatest, map } from 'rxjs';
+import { Observable, Subscription, combineLatest, map, switchMap, tap } from 'rxjs';
 
 import { BaseLocalStore, LocalState, ModelId, StoreName } from '@app/store/local';
 import { Profile } from '@models';
@@ -42,7 +42,26 @@ export class ProfileStore extends BaseLocalStore<State, ProfileLocalModel> {
   }
 
   addProfile(model: ProfileLocalModel): Subscription {
-    return this.addItem(model);
+    const createSubs = this.effect((model$: Observable<ProfileLocalModel>) => {
+      return model$.pipe(
+        switchMap((model: ProfileLocalModel) => {
+          /** Fake HTTP call to add profile. */
+          const addProfile$ = new Observable<ProfileLocalModel>((subscriber) => {
+            setTimeout(() => {
+              subscriber.next(model);
+              subscriber.complete();
+            }, 1000);
+          });
+
+          return addProfile$.pipe(tap((model: ProfileLocalModel) => this.addItem(model)));
+        })
+      );
+    });
+    const subs = createSubs(model);
+
+    this.subscriptions.push(subs);
+
+    return subs;
   }
 
   updateProfile(model: ProfileLocalModel): Subscription {
