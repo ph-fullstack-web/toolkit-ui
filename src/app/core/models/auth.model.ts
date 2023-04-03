@@ -8,4 +8,4 @@ export type UserPayload = { user: User };
 
 export type AttemptAuthPayload = { credentials: Credentials; authType: AuthType };
 
-export type AttemptAuthError = { errors: Errors };
+export type AuthError = { errors: Errors };

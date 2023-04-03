@@ -96,12 +96,26 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "polyfills": ["zone.js", "zone.js/testing"],
+            "main": "src/test.ts",
+            "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": ["src/styles.scss"],
-            "scripts": []
+            "scripts": [],
+            "codeCoverage": true,
+            "codeCoverageExclude": [
+              "src/polyfills"
+            ]
+          },
+          "defaultConfiguration": "development",
+          "configurations": {
+            "development": {
+              "karmaConfig": "karma.config.js"
+            },
+            "production" : {
+              "karmaConfig": "karma.config.js"
+            }
           }
         }
       }

@@ -11,22 +11,29 @@ export class LocalStoreFactory {
     TState extends LocalState<LocalModel> = LocalState<LocalModel>,
     TModel extends LocalModel = LocalModel
   >(storeName: StoreName): TLocalStore {
-    const storeProviders = this.getStoreProviders();
+    const storeProvider = this.getStoreProvider(storeName);
     const injector = Injector.create({
       parent: this.injector,
-      providers: storeProviders,
+      //** There should ONLY be 1 local store that needs to be added to DI + the root  */
+      providers: [storeProvider],
     });
 
-    const stores = storeProviders.map(({ provide }) => injector.get(provide) as TLocalStore);
+    const store = injector.get(storeProvider.provide);
 
-    return stores.find((store) => store.name === storeName)!;
+    store.initializeState();
+
+    return store;
   }
 
-  private getStoreProviders(): ConstructorProvider[] {
-    /** Add derived store class type here.. */
-    const storeTypes: Array<Function> = [ProfileStore];
+  private getStoreProvider(storeName: StoreName): ConstructorProvider {
+    /** Add store & derived store class type pair in this map.. */
+    const storeConstructorMap = new Map<StoreName, Function>([
+      ['profile', ProfileStore],
+      /** This is a test store */
+      ['add-more-here', ProfileStore],
+    ]);
 
-    return storeTypes.map((type) => ({ provide: type as Type<Function> }));
+    return { provide: storeConstructorMap.get(storeName) as Type<Function> };
   }
 }
 

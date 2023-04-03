@@ -3,17 +3,16 @@ import { Observable, Subscription } from 'rxjs';
 
 import { LocalState, LocalStore, LocalModel, StoreName } from '@app/store/local';
 
-export abstract class BaseLocalStore<TModel extends LocalModel>
-  extends ComponentStore<LocalState<TModel>>
-  implements LocalStore<LocalState<TModel>, TModel>
+export abstract class BaseLocalStore<TState extends LocalState<LocalModel>, TModel extends LocalModel>
+  extends ComponentStore<TState>
+  implements LocalStore<TState, TModel>
 {
-  constructor(initialState: LocalState<TModel>) {
-    super(initialState);
-  }
   abstract name: StoreName;
 
-  readonly localState$: Observable<LocalState<TModel>> = this.state$;
-  readonly list$: Observable<TModel[]> = this.select((state) => state.list);
+  abstract initializeState(): void;
+
+  readonly localState$: Observable<TState> = this.state$;
+  readonly list$: Observable<TModel[]> = this.select((state: TState) => state.list as TModel[]);
 
   protected subscriptions: Subscription[] = [];
 
@@ -25,16 +24,20 @@ export abstract class BaseLocalStore<TModel extends LocalModel>
     });
   }
 
-  getItem(id: TModel['id']): Observable<TModel | undefined> {
-    return this.select((state) => state.list.find((item) => item.id === id));
+  getItem<TResult>(idOrProjector: TModel['id'] | ((state: TState) => TResult)): Observable<TResult | undefined> {
+    if (typeof idOrProjector === 'function') {
+      return this.select(idOrProjector);
+    }
+
+    return this.select((state: TState) => state.list.find((item) => item.id === idOrProjector) as TResult);
   }
 
   getItemSync(id: TModel['id']): TModel | undefined {
-    return this.get((state) => state.list.find((item) => item.id === id));
+    return this.get((state: TState) => state.list.find((item) => item.id === id) as TModel);
   }
 
   addItem(model: TModel): Subscription {
-    const createSubscription = this.updater((state: LocalState<TModel>, item: TModel) => ({
+    const createSubscription = this.updater((state: TState, item: TModel) => ({
       ...state,
       list: [...state.list, item],
     }));
@@ -43,7 +46,7 @@ export abstract class BaseLocalStore<TModel extends LocalModel>
   }
 
   updateItem(model: TModel): Subscription {
-    const createSubscription = this.updater((state: LocalState<TModel>, item: TModel) => {
+    const createSubscription = this.updater((state: TState, item: TModel) => {
       const copiedList = state.list.slice();
       const itemIndex = copiedList.indexOf(item);
 
@@ -55,16 +58,16 @@ export abstract class BaseLocalStore<TModel extends LocalModel>
     return this.executeCommand(createSubscription.bind(this, model));
   }
 
-  updatePartial(props: Record<string, unknown>): void {
+  updatePartial(props: Partial<TState>): void | Subscription {
     this.patchState(props);
   }
 
   deleteItem(id: TModel['id']): Subscription {
-    const createSubscription = this.updater((state: LocalState<TModel>, id: TModel['id']) => {
+    const createSubscription = this.updater((state: TState, id: TModel['id']) => {
       const copiedList = state.list.slice();
       const itemIndex = copiedList.findIndex((item) => item.id === id);
 
-      copiedList.splice(itemIndex);
+      copiedList.splice(itemIndex, 1);
 
       return { ...state, list: copiedList };
     });

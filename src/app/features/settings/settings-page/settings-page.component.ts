@@ -40,7 +40,7 @@ export class SettingsPageComponent {
         next: (user) => this.settingsForm.patchValue(user!),
       });
 
-    this.errors$ = this.store.select(fromAuth.selectAttemptAuthErrors);
+    this.errors$ = this.store.select(fromAuth.selectAuthErrors);
     this.isLoading$ = this.store.select(fromAuth.selectIsLoading);
   }
 
