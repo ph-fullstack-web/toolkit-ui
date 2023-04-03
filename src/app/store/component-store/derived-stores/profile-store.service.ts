@@ -29,7 +29,7 @@ export class ProfileStore extends BaseLocalStore<State, ProfileLocalModel> {
 
   getSelectedItem(): Observable<ProfileLocalModel> {
     return combineLatest([this.list$, this.select((state) => state.selectedId)]).pipe(
-      map(([list, selectedId]) => list.find((item) => item.id === selectedId) as ProfileLocalModel)
+      map(([list, selectedId]) => list.find((item) => item.id === selectedId)!)
     );
   }
 
