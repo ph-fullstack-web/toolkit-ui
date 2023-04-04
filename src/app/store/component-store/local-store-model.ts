@@ -11,7 +11,7 @@ export interface LocalState<TModel extends LocalModel> {
 }
 
 /** Add store names as literal types */
-export type StoreName = 'profile' | 'consultant' | 'add-more-here' | 'feedback';
+export type StoreName = 'profile' | 'consultant' | 'feedback' | 'add-more-here';
 
 export interface LocalStore<TState extends LocalState<LocalModel>, TModel extends LocalModel> {
   readonly localState$: Observable<TState>;
