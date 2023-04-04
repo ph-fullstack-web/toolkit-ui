@@ -1,0 +1,10 @@
+<app-feedback-template
+  [feedbacks]="(feedbacks$ | async)!"
+  [pageOptions]="(pageOptions$ | async)!"
+  [isLoading]="(isLoading$ | async)!"
+  (feedbackAdd)="onFeedbackAdd($event)"
+  (pageSelect)="onPageSelect($event)"
+  (feedbacktDelete)="onFeedbackDelete($event)"
+  (searchChange)="onSearchChange($event)"
+  (pageNavigate)="onPageNavigate($event)"
+></app-feedback-template>

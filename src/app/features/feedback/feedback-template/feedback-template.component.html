@@ -1,0 +1,68 @@
+<!-- 
+      NOTE: this template is just an example on how to use local store implementation,
+      typically these elements below should be wrapped inside atomic components.
+  -->
+<div class="container">
+  <div class="top-ctrls-container">
+    <div class="add-record">
+      <img *ngIf="isLoading" src="assets/spinner.svg" alt="" />
+      <button [disabled]="isLoading" type="button" class="btn btn-outline-primary" (click)="onAddFeedback()">
+        Add Random Record
+      </button>
+    </div>
+    <div class="input-group">
+      <input
+        #searchInput
+        [value]="searchKey"
+        type="text"
+        (keypress)="onSearchKeyPress($event)"
+        class="form-control"
+        placeholder="Search Email, Firstname or Lastname"
+      />
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button" (click)="onSearchClick(searchInput.value)">
+          <img src="assets/search-icon.svg" alt="" />
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Email</th>
+        <th scope="col">Firstname</th>
+        <th scope="col">Lastname</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let feedback of feedbacks">
+        <td>{{ feedback.feedbackEmail }}</td>
+        <td>{{ feedback.firstName }}</td>
+        <td>{{ feedback.lastName }}</td>
+        <td>
+          <button type="button" (click)="onDeleteItem(feedback.id)" class="btn btn-outline-danger btn-sm">
+            <i class="ion-android-delete"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="navigation-container">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item" [ngClass]="{ disabled: isPreviousDisabled }">
+          <a class="page-link" (click)="onNavigate('previous')">Previous</a>
+        </li>
+        <li *ngFor="let pageNum of pageNumbers" class="page-item" [ngClass]="{ active: pageNum.isActive }">
+          <a class="page-link" (click)="onPageClick(pageNum.value)">{{ pageNum.value }}</a>
+        </li>
+
+        <li class="page-item" [ngClass]="{ disabled: isNextDisabled }">
+          <a class="page-link" (click)="onNavigate('next')">Next</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+.top-ctrls-container {
+  display: flex;
+  flex-direction: column;
+
+  .add-record {
+    margin-left: auto;
+  }
+}
+
+.navigation-container {
+  display: flex;
+  justify-content: center;
+}

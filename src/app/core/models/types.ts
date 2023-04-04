@@ -6,6 +6,14 @@ export type Consultant = {
   managerId: string;
 };
 
+export type Feedback = {
+  feedbackId: string;
+  feedbackEmail: string;
+  firstName: string;
+  lastName: string;
+  managerId: string;
+};
+
 export type ConsultantReviewer = {
   consultantReviewerId: string;
   consultantEmail: string;

@@ -1,6 +1,14 @@
 import { Injectable, Injector, ConstructorProvider, Type, Provider } from '@angular/core';
 
-import { ConsultantStore, LocalModel, LocalState, LocalStore, ProfileStore, StoreName } from '@app/store/local';
+import {
+  ConsultantStore,
+  LocalModel,
+  LocalState,
+  LocalStore,
+  ProfileStore,
+  StoreName,
+  FeedbackStore,
+} from '@app/store/local';
 
 @Injectable()
 export class LocalStoreFactory {
@@ -30,6 +38,7 @@ export class LocalStoreFactory {
       /** Map store name & derived store class type pair below.. */
       ['profile', ProfileStore],
       ['consultant', ConsultantStore],
+      ['feedback', FeedbackStore],
     ]);
 
     return { provide: storeConstructorMap.get(storeName) as Type<Function> };
