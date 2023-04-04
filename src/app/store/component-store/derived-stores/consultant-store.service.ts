@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subscription, combineLatest, map, switchMap, tap } from 'rxjs';
+import { Observable, Subscription, switchMap, tap } from 'rxjs';
+import { tapResponse } from '@ngrx/component-store';
 
 import { BaseLocalStore, LocalState, ModelId, StoreName } from '@app/store/local';
 import { Consultant } from '@models';
@@ -17,7 +18,7 @@ export interface ConsultantState extends LocalState<ConsultantLocalModel> {
 
 @Injectable()
 export class ConsultantStore extends BaseLocalStore<ConsultantState, ConsultantLocalModel> {
-  /** Setup reactive state that will listen from to local state prop changes. */
+  /** Setup reactive state that will listen to local state prop changes. */
   get #consultantsBySearch$(): Observable<ConsultantLocalModel[]> {
     return this.select((state: ConsultantState) =>
       state.list.filter((item: ConsultantLocalModel) =>
@@ -80,6 +81,10 @@ export class ConsultantStore extends BaseLocalStore<ConsultantState, ConsultantL
     });
   }
 
+  getConsultant(id: ConsultantId): Observable<ConsultantLocalModel | undefined> {
+    return this.getItem(id);
+  }
+
   /** these methods below will update the local state */
 
   setCurrentPage(currentPage: number): Subscription {
@@ -114,10 +119,6 @@ export class ConsultantStore extends BaseLocalStore<ConsultantState, ConsultantL
     currentPage: state.currentPage - 1,
   }));
 
-  getConsultant(id: ConsultantId): Observable<ConsultantLocalModel | undefined> {
-    return this.getItem(id);
-  }
-
   deleteConsultant(id: ConsultantId): Subscription {
     const createSubscription = this.effect((id$: Observable<ConsultantId>) =>
       id$.pipe(
@@ -132,13 +133,15 @@ export class ConsultantStore extends BaseLocalStore<ConsultantState, ConsultantL
           });
 
           return deleteConsultant$.pipe(
-            tap({
-              next: (id) => {
+            tapResponse(
+              (id: ConsultantId) => {
                 this.deleteItem(id);
                 this.updatePartial({ isLoading: false, currentPage: 1 });
               },
-              error: () => this.updatePartial({ isLoading: false }),
-            })
+              () => {
+                this.updatePartial({ isLoading: false });
+              }
+            )
           );
         })
       )
@@ -161,13 +164,13 @@ export class ConsultantStore extends BaseLocalStore<ConsultantState, ConsultantL
           });
 
           return addConsultant$.pipe(
-            tap({
-              next: (model) => {
+            tapResponse(
+              (model: ConsultantLocalModel) => {
                 this.addItem(model);
                 this.updatePartial({ isLoading: false, searchKey: '', currentPage: 1 });
               },
-              error: () => this.updatePartial({ isLoading: false }),
-            })
+              () => this.updatePartial({ isLoading: false })
+            )
           );
         })
       )

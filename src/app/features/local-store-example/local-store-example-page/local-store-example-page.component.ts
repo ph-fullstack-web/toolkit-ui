@@ -32,6 +32,8 @@ export class LocalStoreExamplePageComponent implements OnInit {
 
   ngOnInit(): void {
     this.store = this.storeFactory.createInstance<ConsultantStore>('consultant');
+    this.store.setItemsPerPage(5);
+
     this.consultants$ = this.store.consultants$;
     this.isLoading$ = this.store.isLoading$;
 
