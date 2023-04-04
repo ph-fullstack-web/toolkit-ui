@@ -1,5 +1,5 @@
 import { NgClass, NgFor, NgIf } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { ConsultantId, ConsultantLocalModel } from '@app/store/local';
 
@@ -18,7 +18,7 @@ export type PageOptions = {
   standalone: true,
   imports: [NgFor, NgIf, NgClass],
 })
-export class LocalStoreExampleTemplateComponent implements OnInit {
+export class LocalStoreExampleTemplateComponent {
   @Input() consultants!: ConsultantLocalModel[];
   @Input() isLoading!: boolean;
   @Input() _pageOptions!: {
@@ -44,15 +44,10 @@ export class LocalStoreExampleTemplateComponent implements OnInit {
   @Output() searchChange = new EventEmitter<string>();
   @Output() pageNavigate = new EventEmitter<'previous' | 'next'>();
 
-  columnNames!: string[];
   searchKey!: string;
   pageNumbers!: { isActive: boolean; value: number }[];
   isNextDisabled!: boolean;
   isPreviousDisabled!: boolean;
-
-  ngOnInit(): void {
-    this.columnNames = Object.keys(this.consultants?.[0] ?? {});
-  }
 
   onAddConsultant() {
     this.consultantAdd.emit(this.generateConsultant());

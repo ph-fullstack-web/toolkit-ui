@@ -28,9 +28,7 @@ export class ProfileStore extends BaseLocalStore<State, ProfileLocalModel> {
   }
 
   getSelectedItem(): Observable<ProfileLocalModel> {
-    return combineLatest([this.list$, this.select((state) => state.selectedId)]).pipe(
-      map(([list, selectedId]) => list.find((item) => item.id === selectedId)!)
-    );
+    return this.select((state) => state.list.find((i) => i.id === state.selectedId)!);
   }
 
   getProfile(id: ProfileId): Observable<ProfileLocalModel | undefined> {

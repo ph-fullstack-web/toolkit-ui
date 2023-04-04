@@ -17,11 +17,11 @@ export interface ConsultantState extends LocalState<ConsultantLocalModel> {
 
 @Injectable()
 export class ConsultantStore extends BaseLocalStore<ConsultantState, ConsultantLocalModel> {
-  /** Setup reactive state that will listen from the local state prop changes. */
+  /** Setup reactive state that will listen from to local state prop changes. */
   get #consultantsBySearch$(): Observable<ConsultantLocalModel[]> {
-    return this.select((state) =>
-      state.list.filter((item) =>
-        Object.values(item).some((value) => {
+    return this.select((state: ConsultantState) =>
+      state.list.filter((item: ConsultantLocalModel) =>
+        Object.values(item).some((value: any[]) => {
           return !state.searchKey || value.toString().includes(state.searchKey);
         })
       )
@@ -32,39 +32,38 @@ export class ConsultantStore extends BaseLocalStore<ConsultantState, ConsultantL
     return this.select(this.#consultantsBySearch$, this.state$, (filteredList, state) => {
       const fromIndex = (state.currentPage - 1) * state.itemsPerPage;
       const toIndex = state.currentPage * state.itemsPerPage;
-      const list = filteredList.slice(fromIndex, toIndex);
-      return list;
+      return filteredList.slice(fromIndex, toIndex);
     });
   }
 
   get pageCount$(): Observable<number> {
     return this.select(
       this.#consultantsBySearch$,
-      this.select((state) => state.itemsPerPage),
+      this.select((state: ConsultantState) => state.itemsPerPage),
       (list, itemsPerPage) => Math.ceil(list.length / itemsPerPage)
     );
   }
 
   get currentPage$(): Observable<number> {
-    return this.select((state) => state.currentPage);
+    return this.select((state: ConsultantState) => state.currentPage);
   }
 
   get isLoading$(): Observable<boolean> {
-    return this.select((state) => state.isLoading);
+    return this.select((state: ConsultantState) => state.isLoading);
   }
 
   get searchKey$(): Observable<string> {
-    return this.select((state) => state.searchKey);
+    return this.select((state: ConsultantState) => state.searchKey);
   }
 
   get isPreviousDisabled$(): Observable<boolean> {
-    return this.select((state) => state.currentPage === 1);
+    return this.select((state: ConsultantState) => state.currentPage === 1);
   }
 
   get isNextDisabled$(): Observable<boolean> {
     return this.select(
       this.pageCount$,
-      this.select((state) => state.currentPage),
+      this.select((state: ConsultantState) => state.currentPage),
       (pageCount, currentPage) => currentPage === pageCount
     );
   }
@@ -105,12 +104,12 @@ export class ConsultantStore extends BaseLocalStore<ConsultantState, ConsultantL
     this.updatePartial({ searchKey, currentPage: 1 });
   }
 
-  goToNextPage = this.updater((state) => ({
+  goToNextPage = this.updater((state: ConsultantState) => ({
     ...state,
     currentPage: state.currentPage + 1,
   }));
 
-  goToPreviousPage = this.updater((state) => ({
+  goToPreviousPage = this.updater((state: ConsultantState) => ({
     ...state,
     currentPage: state.currentPage - 1,
   }));
