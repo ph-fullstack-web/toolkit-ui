@@ -21,12 +21,6 @@ export type PageOptions = {
 export class LocalStoreExampleTemplateComponent {
   @Input() consultants!: ConsultantLocalModel[];
   @Input() isLoading!: boolean;
-  @Input() _pageOptions!: {
-    pageCount: number;
-    currentPage: number;
-    isPreviousDisabled: boolean;
-    isNextDisabled: boolean;
-  };
   @Input() set pageOptions(options: PageOptions) {
     this.pageNumbers = [];
 
