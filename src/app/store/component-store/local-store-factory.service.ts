@@ -1,6 +1,7 @@
 import { Injectable, Injector, ConstructorProvider, Type, Provider } from '@angular/core';
 
 import { ConsultantStore, LocalModel, LocalState, LocalStore, ProfileStore, StoreName } from '@app/store/local';
+import { provideComponentStore } from '@ngrx/component-store';
 
 @Injectable()
 export class LocalStoreFactory {
@@ -15,7 +16,7 @@ export class LocalStoreFactory {
     const injector = Injector.create({
       parent: this.injector,
       /** There should ONLY be 1 local store that will be added to DI + the root (parent injector). */
-      providers: [storeProvider],
+      providers: [provideComponentStore(storeProvider.provide)],
     });
 
     const store = injector.get(storeProvider.provide);
