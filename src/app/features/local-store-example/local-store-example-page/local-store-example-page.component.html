@@ -1,0 +1,10 @@
+<app-local-store-example-template
+  [consultants]="(consultants$ | async)!"
+  [pageOptions]="(pageOptions$ | async)!"
+  [isLoading]="(isLoading$ | async)!"
+  (consultantAdd)="onConsultantAdd($event)"
+  (pageSelect)="onPageSelect($event)"
+  (consultantDelete)="onConsultantDelete($event)"
+  (searchChange)="onSearchChange($event)"
+  (pageNavigate)="onPageNavigate($event)"
+></app-local-store-example-template>

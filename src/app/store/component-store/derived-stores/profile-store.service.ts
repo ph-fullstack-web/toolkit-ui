@@ -42,8 +42,8 @@ export class ProfileStore extends BaseLocalStore<State, ProfileLocalModel> {
   }
 
   addProfile(model: ProfileLocalModel): Subscription {
-    const createSubs = this.effect((model$: Observable<ProfileLocalModel>) => {
-      return model$.pipe(
+    const createSubscription = this.effect((model$: Observable<ProfileLocalModel>) =>
+      model$.pipe(
         switchMap((model: ProfileLocalModel) => {
           /** Fake HTTP call to add profile. */
           const addProfile$ = new Observable<ProfileLocalModel>((subscriber) => {
@@ -55,13 +55,10 @@ export class ProfileStore extends BaseLocalStore<State, ProfileLocalModel> {
 
           return addProfile$.pipe(tap((model: ProfileLocalModel) => this.addItem(model)));
         })
-      );
-    });
-    const subs = createSubs(model);
+      )
+    );
 
-    this.subscriptions.push(subs);
-
-    return subs;
+    return this.executeCommand(createSubscription.bind(this, model));
   }
 
   updateProfile(model: ProfileLocalModel): Subscription {

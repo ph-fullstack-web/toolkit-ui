@@ -1,6 +1,6 @@
 import { Injectable, Injector, ConstructorProvider, Type, Provider } from '@angular/core';
 
-import { LocalModel, LocalState, LocalStore, ProfileStore, StoreName } from '@app/store/local';
+import { ConsultantStore, LocalModel, LocalState, LocalStore, ProfileStore, StoreName } from '@app/store/local';
 
 @Injectable()
 export class LocalStoreFactory {
@@ -14,7 +14,7 @@ export class LocalStoreFactory {
     const storeProvider = this.getStoreProvider(storeName);
     const injector = Injector.create({
       parent: this.injector,
-      //** There should ONLY be 1 local store that needs to be added to DI + the root  */
+      /** There should ONLY be 1 local store that will be added to DI + the root (parent injector). */
       providers: [storeProvider],
     });
 
@@ -26,11 +26,10 @@ export class LocalStoreFactory {
   }
 
   private getStoreProvider(storeName: StoreName): ConstructorProvider {
-    /** Add store & derived store class type pair in this map.. */
     const storeConstructorMap = new Map<StoreName, Function>([
+      /** Map store name & derived store class type pair below.. */
       ['profile', ProfileStore],
-      /** This is a test store */
-      ['add-more-here', ProfileStore],
+      ['consultant', ConsultantStore],
     ]);
 
     return { provide: storeConstructorMap.get(storeName) as Type<Function> };

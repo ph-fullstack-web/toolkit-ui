@@ -75,7 +75,7 @@ export abstract class BaseLocalStore<TState extends LocalState<LocalModel>, TMod
     return this.executeCommand(createSubscription.bind(this, id));
   }
 
-  private executeCommand(createSubscription: () => Subscription) {
+  protected executeCommand(createSubscription: () => Subscription) {
     const subscription = createSubscription();
 
     this.subscriptions.push(subscription);
