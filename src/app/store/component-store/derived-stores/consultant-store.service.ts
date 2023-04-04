@@ -16,6 +16,11 @@ export interface ConsultantState extends LocalState<ConsultantLocalModel> {
   isLoading: boolean;
 }
 
+export type PaginationMetadata = Array<{
+  pageNumber: number;
+  isActive: boolean;
+}>;
+
 @Injectable()
 export class ConsultantStore extends BaseLocalStore<ConsultantState, ConsultantLocalModel> {
   /** Setup reactive state that will listen to local state prop changes. */
@@ -67,6 +72,18 @@ export class ConsultantStore extends BaseLocalStore<ConsultantState, ConsultantL
       this.select((state: ConsultantState) => state.currentPage),
       (pageCount, currentPage) => currentPage === pageCount
     );
+  }
+
+  get paginationMetadata$(): Observable<PaginationMetadata> {
+    return this.select(this.pageCount$, this.currentPage$, (pageCount, currentPage) => {
+      const metadata: PaginationMetadata = [];
+
+      for (let pageNum = 1; pageNum <= pageCount; pageNum++) {
+        metadata.push({ isActive: pageNum === currentPage, pageNumber: pageNum });
+      }
+
+      return metadata;
+    });
   }
 
   override name: StoreName = 'consultant';

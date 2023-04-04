@@ -38,18 +38,16 @@ export class LocalStoreExamplePageComponent implements OnInit {
     this.isLoading$ = this.store.isLoading$;
 
     this.pageOptions$ = combineLatest([
-      this.store.pageCount$,
       this.store.searchKey$,
-      this.store.currentPage$,
       this.store.isPreviousDisabled$,
       this.store.isNextDisabled$,
+      this.store.paginationMetadata$,
     ]).pipe(
-      map(([pageCount, searchKey, currentPage, isPreviousDisabled, isNextDisabled]) => ({
-        pageCount,
+      map(([searchKey, isPreviousDisabled, isNextDisabled, paginationMetadata]) => ({
         searchKey,
-        currentPage,
         isPreviousDisabled,
         isNextDisabled,
+        paginationMetadata,
       }))
     );
   }

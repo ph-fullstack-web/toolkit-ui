@@ -1,14 +1,13 @@
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { ConsultantId, ConsultantLocalModel } from '@app/store/local';
+import { ConsultantId, ConsultantLocalModel, PaginationMetadata } from '@app/store/local';
 
 export type PageOptions = {
-  pageCount: number;
-  currentPage: number;
   searchKey: string;
   isPreviousDisabled: boolean;
   isNextDisabled: boolean;
+  paginationMetadata: PaginationMetadata;
 };
 
 @Component({
@@ -21,27 +20,15 @@ export type PageOptions = {
 export class LocalStoreExampleTemplateComponent {
   @Input() consultants!: ConsultantLocalModel[];
   @Input() isLoading!: boolean;
-  @Input() set pageOptions(options: PageOptions) {
-    this.pageNumbers = [];
+  @Input() pageOptions!: PageOptions;
 
-    for (let i = 1; i <= options.pageCount; i++) {
-      this.pageNumbers.push({ isActive: i === options.currentPage, value: i });
-    }
-
-    this.searchKey = options.searchKey;
-    this.isPreviousDisabled = options.isPreviousDisabled;
-    this.isNextDisabled = options.isNextDisabled;
-  }
   @Output() consultantAdd = new EventEmitter<ConsultantLocalModel>();
   @Output() pageSelect = new EventEmitter<number>();
   @Output() consultantDelete = new EventEmitter<ConsultantId>();
   @Output() searchChange = new EventEmitter<string>();
   @Output() pageNavigate = new EventEmitter<'previous' | 'next'>();
 
-  searchKey!: string;
   pageNumbers!: { isActive: boolean; value: number }[];
-  isNextDisabled!: boolean;
-  isPreviousDisabled!: boolean;
 
   onAddConsultant() {
     this.consultantAdd.emit(this.generateConsultant());

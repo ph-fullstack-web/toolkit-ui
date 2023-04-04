@@ -13,7 +13,7 @@
     <div class="input-group">
       <input
         #searchInput
-        [value]="searchKey"
+        [value]="pageOptions.searchKey"
         type="text"
         (keypress)="onSearchKeyPress($event)"
         class="form-control"
@@ -52,14 +52,18 @@
   <div class="navigation-container">
     <nav aria-label="Page navigation example">
       <ul class="pagination">
-        <li class="page-item" [ngClass]="{ disabled: isPreviousDisabled }">
+        <li class="page-item" [ngClass]="{ disabled: pageOptions.isPreviousDisabled }">
           <a class="page-link" (click)="onNavigate('previous')">Previous</a>
         </li>
-        <li *ngFor="let pageNum of pageNumbers" class="page-item" [ngClass]="{ active: pageNum.isActive }">
-          <a class="page-link" (click)="onPageClick(pageNum.value)">{{ pageNum.value }}</a>
+        <li
+          *ngFor="let metadata of pageOptions.paginationMetadata"
+          class="page-item"
+          [ngClass]="{ active: metadata.isActive }"
+        >
+          <a class="page-link" (click)="onPageClick(metadata.pageNumber)">{{ metadata.pageNumber }}</a>
         </li>
 
-        <li class="page-item" [ngClass]="{ disabled: isNextDisabled }">
+        <li class="page-item" [ngClass]="{ disabled: pageOptions.isNextDisabled }">
           <a class="page-link" (click)="onNavigate('next')">Next</a>
         </li>
       </ul>
