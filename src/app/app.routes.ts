@@ -24,6 +24,11 @@ export const APP_ROUTES: Routes = [
       ),
   },
   {
+    path: 'feedback',
+    loadComponent: () =>
+      import('./features/feedback/feedback-page/feedback-page.component').then((mod) => mod.FeedbackPageComponent),
+  },
+  {
     path: 'login',
     loadComponent: () => import('./features/auth/auth-page/auth-page.component').then((mod) => mod.AuthPageComponent),
     canActivate: [NoAuthGuard],
