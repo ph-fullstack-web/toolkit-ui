@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-echo "pre-commit run"
+# npm run lint
+echo "pre-commit"
