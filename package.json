@@ -10,7 +10,8 @@
         "build:prod": "ng serve --configuration=production",
         "build:test": "ng serve --configuration=test",
         "watch": "ng build --watch --configuration development",
-        "test": "ng test --watch=false --browsers ChromeHeadless",
+        "test": "ng test",
+        "test-headless": "ng test --watch=false --browsers ChromeHeadless",
         "lint": "ng lint --fix",
         "prepare": "husky install"
     },
