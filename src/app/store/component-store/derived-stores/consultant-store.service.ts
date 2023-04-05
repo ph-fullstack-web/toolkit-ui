@@ -1,12 +1,25 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subscription, filter, switchMap, tap } from 'rxjs';
+import {
+  Observable,
+  Subscription,
+  exhaustMap,
+  filter,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { tapResponse } from '@ngrx/component-store';
 
-import { BaseLocalStore, LocalState, ModelId, StoreName } from '@app/store/local';
+import {
+  BaseLocalStore,
+  LocalState,
+  ModelId,
+  StoreName,
+} from '@app/store/local';
 import { Consultant } from '@models';
 
 export type ConsultantId = ModelId<string>;
-export interface ConsultantLocalModel extends Omit<Consultant, 'consultantId' | 'managerId'> {
+export interface ConsultantLocalModel
+  extends Omit<Consultant, 'consultantId' | 'managerId'> {
   id: ConsultantId;
   isDeleting?: boolean;
 }
@@ -23,7 +36,10 @@ export type PaginationMetadata = Array<{
 }>;
 
 @Injectable()
-export class ConsultantStore extends BaseLocalStore<ConsultantState, ConsultantLocalModel> {
+export class ConsultantStore extends BaseLocalStore<
+  ConsultantState,
+  ConsultantLocalModel
+> {
   /** Setup reactive state that will listen to local state prop changes. */
   get #consultantsBySearch$(): Observable<ConsultantLocalModel[]> {
     return this.select((state: ConsultantState) =>
@@ -36,11 +52,15 @@ export class ConsultantStore extends BaseLocalStore<ConsultantState, ConsultantL
   }
 
   get consultants$(): Observable<ConsultantLocalModel[]> {
-    return this.select(this.#consultantsBySearch$, this.state$, (filteredList, state) => {
-      const fromIndex = (state.currentPage - 1) * state.itemsPerPage;
-      const toIndex = state.currentPage * state.itemsPerPage;
-      return filteredList.slice(fromIndex, toIndex);
-    });
+    return this.select(
+      this.#consultantsBySearch$,
+      this.state$,
+      (filteredList, state) => {
+        const fromIndex = (state.currentPage - 1) * state.itemsPerPage;
+        const toIndex = state.currentPage * state.itemsPerPage;
+        return filteredList.slice(fromIndex, toIndex);
+      }
+    );
   }
 
   get pageCount$(): Observable<number> {
@@ -76,15 +96,22 @@ export class ConsultantStore extends BaseLocalStore<ConsultantState, ConsultantL
   }
 
   get paginationMetadata$(): Observable<PaginationMetadata> {
-    return this.select(this.pageCount$, this.currentPage$, (pageCount, currentPage) => {
-      const metadata: PaginationMetadata = [];
+    return this.select(
+      this.pageCount$,
+      this.currentPage$,
+      (pageCount, currentPage) => {
+        const metadata: PaginationMetadata = [];
 
-      for (let pageNum = 1; pageNum <= pageCount; pageNum++) {
-        metadata.push({ isActive: pageNum === currentPage, pageNumber: pageNum });
+        for (let pageNum = 1; pageNum <= pageCount; pageNum++) {
+          metadata.push({
+            isActive: pageNum === currentPage,
+            pageNumber: pageNum,
+          });
+        }
+
+        return metadata;
       }
-
-      return metadata;
-    });
+    );
   }
 
   override name: StoreName = 'consultant';
@@ -99,26 +126,32 @@ export class ConsultantStore extends BaseLocalStore<ConsultantState, ConsultantL
     });
   }
 
-  getConsultant(id: ConsultantId): Observable<ConsultantLocalModel | undefined> {
+  getConsultant(
+    id: ConsultantId
+  ): Observable<ConsultantLocalModel | undefined> {
     return this.getItem(id);
   }
 
   /** these methods below will update the local state */
 
   setCurrentPage(currentPage: number): Subscription {
-    const createSubscription = this.updater((state: ConsultantState, currentPage: number) => ({
-      ...state,
-      currentPage,
-    }));
+    const createSubscription = this.updater(
+      (state: ConsultantState, currentPage: number) => ({
+        ...state,
+        currentPage,
+      })
+    );
 
     return this.executeCommand(createSubscription.bind(this, currentPage));
   }
 
   setItemsPerPage(itemsPerPage: number): Subscription {
-    const createSubscription = this.updater((state: ConsultantState, itemsPerPage: number) => ({
-      ...state,
-      itemsPerPage,
-    }));
+    const createSubscription = this.updater(
+      (state: ConsultantState, itemsPerPage: number) => ({
+        ...state,
+        itemsPerPage,
+      })
+    );
 
     return this.executeCommand(createSubscription.bind(this, itemsPerPage));
   }
@@ -143,7 +176,7 @@ export class ConsultantStore extends BaseLocalStore<ConsultantState, ConsultantL
         tap(() => this.updatePartial({ isLoading: true })),
         switchMap((id: ConsultantId) => {
           /** Fake HTTP call to delete consultant. */
-          const deleteConsultant$ = new Observable<ConsultantId>((subscriber) => {
+          const deleteConsultant$ = new Observable<ConsultantId>(subscriber => {
             setTimeout(() => {
               subscriber.next(id);
               subscriber.complete();
@@ -151,11 +184,11 @@ export class ConsultantStore extends BaseLocalStore<ConsultantState, ConsultantL
           });
 
           return this.getItem<ConsultantLocalModel>(id).pipe(
-            filter((model) => !!model),
-            tap((model) => {
+            filter(model => !!model),
+            tap(model => {
               model!.isDeleting = true;
             }),
-            switchMap(() => {
+            exhaustMap(() => {
               return deleteConsultant$.pipe(
                 tapResponse(
                   (id: ConsultantId) => {
@@ -177,29 +210,36 @@ export class ConsultantStore extends BaseLocalStore<ConsultantState, ConsultantL
   }
 
   addConsultant(model: ConsultantLocalModel): Subscription {
-    const createSubscription = this.effect((model$: Observable<ConsultantLocalModel>) =>
-      model$.pipe(
-        tap(() => this.updatePartial({ isLoading: true })),
-        switchMap((model: ConsultantLocalModel) => {
-          /** Fake HTTP call to add consultant. */
-          const addConsultant$ = new Observable<ConsultantLocalModel>((subscriber) => {
-            setTimeout(() => {
-              subscriber.next(model);
-              subscriber.complete();
-            }, 1000);
-          });
+    const createSubscription = this.effect(
+      (model$: Observable<ConsultantLocalModel>) =>
+        model$.pipe(
+          tap(() => this.updatePartial({ isLoading: true })),
+          switchMap((model: ConsultantLocalModel) => {
+            /** Fake HTTP call to add consultant. */
+            const addConsultant$ = new Observable<ConsultantLocalModel>(
+              subscriber => {
+                setTimeout(() => {
+                  subscriber.next(model);
+                  subscriber.complete();
+                }, 1000);
+              }
+            );
 
-          return addConsultant$.pipe(
-            tapResponse(
-              (model: ConsultantLocalModel) => {
-                this.addItem(model);
-                this.updatePartial({ isLoading: false, searchKey: '', currentPage: 1 });
-              },
-              () => this.updatePartial({ isLoading: false })
-            )
-          );
-        })
-      )
+            return addConsultant$.pipe(
+              tapResponse(
+                (model: ConsultantLocalModel) => {
+                  this.addItem(model);
+                  this.updatePartial({
+                    isLoading: false,
+                    searchKey: '',
+                    currentPage: 1,
+                  });
+                },
+                () => this.updatePartial({ isLoading: false })
+              )
+            );
+          })
+        )
     );
 
     return this.executeCommand(createSubscription.bind(this, model));
