@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subscription, switchMap, tap } from 'rxjs';
+import { Observable, Subscription, filter, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/component-store';
 
 import { BaseLocalStore, LocalState, ModelId, StoreName } from '@app/store/local';
@@ -151,6 +151,7 @@ export class ConsultantStore extends BaseLocalStore<ConsultantState, ConsultantL
           });
 
           return this.getItem<ConsultantLocalModel>(id).pipe(
+            filter((model) => !!model),
             tap((model) => {
               model!.isDeleting = true;
             }),

@@ -22,7 +22,7 @@ import {
   standalone: true,
 })
 export class LocalStoreExamplePageComponent implements OnInit {
-  constructor(readonly storeFactory: LocalStoreFactory) {}
+  constructor(private readonly storeFactory: LocalStoreFactory) {}
 
   private store!: ConsultantStore;
 
