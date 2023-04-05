@@ -17,7 +17,7 @@ export interface LocalStore<TState extends LocalState<LocalModel>, TModel extend
   readonly localState$: Observable<TState>;
   readonly list$: Observable<TModel[]>;
 
-  name: StoreName;
+  readonly name: StoreName;
 
   initializeState(): void;
   getItem<TResult>(id: TModel['id'] | ((s: TState) => TResult)): Observable<TResult | undefined>;

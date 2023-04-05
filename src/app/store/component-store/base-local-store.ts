@@ -7,7 +7,7 @@ export abstract class BaseLocalStore<TState extends LocalState<LocalModel>, TMod
   extends ComponentStore<TState>
   implements LocalStore<TState, TModel>
 {
-  abstract name: StoreName;
+  readonly abstract name: StoreName;
 
   abstract initializeState(): void;
 

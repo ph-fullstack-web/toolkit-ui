@@ -37,12 +37,17 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let consultant of consultants">
+      <tr *ngFor="let consultant of consultants" [ngClass]="{ 'table-active': consultant.isDeleting }">
         <td>{{ consultant.consultantEmail }}</td>
         <td>{{ consultant.firstName }}</td>
         <td>{{ consultant.lastName }}</td>
         <td>
-          <button type="button" (click)="onDeleteItem(consultant.id)" class="btn btn-outline-danger btn-sm">
+          <button
+            [disabled]="consultant.isDeleting"
+            type="button"
+            (click)="onDeleteItem(consultant.id)"
+            class="btn btn-outline-danger btn-sm"
+          >
             <i class="ion-android-delete"></i>
           </button>
         </td>

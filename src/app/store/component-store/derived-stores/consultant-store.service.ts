@@ -8,6 +8,7 @@ import { Consultant } from '@models';
 export type ConsultantId = ModelId<string>;
 export interface ConsultantLocalModel extends Omit<Consultant, 'consultantId' | 'managerId'> {
   id: ConsultantId;
+  isDeleting?: boolean;
 }
 export interface ConsultantState extends LocalState<ConsultantLocalModel> {
   currentPage: number;
@@ -149,16 +150,23 @@ export class ConsultantStore extends BaseLocalStore<ConsultantState, ConsultantL
             }, 1000);
           });
 
-          return deleteConsultant$.pipe(
-            tapResponse(
-              (id: ConsultantId) => {
-                this.deleteItem(id);
-                this.updatePartial({ isLoading: false, currentPage: 1 });
-              },
-              () => {
-                this.updatePartial({ isLoading: false });
-              }
-            )
+          return this.getItem<ConsultantLocalModel>(id).pipe(
+            tap((model) => {
+              model!.isDeleting = true;
+            }),
+            switchMap(() => {
+              return deleteConsultant$.pipe(
+                tapResponse(
+                  (id: ConsultantId) => {
+                    this.deleteItem(id);
+                    this.updatePartial({ isLoading: false, currentPage: 1 });
+                  },
+                  () => {
+                    this.updatePartial({ isLoading: false });
+                  }
+                )
+              );
+            })
           );
         })
       )
