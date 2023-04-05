@@ -193,10 +193,15 @@ export class ConsultantStore extends BaseLocalStore<
                 tapResponse(
                   (id: ConsultantId) => {
                     this.deleteItem(id);
-                    this.updatePartial({ isLoading: false, currentPage: 1 });
+                    this.updatePartial({
+                      isLoading: false,
+                      currentPage: 1,
+                    });
                   },
                   () => {
-                    this.updatePartial({ isLoading: false });
+                    this.updatePartial({
+                      isLoading: false,
+                    });
                   }
                 )
               );

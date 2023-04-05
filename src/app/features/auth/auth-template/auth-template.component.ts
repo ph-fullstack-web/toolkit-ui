@@ -1,5 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  UntypedFormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { NgIf } from '@angular/common';
 
@@ -10,14 +14,20 @@ import { AuthType, Errors } from '@models';
   selector: 'app-auth-template',
   templateUrl: './auth-template.component.html',
   standalone: true,
-  imports: [NgIf, RouterLink, ListErrorsComponent, FormsModule, ReactiveFormsModule],
+  imports: [
+    NgIf,
+    RouterLink,
+    ListErrorsComponent,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
 })
 export class AuthTemplateComponent {
   @Input() title!: string;
   @Input() authType!: AuthType;
   @Input() errors: Errors = { errors: {} };
   @Input() authForm!: UntypedFormGroup;
-  @Input() isSubmitting: boolean = false;
+  @Input() isSubmitting = false;
 
   @Output() handleSubmitForm = new EventEmitter();
 

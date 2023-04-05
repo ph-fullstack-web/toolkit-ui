@@ -1,23 +1,23 @@
 .top-ctrls-container {
-  display: flex;
-  flex-direction: column;
-
-  .add-record {
-    margin-left: auto;
     display: flex;
+    flex-direction: column;
 
-    button {
-      display: flex;
+    .add-record {
+        margin-left: auto;
+        display: flex;
+
+        button {
+            display: flex;
+        }
     }
-  }
 }
 
 .navigation-container {
-  display: flex;
-  justify-content: center;
+    display: flex;
+    justify-content: center;
 }
 
 .table-action {
-  border-left: 1px #eee solid;
-  text-align: center;
+    border-left: 1px #eee solid;
+    text-align: center;
 }

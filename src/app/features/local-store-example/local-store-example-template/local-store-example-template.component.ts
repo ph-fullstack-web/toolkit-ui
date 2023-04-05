@@ -1,7 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NgClass, NgFor, NgIf } from '@angular/common';
 
-import { ConsultantId, ConsultantLocalModel, PaginationMetadata } from '@app/store/local';
+import {
+  ConsultantId,
+  ConsultantLocalModel,
+  PaginationMetadata,
+} from '@app/store/local';
 import { itemIn } from './local-store-example-template.animations';
 
 export type PageOptions = {

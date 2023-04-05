@@ -18,10 +18,15 @@ export const authFeature = createFeature({
   name: 'auth',
   reducer: createReducer(
     initialState,
-    on(AuthActions.attemptAuth, AuthActions.updateUser, AuthActions.populateUser, (state: State) => ({
-      ...state,
-      isLoading: true,
-    })),
+    on(
+      AuthActions.attemptAuth,
+      AuthActions.updateUser,
+      AuthActions.populateUser,
+      (state: State) => ({
+        ...state,
+        isLoading: true,
+      })
+    ),
     on(
       AuthActions.attemptAuthSuccess,
       AuthActions.updateUserSuccess,
@@ -33,12 +38,16 @@ export const authFeature = createFeature({
         isLoading: false,
       })
     ),
-    on(AuthActions.attemptAuthFailure, AuthActions.updateUserFailure, (state: State, payload: AuthError) => ({
-      ...state,
-      currentUser: null,
-      authErrors: payload.errors,
-      isLoading: false,
-    })),
+    on(
+      AuthActions.attemptAuthFailure,
+      AuthActions.updateUserFailure,
+      (state: State, payload: AuthError) => ({
+        ...state,
+        currentUser: null,
+        authErrors: payload.errors,
+        isLoading: false,
+      })
+    ),
     on(AuthActions.purgeAuthSuccess, (state: State) => ({
       ...state,
       currentUser: null,

@@ -31,7 +31,8 @@ export class LocalStoreExamplePageComponent implements OnInit {
   isLoading$!: Observable<boolean>;
 
   ngOnInit(): void {
-    this.store = this.storeFactory.createInstance<ConsultantStore>('consultant');
+    this.store =
+      this.storeFactory.createInstance<ConsultantStore>('consultant');
     this.store.setItemsPerPage(5);
 
     this.consultants$ = this.store.consultants$;
@@ -43,12 +44,19 @@ export class LocalStoreExamplePageComponent implements OnInit {
       this.store.isNextDisabled$,
       this.store.paginationMetadata$,
     ]).pipe(
-      map(([searchKey, isPreviousDisabled, isNextDisabled, paginationMetadata]) => ({
-        searchKey,
-        isPreviousDisabled,
-        isNextDisabled,
-        paginationMetadata,
-      }))
+      map(
+        ([
+          searchKey,
+          isPreviousDisabled,
+          isNextDisabled,
+          paginationMetadata,
+        ]) => ({
+          searchKey,
+          isPreviousDisabled,
+          isNextDisabled,
+          paginationMetadata,
+        })
+      )
     );
   }
 

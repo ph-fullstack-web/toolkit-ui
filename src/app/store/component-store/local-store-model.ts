@@ -13,15 +13,19 @@ export interface LocalState<TModel extends LocalModel> {
 /** Add store names as literal types */
 export type StoreName = 'profile' | 'consultant' | 'add-more-here';
 
-export interface LocalStore<TState extends LocalState<LocalModel>, TModel extends LocalModel> {
+export interface LocalStore<
+  TState extends LocalState<LocalModel>,
+  TModel extends LocalModel
+> {
   readonly localState$: Observable<TState>;
   readonly list$: Observable<TModel[]>;
 
   readonly name: StoreName;
 
   initializeState(): void;
-  getItem<TResult>(id: TModel['id'] | ((s: TState) => TResult)): Observable<TResult | undefined>;
-  getItemSync(id: TModel['id']): TModel | undefined;
+  getItem<TResult>(
+    id: TModel['id'] | ((s: TState) => TResult)
+  ): Observable<TResult | undefined>;
   addItem(model: TModel): Subscription | void;
   updateItem(model: TModel): Subscription | void;
   updatePartial(props: Partial<TState>): Subscription | void;

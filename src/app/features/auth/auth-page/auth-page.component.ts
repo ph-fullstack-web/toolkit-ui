@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
 import { AsyncPipe, NgIf } from '@angular/common';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
 import { Observable, map, tap } from 'rxjs';
 
@@ -22,7 +27,11 @@ export class AuthPageComponent {
   isLoading$!: Observable<boolean>;
   authForm!: UntypedFormGroup;
 
-  constructor(private route: ActivatedRoute, private store: AppStore, private fb: UntypedFormBuilder) {}
+  constructor(
+    private route: ActivatedRoute,
+    private store: AppStore,
+    private fb: UntypedFormBuilder
+  ) {}
 
   ngOnInit() {
     this.initializeForm();
@@ -30,7 +39,11 @@ export class AuthPageComponent {
   }
 
   submitForm(authType: AuthType) {
-    this.store.dispatch(AuthActions.attemptAuth({ payload: { authType, credentials: this.authForm.value } }));
+    this.store.dispatch(
+      AuthActions.attemptAuth({
+        payload: { authType, credentials: this.authForm.value },
+      })
+    );
   }
 
   private initializeObservables() {
@@ -42,7 +55,11 @@ export class AuthPageComponent {
         }
       })
     );
-    this.title$ = this.authType$.pipe(map((authType: AuthType) => (authType === 'login' ? 'Sign in' : 'Sign up')));
+    this.title$ = this.authType$.pipe(
+      map((authType: AuthType) =>
+        authType === 'login' ? 'Sign in' : 'Sign up'
+      )
+    );
     this.isLoading$ = this.store.select(fromAuth.selectIsLoading);
     this.errors$ = this.store.select(fromAuth.selectAuthErrors);
   }

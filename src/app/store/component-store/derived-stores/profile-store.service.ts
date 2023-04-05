@@ -51,10 +51,6 @@ export class ProfileStore extends BaseLocalStore<State, ProfileLocalModel> {
     return this.getItem(id);
   }
 
-  getProfileSync(id: ProfileId): ProfileLocalModel | undefined {
-    return this.getItemSync(id);
-  }
-
   addProfile(model: ProfileLocalModel): Subscription {
     const createSubscription = this.effect(
       (model$: Observable<ProfileLocalModel>) =>

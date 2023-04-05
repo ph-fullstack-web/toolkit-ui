@@ -3,8 +3,10 @@ import { Observable } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
 
 export class MockActivatedRoute {
-  private innerTestParams?: any;
-  private subject: BehaviorSubject<any> = new BehaviorSubject(this.testParams);
+  private innerTestParams?: Params;
+  private subject: BehaviorSubject<Params> = new BehaviorSubject(
+    this.testParams
+  );
   data?: Observable<Data>;
 
   params = this.subject.asObservable();
@@ -19,10 +21,10 @@ export class MockActivatedRoute {
   }
 
   get testParams() {
-    return this.innerTestParams;
+    return this.innerTestParams as Params;
   }
 
-  set testParams(params: {}) {
+  set testParams(params: Params) {
     this.innerTestParams = params;
     this.subject.next(params);
   }

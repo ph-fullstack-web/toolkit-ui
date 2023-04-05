@@ -1,5 +1,5 @@
 import { ConsultantsWithReviewer } from '@models';
-import { mockConsultantReviewers, mockConsultants, mockManagers } from '@mocks';
+import { mockConsultantReviewers, mockConsultants } from '@mocks';
 
 export const mockConsultantsWithReviewers: ConsultantsWithReviewer[] = [
   {

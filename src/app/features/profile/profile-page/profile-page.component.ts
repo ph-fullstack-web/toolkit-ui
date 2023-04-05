@@ -26,7 +26,9 @@ export class ProfilePageComponent {
     this.profile$ = this.route.data.pipe(map((data: Data) => data['profile']));
     this.currentUser$ = this.store.select(fromAuth.selectCurrentUser);
     this.isUser$ = combineLatest([this.profile$, this.currentUser$]).pipe(
-      map(([profile, currentUser]) => currentUser?.username === profile!.username)
+      map(
+        ([profile, currentUser]) => currentUser?.username === profile!.username
+      )
     );
   }
 }

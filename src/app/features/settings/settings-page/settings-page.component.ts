@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { AsyncPipe } from '@angular/common';
 import { Observable, take } from 'rxjs';
 
@@ -37,7 +41,7 @@ export class SettingsPageComponent {
       .select(fromAuth.selectCurrentUser)
       .pipe(take(1))
       .subscribe({
-        next: (user) => this.settingsForm.patchValue(user!),
+        next: user => this.settingsForm.patchValue(user!),
       });
 
     this.errors$ = this.store.select(fromAuth.selectAuthErrors);

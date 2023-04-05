@@ -20,16 +20,26 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(AuthActions.attemptAuth),
-        map((action) => action.payload),
+        map(action => action.payload),
         exhaustMap((payload: AttemptAuthPayload) => {
           const authType = payload.authType;
           const path = authType === 'register' ? '' : authType;
 
-          return this.apiService.post(`/users/${path}`, { user: payload.credentials }).pipe(
-            tap((data: UserResponse) => this.jwtService.saveToken(data.user.token)),
-            map((data: UserResponse) => AuthActions.attemptAuthSuccess({ user: data.user })),
-            catchError((errors: Errors) => of(AuthActions.attemptAuthFailure({ errors })))
-          );
+          return this.apiService
+            .post(`/users/${path}`, { user: payload.credentials })
+            .pipe(
+              tap((data: UserResponse) =>
+                this.jwtService.saveToken(data.user.token)
+              ),
+              map((data: UserResponse) =>
+                AuthActions.attemptAuthSuccess({
+                  user: data.user,
+                })
+              ),
+              catchError((errors: Errors) =>
+                of(AuthActions.attemptAuthFailure({ errors }))
+              )
+            );
         })
       ),
     { useEffectsErrorHandler: false }
@@ -54,7 +64,9 @@ export class AuthEffects {
           }
 
           return this.apiService.get('/user').pipe(
-            map((data: UserResponse) => AuthActions.populateUserSuccess({ user: data.user })),
+            map((data: UserResponse) =>
+              AuthActions.populateUserSuccess({ user: data.user })
+            ),
             catchError(() => of(AuthActions.purgeAuth()))
           );
         })
@@ -85,8 +97,12 @@ export class AuthEffects {
         ofType(AuthActions.updateUser),
         exhaustMap(({ user }) =>
           this.apiService.put('/user', { user }).pipe(
-            map((data: UserResponse) => AuthActions.updateUserSuccess({ user: data.user })),
-            catchError((errors: Errors) => of(AuthActions.updateUserFailure({ errors })))
+            map((data: UserResponse) =>
+              AuthActions.updateUserSuccess({ user: data.user })
+            ),
+            catchError((errors: Errors) =>
+              of(AuthActions.updateUserFailure({ errors }))
+            )
           )
         )
       ),

@@ -13,7 +13,7 @@ import { Profile, User } from '@models';
 export class ProfileTemplateComponent {
   @Input() profile!: Profile;
   @Input() currentUser!: User;
-  @Input() isUser: boolean = false;
+  @Input() isUser = false;
 
   @Output() handleToggleFollowing = new EventEmitter<boolean>();
 

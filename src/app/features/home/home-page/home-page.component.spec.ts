@@ -45,7 +45,9 @@ describe('HomePageComponent', () => {
       fixture.detectChanges();
       flush();
 
-      expectObservable(component.isAuthenticated$).toBe('a|', { a: isAuthenticated });
+      expectObservable(component.isAuthenticated$).toBe('a|', {
+        a: isAuthenticated,
+      });
       done();
     });
   });

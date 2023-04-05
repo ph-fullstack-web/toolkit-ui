@@ -1,4 +1,10 @@
-import { AnimationTriggerMetadata, trigger, transition, style, animate } from '@angular/animations';
+import {
+  AnimationTriggerMetadata,
+  trigger,
+  transition,
+  style,
+  animate,
+} from '@angular/animations';
 
 export function itemIn(timingIn: number): AnimationTriggerMetadata {
   return trigger('itemIn', [
@@ -10,10 +16,17 @@ export function itemIn(timingIn: number): AnimationTriggerMetadata {
 }
 
 export function itemOut(timingOut: number): AnimationTriggerMetadata {
-  return trigger('itemOut', [transition(':leave', [animate(timingOut, style({ opacity: 0, height: 0 }))])]);
+  return trigger('itemOut', [
+    transition(':leave', [
+      animate(timingOut, style({ opacity: 0, height: 0 })),
+    ]),
+  ]);
 }
 
-export function itemInOut(timingIn: number, timingOut: number): AnimationTriggerMetadata {
+export function itemInOut(
+  timingIn: number,
+  timingOut: number
+): AnimationTriggerMetadata {
   return trigger('itemInOut', [
     transition(':enter', [
       style({ transform: 'translateX(100%)', opacity: 0 }),

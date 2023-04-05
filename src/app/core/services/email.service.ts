@@ -1,7 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { SendEmailToReviewersData, SendEmailToReviewersResponse } from '@models';
+import {
+  SendEmailToReviewersData,
+  SendEmailToReviewersResponse,
+} from '@models';
 
 @Injectable({
   providedIn: 'root',
@@ -18,8 +21,12 @@ export class EmailService {
       if (value) formData.append(key, value!);
     }
 
-    return this.http.post<SendEmailToReviewersResponse>('/api/consultant/emailreviewers', formData, {
-      headers: new HttpHeaders().delete('Content-Type'),
-    });
+    return this.http.post<SendEmailToReviewersResponse>(
+      '/api/consultant/emailreviewers',
+      formData,
+      {
+        headers: new HttpHeaders().delete('Content-Type'),
+      }
+    );
   }
 }

@@ -1,5 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  UntypedFormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 
 import { Errors } from '@models';
 import { ListErrorsComponent } from '@atoms';
@@ -13,7 +17,7 @@ import { ListErrorsComponent } from '@atoms';
 export class SettingsTemplateComponent {
   @Input() settingsForm!: UntypedFormGroup;
   @Input() errors: Errors = { errors: {} };
-  @Input() isSubmitting: boolean = false;
+  @Input() isSubmitting = false;
 
   @Output() handleLogout = new EventEmitter();
   @Output() handleSubmitForm = new EventEmitter();
