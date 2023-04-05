@@ -4,10 +4,20 @@
 
   .add-record {
     margin-left: auto;
+    display: flex;
+
+    button {
+      display: flex;
+    }
   }
 }
 
 .navigation-container {
   display: flex;
   justify-content: center;
+}
+
+.table-action {
+  border-left: 1px #eee solid;
+  text-align: center;
 }

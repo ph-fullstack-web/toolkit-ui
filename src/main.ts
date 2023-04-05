@@ -1,5 +1,6 @@
 import { enableProdMode, importProvidersFrom } from '@angular/core';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PreloadAllModules, provideRouter, withPreloading } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
@@ -20,7 +21,7 @@ if (environment.production) {
 provideEffects();
 const bootstrapPromise = bootstrapApplication(AppComponent, {
   providers: [
-    importProvidersFrom(BrowserModule, CoreModule),
+    importProvidersFrom(BrowserModule, BrowserAnimationsModule, CoreModule),
     provideRouter(APP_ROUTES, withPreloading(PreloadAllModules)),
 
     /** ngrx related providers */

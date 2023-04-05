@@ -1,7 +1,8 @@
-import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 
 import { ConsultantId, ConsultantLocalModel, PaginationMetadata } from '@app/store/local';
+import { itemIn } from './local-store-example-template.animations';
 
 export type PageOptions = {
   searchKey: string;
@@ -16,6 +17,7 @@ export type PageOptions = {
   styleUrls: ['././local-store-example-template.component.scss'],
   standalone: true,
   imports: [NgFor, NgIf, NgClass],
+  animations: [itemIn(100)],
 })
 export class LocalStoreExampleTemplateComponent {
   @Input() consultants!: ConsultantLocalModel[];

@@ -33,15 +33,15 @@
         <th scope="col">Email</th>
         <th scope="col">Firstname</th>
         <th scope="col">Lastname</th>
-        <th scope="col"></th>
+        <th scope="col" class="table-action"></th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let consultant of consultants" [ngClass]="{ 'table-active': consultant.isDeleting }">
+      <tr [@itemIn] *ngFor="let consultant of consultants" [ngClass]="{ 'table-active': consultant.isDeleting }">
         <td>{{ consultant.consultantEmail }}</td>
         <td>{{ consultant.firstName }}</td>
         <td>{{ consultant.lastName }}</td>
-        <td>
+        <td class="table-action">
           <button
             [disabled]="consultant.isDeleting"
             type="button"
