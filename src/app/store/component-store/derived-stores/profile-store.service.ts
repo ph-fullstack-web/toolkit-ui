@@ -1,7 +1,19 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subscription, combineLatest, map, switchMap, tap } from 'rxjs';
+import {
+  Observable,
+  Subscription,
+  combineLatest,
+  map,
+  switchMap,
+  tap,
+} from 'rxjs';
 
-import { BaseLocalStore, LocalState, ModelId, StoreName } from '@app/store/local';
+import {
+  BaseLocalStore,
+  LocalState,
+  ModelId,
+  StoreName,
+} from '@app/store/local';
 import { Profile } from '@models';
 
 export type ProfileId = ModelId<string>;
@@ -19,7 +31,9 @@ export interface State extends LocalState<ProfileLocalModel> {
  */
 @Injectable()
 export class ProfileStore extends BaseLocalStore<State, ProfileLocalModel> {
-  profiles$: Observable<ProfileLocalModel[]> = this.state$.pipe(map((state) => state.list));
+  profiles$: Observable<ProfileLocalModel[]> = this.state$.pipe(
+    map(state => state.list)
+  );
 
   override name: StoreName = 'profile';
 
@@ -28,7 +42,9 @@ export class ProfileStore extends BaseLocalStore<State, ProfileLocalModel> {
   }
 
   getSelectedItem(): Observable<ProfileLocalModel> {
-    return this.select((state) => state.list.find((i) => i.id === state.selectedId)!);
+    return this.select(
+      state => state.list.find(i => i.id === state.selectedId)!
+    );
   }
 
   getProfile(id: ProfileId): Observable<ProfileLocalModel | undefined> {
@@ -40,20 +56,25 @@ export class ProfileStore extends BaseLocalStore<State, ProfileLocalModel> {
   }
 
   addProfile(model: ProfileLocalModel): Subscription {
-    const createSubscription = this.effect((model$: Observable<ProfileLocalModel>) =>
-      model$.pipe(
-        switchMap((model: ProfileLocalModel) => {
-          /** Fake HTTP call to add profile. */
-          const addProfile$ = new Observable<ProfileLocalModel>((subscriber) => {
-            setTimeout(() => {
-              subscriber.next(model);
-              subscriber.complete();
-            }, 1000);
-          });
+    const createSubscription = this.effect(
+      (model$: Observable<ProfileLocalModel>) =>
+        model$.pipe(
+          switchMap((model: ProfileLocalModel) => {
+            /** Fake HTTP call to add profile. */
+            const addProfile$ = new Observable<ProfileLocalModel>(
+              subscriber => {
+                setTimeout(() => {
+                  subscriber.next(model);
+                  subscriber.complete();
+                }, 1000);
+              }
+            );
 
-          return addProfile$.pipe(tap((model: ProfileLocalModel) => this.addItem(model)));
-        })
-      )
+            return addProfile$.pipe(
+              tap((model: ProfileLocalModel) => this.addItem(model))
+            );
+          })
+        )
     );
 
     return this.executeCommand(createSubscription.bind(this, model));
