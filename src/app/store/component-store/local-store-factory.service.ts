@@ -32,7 +32,9 @@ export class LocalStoreFactory {
       providers: [localStoreProviders],
     });
 
-    const store = injector.get((provider as ClassProvider).useClass);
+    const store = injector.get(
+      (provider as ClassProvider).useClass
+    ) as TLocalStore;
 
     store.initializeState();
 
