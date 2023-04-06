@@ -1,12 +1,6 @@
-import { Injectable } from '@angular/core';
-import {
-  Observable,
-  Subscription,
-  combineLatest,
-  map,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { Injectable, Provider } from '@angular/core';
+import { Observable, Subscription, exhaustMap, map, tap } from 'rxjs';
+import { provideComponentStore } from '@ngrx/component-store';
 
 import {
   BaseLocalStore,
@@ -55,7 +49,7 @@ export class ProfileStore extends BaseLocalStore<State, ProfileLocalModel> {
     const createSubscription = this.effect(
       (model$: Observable<ProfileLocalModel>) =>
         model$.pipe(
-          switchMap((model: ProfileLocalModel) => {
+          exhaustMap((model: ProfileLocalModel) => {
             /** Fake HTTP call to add profile. */
             const addProfile$ = new Observable<ProfileLocalModel>(
               subscriber => {
@@ -84,3 +78,6 @@ export class ProfileStore extends BaseLocalStore<State, ProfileLocalModel> {
     return this.deleteItem(id);
   }
 }
+
+export const provideProfileStore = (): Provider[] =>
+  provideComponentStore(ProfileStore);

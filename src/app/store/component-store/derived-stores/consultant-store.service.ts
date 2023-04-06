@@ -1,13 +1,6 @@
-import { Injectable } from '@angular/core';
-import {
-  Observable,
-  Subscription,
-  exhaustMap,
-  filter,
-  switchMap,
-  tap,
-} from 'rxjs';
-import { tapResponse } from '@ngrx/component-store';
+import { Injectable, Provider } from '@angular/core';
+import { Observable, Subscription, exhaustMap, filter, tap } from 'rxjs';
+import { provideComponentStore, tapResponse } from '@ngrx/component-store';
 
 import {
   BaseLocalStore,
@@ -174,7 +167,7 @@ export class ConsultantStore extends BaseLocalStore<
     const createSubscription = this.effect((id$: Observable<ConsultantId>) =>
       id$.pipe(
         tap(() => this.updatePartial({ isLoading: true })),
-        switchMap((id: ConsultantId) => {
+        exhaustMap((id: ConsultantId) => {
           /** Fake HTTP call to delete consultant. */
           const deleteConsultant$ = new Observable<ConsultantId>(subscriber => {
             setTimeout(() => {
@@ -186,7 +179,7 @@ export class ConsultantStore extends BaseLocalStore<
           return this.getItem<ConsultantLocalModel>(id).pipe(
             filter(model => !!model),
             tap(model => {
-              model!.isDeleting = true;
+              (model as ConsultantLocalModel).isDeleting = true;
             }),
             exhaustMap(() => {
               return deleteConsultant$.pipe(
@@ -219,7 +212,7 @@ export class ConsultantStore extends BaseLocalStore<
       (model$: Observable<ConsultantLocalModel>) =>
         model$.pipe(
           tap(() => this.updatePartial({ isLoading: true })),
-          switchMap((model: ConsultantLocalModel) => {
+          exhaustMap((model: ConsultantLocalModel) => {
             /** Fake HTTP call to add consultant. */
             const addConsultant$ = new Observable<ConsultantLocalModel>(
               subscriber => {
@@ -250,3 +243,6 @@ export class ConsultantStore extends BaseLocalStore<
     return this.executeCommand(createSubscription.bind(this, model));
   }
 }
+
+export const provideConsultantStore = (): Provider[] =>
+  provideComponentStore(ConsultantStore);
