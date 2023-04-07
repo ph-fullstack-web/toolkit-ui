@@ -1,6 +1,5 @@
 import { Injectable, Injector, Provider } from '@angular/core';
 import {
-  LocalState,
   LocalStore,
   LocalStoreProviders,
   StoreName,
@@ -12,19 +11,13 @@ import {
 export class LocalStoreFactory {
   constructor(private injector: Injector) {}
 
-  createInstance<
-    TLocalStore extends LocalStore<TState, TModel>,
-    TState extends LocalState<TModel>,
-    TModel extends {
-      id: string;
-    }
-  >(storeName: StoreName): TLocalStore {
+  createInstance<TLocalStore extends LocalStore>(storeName: StoreName): TLocalStore {
     const storeProviders = this.getStoreProviders(storeName);
     /**
      * https://github.com/ngrx/platform/blob/master/modules/component-store/src/lifecycle_hooks.ts
      * the localStoreProviders array contains:
      * [0] - provider for the local store
-     * [1] - provider for CS_WITH_HOOKS to call the useFactory and execute the hooks.
+     * [1] - provider for CS_WITH_HOOKS token to call the useFactory and execute the hooks.
      */
     const [provider] = storeProviders;
     const injector = Injector.create({

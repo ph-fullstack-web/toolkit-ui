@@ -5,14 +5,14 @@ import { LocalState, LocalStore, StoreName } from '@app/store/local';
 
 export abstract class BaseLocalStore<TState extends LocalState<TModel>, TModel extends { id: string }>
   extends ComponentStore<TState>
-  implements LocalStore<TState, TModel>
+  implements LocalStore<TModel, TState>
 {
   abstract readonly name: StoreName;
 
   abstract initializeState(): void;
 
   readonly localState$: Observable<TState> = this.state$;
-  readonly list$: Observable<TModel[]> = this.select((state: TState) => state.list as TModel[]);
+  readonly list$: Observable<TModel[]> = this.select((state: TState) => state.list);
 
   protected subscriptions: Subscription[] = [];
 

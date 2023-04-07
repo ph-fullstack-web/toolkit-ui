@@ -8,7 +8,10 @@ export interface LocalState<TModel extends { id: string }> {
 /** Add store names as literal types */
 export type StoreName = 'profile' | 'consultant' | 'add-more-here';
 
-export interface LocalStore<TState extends LocalState<TModel>, TModel extends { id: string }> {
+export interface LocalStore<
+  TModel extends { id: string } = { id: string },
+  TState extends LocalState<TModel> = LocalState<TModel>
+> {
   readonly localState$: Observable<TState>;
   readonly list$: Observable<TModel[]>;
 
