@@ -11,11 +11,7 @@ describe('ShowAuthedDirective', () => {
     const mockTemplateRef = new MockTemplateRef();
     const mockAppStore: MockStore<RootState> = createMockStore();
     const mockViewContainerRef = new MockViewContainerRef();
-    const directive = new ShowAuthedDirective(
-      mockTemplateRef,
-      mockAppStore,
-      mockViewContainerRef
-    );
+    const directive = new ShowAuthedDirective(mockTemplateRef, mockAppStore, mockViewContainerRef);
     directive.appShowAuthed = false;
     expect(directive.appShowAuthed).toEqual(false);
   });
@@ -25,17 +21,11 @@ describe('ShowAuthedDirective', () => {
     const mockAppStore: MockStore<RootState> = createMockStore();
     const mockViewContainerRef = new MockViewContainerRef();
     const isAuthenticated = true;
-    const directive = new ShowAuthedDirective(
-      mockTemplateRef,
-      mockAppStore,
-      mockViewContainerRef
-    );
+    const directive = new ShowAuthedDirective(mockTemplateRef, mockAppStore, mockViewContainerRef);
     directive.appShowAuthed = false;
 
     spyOn(mockAppStore, 'select').and.returnValue(of(isAuthenticated));
-    spyOn(mockViewContainerRef, 'clear').and.callFake(() =>
-      console.log('callFake Clear 1')
-    );
+    spyOn(mockViewContainerRef, 'clear').and.callFake(() => console.log('callFake Clear 1'));
 
     directive.ngOnInit();
 
@@ -47,17 +37,11 @@ describe('ShowAuthedDirective', () => {
     const mockAppStore: MockStore<RootState> = createMockStore();
     const mockViewContainerRef = new MockViewContainerRef();
     const isAuthenticated = false;
-    const directive = new ShowAuthedDirective(
-      mockTemplateRef,
-      mockAppStore,
-      mockViewContainerRef
-    );
+    const directive = new ShowAuthedDirective(mockTemplateRef, mockAppStore, mockViewContainerRef);
     directive.appShowAuthed = true;
 
     spyOn(mockAppStore, 'select').and.returnValue(of(isAuthenticated));
-    spyOn(mockViewContainerRef, 'clear').and.callFake(() =>
-      console.log('callFake Clear 2')
-    );
+    spyOn(mockViewContainerRef, 'clear').and.callFake(() => console.log('callFake Clear 2'));
 
     directive.ngOnInit();
 
@@ -69,11 +53,7 @@ describe('ShowAuthedDirective', () => {
     const mockAppStore: MockStore<RootState> = createMockStore();
     const mockViewContainerRef = new MockViewContainerRef();
     const isAuthenticated = true;
-    const directive = new ShowAuthedDirective(
-      mockTemplateRef,
-      mockAppStore,
-      mockViewContainerRef
-    );
+    const directive = new ShowAuthedDirective(mockTemplateRef, mockAppStore, mockViewContainerRef);
     directive.appShowAuthed = true;
 
     spyOn(mockAppStore, 'select').and.returnValue(of(isAuthenticated));
@@ -89,11 +69,7 @@ describe('ShowAuthedDirective', () => {
     const mockAppStore: MockStore<RootState> = createMockStore();
     const mockViewContainerRef = new MockViewContainerRef();
     const isAuthenticated = false;
-    const directive = new ShowAuthedDirective(
-      mockTemplateRef,
-      mockAppStore,
-      mockViewContainerRef
-    );
+    const directive = new ShowAuthedDirective(mockTemplateRef, mockAppStore, mockViewContainerRef);
     directive.appShowAuthed = false;
 
     spyOn(mockAppStore, 'select').and.returnValue(of(isAuthenticated));

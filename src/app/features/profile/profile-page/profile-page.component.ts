@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Data } from '@angular/router';
 import { combineLatest, map, Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
@@ -15,7 +15,7 @@ import { ProfileTemplateComponent } from '../profile-template/profile-template.c
   standalone: true,
   imports: [ProfileTemplateComponent, AsyncPipe],
 })
-export class ProfilePageComponent {
+export class ProfilePageComponent implements OnInit {
   constructor(private route: ActivatedRoute, private store: AppStore) {}
 
   profile$!: Observable<Profile>;
@@ -26,9 +26,7 @@ export class ProfilePageComponent {
     this.profile$ = this.route.data.pipe(map((data: Data) => data['profile']));
     this.currentUser$ = this.store.select(fromAuth.selectCurrentUser);
     this.isUser$ = combineLatest([this.profile$, this.currentUser$]).pipe(
-      map(
-        ([profile, currentUser]) => currentUser?.username === profile!.username
-      )
+      map(([profile, currentUser]) => currentUser?.username === profile.username)
     );
   }
 }

@@ -31,6 +31,21 @@
             "prefix": "app",
             "style": "kebab-case"
           }
+        ],
+        "prettier/prettier": [
+          "error",
+          {
+            "usePrettierrc": false,
+            "tabWidth": 2,
+            "useTabs": false,
+            "singleQuote": true,
+            "semi": true,
+            "bracketSpacing": true,
+            "arrowParens": "avoid",
+            "trailingComma": "es5",
+            "bracketSameLine": true,
+            "printWidth": 120
+          }
         ]
       }
     },
@@ -43,7 +58,12 @@
         "plugin:prettier/recommended"
       ],
       "rules": {
-        "prettier/prettier": ["error", { "parser": "angular" }]
+        "prettier/prettier": [
+          "error",
+          {
+            "parser": "angular"
+          }
+        ]
       }
     }
   ]

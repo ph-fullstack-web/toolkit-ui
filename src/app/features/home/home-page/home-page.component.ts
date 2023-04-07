@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Data } from '@angular/router';
 import { Observable, map } from 'rxjs';
 
@@ -10,14 +10,12 @@ import { HomeTemplateComponent } from '../home-template/home-template.component'
   standalone: true,
   imports: [HomeTemplateComponent],
 })
-export class HomePageComponent {
+export class HomePageComponent implements OnInit {
   constructor(private route: ActivatedRoute) {}
 
   isAuthenticated$!: Observable<boolean>;
 
   ngOnInit() {
-    this.isAuthenticated$ = this.route.data.pipe(
-      map((data: Data) => data['isAuthenticated'])
-    );
+    this.isAuthenticated$ = this.route.data.pipe(map((data: Data) => data['isAuthenticated']));
   }
 }

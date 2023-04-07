@@ -5,11 +5,7 @@ describe('JwtService', () => {
   let service: JwtService;
 
   beforeEach(() => {
-    const apiServiceSpyObj = jasmine.createSpyObj('ApiService', [
-      'get',
-      'post',
-      'delete',
-    ]);
+    // const apiServiceSpyObj = jasmine.createSpyObj('ApiService', ['get', 'post', 'delete']);
     TestBed.configureTestingModule({ providers: [JwtService] });
   });
 
@@ -28,7 +24,7 @@ describe('JwtService', () => {
   it('destroyToken should remove mocked token', () => {
     service = TestBed.inject(JwtService);
     service.destroyToken();
-    const xxx = window.localStorage['jwtToken'];
+    // const xxx = window.localStorage['jwtToken'];
     expect(window.localStorage['jwtToken']).toBeUndefined();
   });
 });

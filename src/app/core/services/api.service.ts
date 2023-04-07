@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -8,31 +8,27 @@ import { catchError } from 'rxjs/operators';
 export class ApiService {
   constructor(private http: HttpClient) {}
 
-  private formatErrors(error: any) {
-    return throwError(error.error);
+  private formatErrors(error: HttpErrorResponse) {
+    return throwError(() => new Error(error.error));
   }
 
-  get(path: string, params: HttpParams = new HttpParams()): Observable<any> {
+  get<TResponse>(path: string, params: HttpParams = new HttpParams()): Observable<TResponse> {
+    return this.http.get<TResponse>(`${environment.api_url}${path}`, { params }).pipe(catchError(this.formatErrors));
+  }
+
+  put<TResponse>(path: string, body?: unknown): Observable<TResponse> {
     return this.http
-      .get(`${environment.api_url}${path}`, { params })
+      .put<TResponse>(`${environment.api_url}${path}`, JSON.stringify(body))
       .pipe(catchError(this.formatErrors));
   }
 
-  put(path: string, body?: any): Observable<any> {
+  post<TResponse>(path: string, body?: unknown): Observable<TResponse> {
     return this.http
-      .put(`${environment.api_url}${path}`, JSON.stringify(body))
+      .post<TResponse>(`${environment.api_url}${path}`, JSON.stringify(body))
       .pipe(catchError(this.formatErrors));
   }
 
-  post(path: string, body?: any): Observable<any> {
-    return this.http
-      .post(`${environment.api_url}${path}`, JSON.stringify(body))
-      .pipe(catchError(this.formatErrors));
-  }
-
-  delete(path: string): Observable<any> {
-    return this.http
-      .delete(`${environment.api_url}${path}`)
-      .pipe(catchError(this.formatErrors));
+  delete<TResponse>(path: string): Observable<TResponse> {
+    return this.http.delete<TResponse>(`${environment.api_url}${path}`).pipe(catchError(this.formatErrors));
   }
 }

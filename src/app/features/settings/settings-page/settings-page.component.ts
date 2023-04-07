@@ -1,15 +1,11 @@
-import { Component } from '@angular/core';
-import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { AsyncPipe } from '@angular/common';
-import { Observable, take } from 'rxjs';
+import { Observable, filter, take } from 'rxjs';
 
 import { AppStore } from '@app/store';
 import { AuthActions, fromAuth } from '@app/store/auth';
-import { Errors } from '@models';
+import { Errors, User } from '@models';
 import { SettingsTemplateComponent } from '../settings-template/settings-template.component';
 
 @Component({
@@ -18,7 +14,7 @@ import { SettingsTemplateComponent } from '../settings-template/settings-templat
   standalone: true,
   imports: [SettingsTemplateComponent, AsyncPipe],
 })
-export class SettingsPageComponent {
+export class SettingsPageComponent implements OnInit {
   settingsForm!: UntypedFormGroup;
   errors$!: Observable<Errors | null>;
   isLoading$!: Observable<boolean>;
@@ -39,9 +35,12 @@ export class SettingsPageComponent {
 
     this.store
       .select(fromAuth.selectCurrentUser)
-      .pipe(take(1))
+      .pipe(
+        filter(user => !!user),
+        take(1)
+      )
       .subscribe({
-        next: user => this.settingsForm.patchValue(user!),
+        next: user => this.settingsForm.patchValue(user as User),
       });
 
     this.errors$ = this.store.select(fromAuth.selectAuthErrors);

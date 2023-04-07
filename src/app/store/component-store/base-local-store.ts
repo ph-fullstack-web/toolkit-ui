@@ -1,17 +1,9 @@
 import { ComponentStore } from '@ngrx/component-store';
 import { Observable, Subscription } from 'rxjs';
 
-import {
-  LocalState,
-  LocalStore,
-  LocalModel,
-  StoreName,
-} from '@app/store/local';
+import { LocalState, LocalStore, StoreName } from '@app/store/local';
 
-export abstract class BaseLocalStore<
-    TState extends LocalState<LocalModel>,
-    TModel extends LocalModel
-  >
+export abstract class BaseLocalStore<TState extends LocalState<TModel>, TModel extends { id: string }>
   extends ComponentStore<TState>
   implements LocalStore<TState, TModel>
 {
@@ -20,9 +12,7 @@ export abstract class BaseLocalStore<
   abstract initializeState(): void;
 
   readonly localState$: Observable<TState> = this.state$;
-  readonly list$: Observable<TModel[]> = this.select(
-    (state: TState) => state.list as TModel[]
-  );
+  readonly list$: Observable<TModel[]> = this.select((state: TState) => state.list as TModel[]);
 
   protected subscriptions: Subscription[] = [];
 
@@ -34,17 +24,12 @@ export abstract class BaseLocalStore<
     });
   }
 
-  getItem<TResult>(
-    idOrProjector: TModel['id'] | ((state: TState) => TResult)
-  ): Observable<TResult | undefined> {
+  getItem<TResult>(idOrProjector: TModel['id'] | ((state: TState) => TResult)): Observable<TResult | undefined> {
     if (typeof idOrProjector === 'function') {
       return this.select(idOrProjector);
     }
 
-    return this.select(
-      (state: TState) =>
-        state.list.find(item => item.id === idOrProjector) as TResult
-    );
+    return this.select((state: TState) => state.list.find(item => item.id === idOrProjector) as TResult);
   }
 
   addItem(model: TModel): Subscription {
@@ -74,16 +59,14 @@ export abstract class BaseLocalStore<
   }
 
   deleteItem(id: TModel['id']): Subscription {
-    const createSubscription = this.updater(
-      (state: TState, id: TModel['id']) => {
-        const copiedList = state.list.slice();
-        const itemIndex = copiedList.findIndex(item => item.id === id);
+    const createSubscription = this.updater((state: TState, id: TModel['id']) => {
+      const copiedList = state.list.slice();
+      const itemIndex = copiedList.findIndex(item => item.id === id);
 
-        copiedList.splice(itemIndex, 1);
+      copiedList.splice(itemIndex, 1);
 
-        return { ...state, list: copiedList };
-      }
-    );
+      return { ...state, list: copiedList };
+    });
 
     return this.executeCommand(createSubscription.bind(this, id));
   }

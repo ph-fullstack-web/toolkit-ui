@@ -6,11 +6,7 @@
   <div class="top-ctrls-container">
     <div class="add-record">
       <img *ngIf="isLoading" src="assets/spinner.svg" alt="" />
-      <button
-        [disabled]="isLoading"
-        type="button"
-        class="btn btn-outline-primary"
-        (click)="onAddConsultant()">
+      <button [disabled]="isLoading" type="button" class="btn btn-outline-primary" (click)="onAddConsultant()">
         Add Random Record
       </button>
     </div>
@@ -21,12 +17,10 @@
         type="text"
         (keypress)="onSearchKeyPress($event)"
         class="form-control"
-        placeholder="Search Email, Firstname or Lastname" />
+        placeholder="Search Email, Firstname or Lastname"
+      />
       <div class="input-group-append">
-        <button
-          class="btn btn-outline-secondary"
-          type="button"
-          (click)="onSearchClick(searchInput.value)">
+        <button class="btn btn-outline-secondary" type="button" (click)="onSearchClick(searchInput.value)">
           <img src="assets/search-icon.svg" alt="" />
         </button>
       </div>
@@ -43,10 +37,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr
-        [@itemIn]
-        *ngFor="let consultant of consultants"
-        [ngClass]="{ 'table-active': consultant.isDeleting }">
+      <tr [@itemIn] *ngFor="let consultant of consultants" [ngClass]="{ 'table-active': consultant.isDeleting }">
         <td>{{ consultant.consultantEmail }}</td>
         <td>{{ consultant.firstName }}</td>
         <td>{{ consultant.lastName }}</td>
@@ -55,7 +46,8 @@
             [disabled]="consultant.isDeleting"
             type="button"
             (click)="onDeleteItem(consultant.id)"
-            class="btn btn-outline-danger btn-sm">
+            class="btn btn-outline-danger btn-sm"
+          >
             <i class="ion-android-delete"></i>
           </button>
         </td>
@@ -65,23 +57,18 @@
   <div class="navigation-container">
     <nav aria-label="Page navigation example">
       <ul class="pagination">
-        <li
-          class="page-item"
-          [ngClass]="{ disabled: pageOptions.isPreviousDisabled }">
+        <li class="page-item" [ngClass]="{ disabled: pageOptions.isPreviousDisabled }">
           <a class="page-link" (click)="onNavigate('previous')">Previous</a>
         </li>
         <li
           *ngFor="let metadata of pageOptions.paginationMetadata"
           class="page-item"
-          [ngClass]="{ active: metadata.isActive }">
-          <a class="page-link" (click)="onPageClick(metadata.pageNumber)">{{
-            metadata.pageNumber
-          }}</a>
+          [ngClass]="{ active: metadata.isActive }"
+        >
+          <a class="page-link" (click)="onPageClick(metadata.pageNumber)">{{ metadata.pageNumber }}</a>
         </li>
 
-        <li
-          class="page-item"
-          [ngClass]="{ disabled: pageOptions.isNextDisabled }">
+        <li class="page-item" [ngClass]="{ disabled: pageOptions.isNextDisabled }">
           <a class="page-link" (click)="onNavigate('next')">Next</a>
         </li>
       </ul>

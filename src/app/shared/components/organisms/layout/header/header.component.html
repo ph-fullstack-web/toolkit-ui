@@ -13,32 +13,25 @@
           class="nav-link"
           routerLink="/local-store"
           routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }">
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
           Local Store Example
         </a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link" routerLink="/login" routerLinkActive="active">
-          Sign in
-        </a>
+        <a class="nav-link" routerLink="/login" routerLinkActive="active"> Sign in </a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link" routerLink="/register" routerLinkActive="active">
-          Sign up
-        </a>
+        <a class="nav-link" routerLink="/register" routerLinkActive="active"> Sign up </a>
       </li>
     </ul>
 
     <!-- Show this for logged in users -->
     <ul *appShowAuthed="true" class="nav navbar-nav pull-xs-right">
       <li class="nav-item">
-        <a
-          class="nav-link"
-          routerLink="/"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }">
+        <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
           Home
         </a>
       </li>
@@ -48,7 +41,8 @@
           class="nav-link"
           routerLink="/local-store"
           routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }">
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
           Local Store Example
         </a>
       </li>
@@ -60,14 +54,8 @@
       </li>
 
       <li class="nav-item" *ngIf="currentUser$ | async as currentUser">
-        <a
-          class="nav-link"
-          [routerLink]="['/profile', currentUser.username]"
-          routerLinkActive="active">
-          <img
-            [src]="currentUser.image"
-            *ngIf="currentUser.image"
-            class="user-pic" />
+        <a class="nav-link" [routerLink]="['/profile', currentUser.username]" routerLinkActive="active">
+          <img [src]="currentUser.image" *ngIf="currentUser.image" class="user-pic" />
           {{ currentUser.username }}
         </a>
       </li>

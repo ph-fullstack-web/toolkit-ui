@@ -16,11 +16,7 @@ import { ProfilesService } from '@services';
   imports: [NgClass],
 })
 export class FollowButtonComponent {
-  constructor(
-    private profilesService: ProfilesService,
-    private router: Router,
-    private store: AppStore
-  ) {}
+  constructor(private profilesService: ProfilesService, private router: Router, private store: AppStore) {}
 
   @Input() profile!: Profile;
   @Output() toggle = new EventEmitter<boolean>();
@@ -43,11 +39,11 @@ export class FollowButtonComponent {
           if (!this.profile.following) {
             return this.profilesService.follow(this.profile.username).pipe(
               tap(
-                data => {
+                () => {
                   this.isSubmitting = false;
                   this.toggle.emit(true);
                 },
-                err => (this.isSubmitting = false)
+                () => (this.isSubmitting = false)
               )
             );
 
@@ -55,11 +51,11 @@ export class FollowButtonComponent {
           } else {
             return this.profilesService.unfollow(this.profile.username).pipe(
               tap(
-                data => {
+                () => {
                   this.isSubmitting = false;
                   this.toggle.emit(false);
                 },
-                err => (this.isSubmitting = false)
+                () => (this.isSubmitting = false)
               )
             );
           }

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   ComponentFactory,
   ComponentRef,
@@ -50,10 +48,7 @@ export class MockViewContainerRef<C> extends ViewContainerRef {
           index?: number | undefined;
           injector?: Injector | undefined;
           ngModuleRef?: NgModuleRef<unknown> | undefined;
-          environmentInjector?:
-            | EnvironmentInjector
-            | NgModuleRef<unknown>
-            | undefined;
+          environmentInjector?: EnvironmentInjector | NgModuleRef<unknown> | undefined;
           projectableNodes?: Node[][] | undefined;
         }
       | undefined

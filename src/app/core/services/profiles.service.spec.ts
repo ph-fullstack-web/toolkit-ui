@@ -9,26 +9,15 @@ describe('ProfilesService', () => {
   let service: ProfilesService;
 
   beforeEach(() => {
-    const apiServiceSpyObj = jasmine.createSpyObj('ApiService', [
-      'get',
-      'post',
-      'delete',
-    ]);
+    const apiServiceSpyObj = jasmine.createSpyObj('ApiService', ['get', 'post', 'delete']);
     TestBed.configureTestingModule({
-      providers: [
-        ProfilesService,
-        { provide: ApiService, useValue: apiServiceSpyObj },
-        HttpClient,
-        HttpHandler,
-      ],
+      providers: [ProfilesService, { provide: ApiService, useValue: apiServiceSpyObj }, HttpClient, HttpHandler],
     });
   });
 
   it('get should return equal to mocked Profile', done => {
     service = TestBed.inject(ProfilesService);
-    const apiServiceSpy = TestBed.inject(
-      ApiService
-    ) as jasmine.SpyObj<ApiService>;
+    const apiServiceSpy = TestBed.inject(ApiService) as jasmine.SpyObj<ApiService>;
     const profileMock: Profile = {
       username: '',
       bio: '',
@@ -49,9 +38,7 @@ describe('ProfilesService', () => {
 
   it('follow should return mocked Profile', done => {
     service = TestBed.inject(ProfilesService);
-    const apiServiceSpy = TestBed.inject(
-      ApiService
-    ) as jasmine.SpyObj<ApiService>;
+    const apiServiceSpy = TestBed.inject(ApiService) as jasmine.SpyObj<ApiService>;
     const profileMock: Profile = {
       username: '',
       bio: '',
@@ -72,9 +59,7 @@ describe('ProfilesService', () => {
 
   it('unfollow should return mocked Profile', done => {
     service = TestBed.inject(ProfilesService);
-    const apiServiceSpy = TestBed.inject(
-      ApiService
-    ) as jasmine.SpyObj<ApiService>;
+    const apiServiceSpy = TestBed.inject(ApiService) as jasmine.SpyObj<ApiService>;
     const profileMock: Profile = {
       username: '',
       bio: '',

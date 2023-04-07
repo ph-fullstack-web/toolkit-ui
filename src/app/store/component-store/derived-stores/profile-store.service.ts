@@ -1,19 +1,12 @@
-import { Injectable, Provider } from '@angular/core';
-import { Observable, Subscription, exhaustMap, map, tap } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Observable, Subscription, exhaustMap, tap } from 'rxjs';
 import { provideComponentStore } from '@ngrx/component-store';
 
-import {
-  BaseLocalStore,
-  LocalState,
-  ModelId,
-  StoreName,
-} from '@app/store/local';
+import { BaseLocalStore, LocalState, StoreName } from '@app/store/local';
 import { Profile } from '@models';
 
-export type ProfileId = ModelId<string>;
-
 export interface ProfileLocalModel extends Profile {
-  id: ProfileId;
+  id: string;
 }
 
 export interface State extends LocalState<ProfileLocalModel> {
@@ -25,9 +18,7 @@ export interface State extends LocalState<ProfileLocalModel> {
  */
 @Injectable()
 export class ProfileStore extends BaseLocalStore<State, ProfileLocalModel> {
-  profiles$: Observable<ProfileLocalModel[]> = this.state$.pipe(
-    map(state => state.list)
-  );
+  profiles$: Observable<ProfileLocalModel[]> = this.select(state => state.list);
 
   override name: StoreName = 'profile';
 
@@ -36,35 +27,28 @@ export class ProfileStore extends BaseLocalStore<State, ProfileLocalModel> {
   }
 
   getSelectedItem(): Observable<ProfileLocalModel> {
-    return this.select(
-      state => state.list.find(i => i.id === state.selectedId)!
-    );
+    return this.select(state => state.list.find(i => i.id === state.selectedId) as ProfileLocalModel);
   }
 
-  getProfile(id: ProfileId): Observable<ProfileLocalModel | undefined> {
+  getProfile(id: string): Observable<ProfileLocalModel | undefined> {
     return this.getItem(id);
   }
 
   addProfile(model: ProfileLocalModel): Subscription {
-    const createSubscription = this.effect(
-      (model$: Observable<ProfileLocalModel>) =>
-        model$.pipe(
-          exhaustMap((model: ProfileLocalModel) => {
-            /** Fake HTTP call to add profile. */
-            const addProfile$ = new Observable<ProfileLocalModel>(
-              subscriber => {
-                setTimeout(() => {
-                  subscriber.next(model);
-                  subscriber.complete();
-                }, 1000);
-              }
-            );
+    const createSubscription = this.effect((model$: Observable<ProfileLocalModel>) =>
+      model$.pipe(
+        exhaustMap((model: ProfileLocalModel) => {
+          /** Fake HTTP call to add profile. */
+          const addProfile$ = new Observable<ProfileLocalModel>(subscriber => {
+            setTimeout(() => {
+              subscriber.next(model);
+              subscriber.complete();
+            }, 1000);
+          });
 
-            return addProfile$.pipe(
-              tap((model: ProfileLocalModel) => this.addItem(model))
-            );
-          })
-        )
+          return addProfile$.pipe(tap((model: ProfileLocalModel) => this.addItem(model)));
+        })
+      )
     );
 
     return this.executeCommand(createSubscription.bind(this, model));
@@ -74,10 +58,11 @@ export class ProfileStore extends BaseLocalStore<State, ProfileLocalModel> {
     return this.updateItem(model);
   }
 
-  deleteProfile(id: ProfileId): Subscription {
+  deleteProfile(id: string): Subscription {
     return this.deleteItem(id);
   }
 }
 
-export const provideProfileStore = (): Provider[] =>
-  provideComponentStore(ProfileStore);
+export function provideProfileStore() {
+  return provideComponentStore(ProfileStore);
+}

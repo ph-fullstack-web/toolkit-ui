@@ -1,11 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NgClass, NgFor, NgIf } from '@angular/common';
 
-import {
-  ConsultantId,
-  ConsultantLocalModel,
-  PaginationMetadata,
-} from '@app/store/local';
+import { ConsultantLocalModel, PaginationMetadata } from '@app/store/local';
 import { itemIn } from './local-store-example-template.animations';
 
 export type PageOptions = {
@@ -30,7 +26,7 @@ export class LocalStoreExampleTemplateComponent {
 
   @Output() consultantAdd = new EventEmitter<ConsultantLocalModel>();
   @Output() pageSelect = new EventEmitter<number>();
-  @Output() consultantDelete = new EventEmitter<ConsultantId>();
+  @Output() consultantDelete = new EventEmitter<string>();
   @Output() searchChange = new EventEmitter<string>();
   @Output() pageNavigate = new EventEmitter<'previous' | 'next'>();
 
@@ -44,7 +40,7 @@ export class LocalStoreExampleTemplateComponent {
     this.pageSelect.emit(pageNum);
   }
 
-  onDeleteItem(id: ConsultantId) {
+  onDeleteItem(id: string) {
     this.consultantDelete.emit(id);
   }
 

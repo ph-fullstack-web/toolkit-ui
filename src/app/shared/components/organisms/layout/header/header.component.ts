@@ -20,8 +20,6 @@ export class HeaderComponent implements OnInit {
   currentUser$!: Observable<User>;
 
   ngOnInit() {
-    this.currentUser$ = this.store.select(
-      fromAuth.selectCurrentUser
-    ) as Observable<User>;
+    this.currentUser$ = this.store.select(fromAuth.selectCurrentUser) as Observable<User>;
   }
 }

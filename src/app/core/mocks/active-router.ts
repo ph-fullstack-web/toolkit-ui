@@ -4,9 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 
 export class MockActivatedRoute {
   private innerTestParams?: Params;
-  private subject: BehaviorSubject<Params> = new BehaviorSubject(
-    this.testParams
-  );
+  private subject: BehaviorSubject<Params> = new BehaviorSubject(this.testParams);
   data?: Observable<Data>;
 
   params = this.subject.asObservable();

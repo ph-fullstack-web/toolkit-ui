@@ -25,21 +25,15 @@ export class AuthEffects {
           const authType = payload.authType;
           const path = authType === 'register' ? '' : authType;
 
-          return this.apiService
-            .post(`/users/${path}`, { user: payload.credentials })
-            .pipe(
-              tap((data: UserResponse) =>
-                this.jwtService.saveToken(data.user.token)
-              ),
-              map((data: UserResponse) =>
-                AuthActions.attemptAuthSuccess({
-                  user: data.user,
-                })
-              ),
-              catchError((errors: Errors) =>
-                of(AuthActions.attemptAuthFailure({ errors }))
-              )
-            );
+          return this.apiService.post<UserResponse>(`/users/${path}`, { user: payload.credentials }).pipe(
+            tap((data: UserResponse) => this.jwtService.saveToken(data.user.token)),
+            map((data: UserResponse) =>
+              AuthActions.attemptAuthSuccess({
+                user: data.user,
+              })
+            ),
+            catchError((errors: Errors) => of(AuthActions.attemptAuthFailure({ errors })))
+          );
         })
       ),
     { useEffectsErrorHandler: false }
@@ -63,10 +57,8 @@ export class AuthEffects {
             return of(AuthActions.purgeAuth());
           }
 
-          return this.apiService.get('/user').pipe(
-            map((data: UserResponse) =>
-              AuthActions.populateUserSuccess({ user: data.user })
-            ),
+          return this.apiService.get<UserResponse>('/user').pipe(
+            map((data: UserResponse) => AuthActions.populateUserSuccess({ user: data.user })),
             catchError(() => of(AuthActions.purgeAuth()))
           );
         })
@@ -96,13 +88,9 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(AuthActions.updateUser),
         exhaustMap(({ user }) =>
-          this.apiService.put('/user', { user }).pipe(
-            map((data: UserResponse) =>
-              AuthActions.updateUserSuccess({ user: data.user })
-            ),
-            catchError((errors: Errors) =>
-              of(AuthActions.updateUserFailure({ errors }))
-            )
+          this.apiService.put<UserResponse>('/user', { user }).pipe(
+            map((data: UserResponse) => AuthActions.updateUserSuccess({ user: data.user })),
+            catchError((errors: Errors) => of(AuthActions.updateUserFailure({ errors })))
           )
         )
       ),

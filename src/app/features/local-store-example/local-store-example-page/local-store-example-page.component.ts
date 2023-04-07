@@ -2,13 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { Observable, combineLatest, map } from 'rxjs';
 
-import {
-  ConsultantId,
-  ConsultantLocalModel,
-  ConsultantStore,
-  LocalStoreFactory,
-  provideLocalStoreFactory,
-} from '@app/store/local';
+import { ConsultantLocalModel, ConsultantStore, LocalStoreFactory, provideLocalStoreFactory } from '@app/store/local';
 
 import {
   LocalStoreExampleTemplateComponent,
@@ -31,8 +25,7 @@ export class LocalStoreExamplePageComponent implements OnInit {
   isLoading$!: Observable<boolean>;
 
   ngOnInit(): void {
-    this.store =
-      this.storeFactory.createInstance<ConsultantStore>('consultant');
+    this.store = this.storeFactory.createInstance('consultant');
     this.store.setItemsPerPage(5);
 
     this.consultants$ = this.store.consultants$;
@@ -44,19 +37,12 @@ export class LocalStoreExamplePageComponent implements OnInit {
       this.store.isNextDisabled$,
       this.store.paginationMetadata$,
     ]).pipe(
-      map(
-        ([
-          searchKey,
-          isPreviousDisabled,
-          isNextDisabled,
-          paginationMetadata,
-        ]) => ({
-          searchKey,
-          isPreviousDisabled,
-          isNextDisabled,
-          paginationMetadata,
-        })
-      )
+      map(([searchKey, isPreviousDisabled, isNextDisabled, paginationMetadata]) => ({
+        searchKey,
+        isPreviousDisabled,
+        isNextDisabled,
+        paginationMetadata,
+      }))
     );
   }
 
@@ -68,7 +54,7 @@ export class LocalStoreExamplePageComponent implements OnInit {
     this.store.setCurrentPage(pageNum);
   }
 
-  onConsultantDelete(id: ConsultantId) {
+  onConsultantDelete(id: string) {
     this.store.deleteConsultant(id);
   }
 

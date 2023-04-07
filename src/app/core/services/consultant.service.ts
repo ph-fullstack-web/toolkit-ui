@@ -11,7 +11,7 @@ import { ConsultantsWithReviewer } from '@models';
 export class ConsultantService {
   constructor(private http: HttpClient) {}
 
-  getConsultants(managerId?: string): Observable<ConsultantsWithReviewer[]> {
+  getConsultants(): Observable<ConsultantsWithReviewer[]> {
     return of(mockConsultantsWithReviewers);
   }
 }
