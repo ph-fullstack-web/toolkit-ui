@@ -51,12 +51,16 @@ export class LocalStoreExamplePageComponent implements OnInit {
     this.store.addConsultant(model);
   }
 
-  onPageSelect(pageNum: number) {
-    this.store.setCurrentPage(pageNum);
+  onConsultantUpdate(args: PropertyChangeArgs) {
+    this.store.updateConsultant(args.id, args.value);
   }
 
   onConsultantDelete(id: string) {
     this.store.deleteConsultant(id);
+  }
+
+  onPageSelect(pageNum: number) {
+    this.store.setCurrentPage(pageNum);
   }
 
   onSearchChange(searchKey: string) {
@@ -69,9 +73,5 @@ export class LocalStoreExamplePageComponent implements OnInit {
     }
 
     return this.store.goToPreviousPage();
-  }
-
-  onpropertyChange(args: PropertyChangeArgs) {
-    this.store.updateConsultant(args.id, args.value);
   }
 }

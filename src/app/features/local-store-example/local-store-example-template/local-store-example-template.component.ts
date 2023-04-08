@@ -31,7 +31,7 @@ export class LocalStoreExampleTemplateComponent {
   @Output() consultantDelete = new EventEmitter<string>();
   @Output() searchChange = new EventEmitter<string>();
   @Output() pageNavigate = new EventEmitter<'previous' | 'next'>();
-  @Output() propertyChange = new EventEmitter<PropertyChangeArgs>();
+  @Output() consultantUpdate = new EventEmitter<PropertyChangeArgs>();
 
   pageNumbers!: { isActive: boolean; value: number }[];
 
@@ -64,7 +64,7 @@ export class LocalStoreExampleTemplateComponent {
 
   onCellChange(id: string, propName: keyof ConsultantLocalModel, event: Event) {
     const propValue = (event.target as HTMLElement).innerText;
-    this.propertyChange.emit({ id, value: { [propName]: propValue } });
+    this.consultantUpdate.emit({ id, value: { [propName]: propValue } });
   }
 
   private generateConsultant(): ConsultantLocalModel {

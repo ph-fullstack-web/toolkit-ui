@@ -3,9 +3,9 @@
   [pageOptions]="(pageOptions$ | async)!"
   [isLoading]="(isLoading$ | async)!"
   (consultantAdd)="onConsultantAdd($event)"
-  (pageSelect)="onPageSelect($event)"
+  (consultantUpdate)="onConsultantUpdate($event)"
   (consultantDelete)="onConsultantDelete($event)"
+  (pageSelect)="onPageSelect($event)"
   (searchChange)="onSearchChange($event)"
   (pageNavigate)="onPageNavigate($event)"
-  (propertyChange)="onpropertyChange($event)"
 ></app-local-store-example-template>
