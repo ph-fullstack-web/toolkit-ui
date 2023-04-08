@@ -94,14 +94,11 @@ export class ConsultantStore extends BaseLocalStore<ConsultantState, ConsultantL
 
   get paginationMetadata$(): Observable<PaginationMetadata> {
     return this.select(this.pageCount$, this.currentPage$, (pageCount, currentPage) => {
-      const metadata: PaginationMetadata = [];
-
-      for (let pageNum = 1; pageNum <= pageCount; pageNum++) {
-        metadata.push({
-          isActive: pageNum === currentPage,
-          pageNumber: pageNum,
-        });
-      }
+      const metadata: PaginationMetadata = Array.from({ length: pageCount }, (...args: [unknown, number]) => {
+        const [, index] = args;
+        const pageNumber = index + 1;
+        return { pageNumber, isActive: pageNumber === currentPage };
+      });
 
       return metadata;
     });
