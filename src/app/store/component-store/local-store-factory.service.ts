@@ -61,7 +61,7 @@ export class LocalStoreFactory {
     return providersMap.get(storeName) as LocalStoreProviders;
   }
 
-  private getSharedStoreProviders(storeName: StoreName): LocalStoreProviders {
+  private getSharedStoreProviders(storeName: SharedStoreName): LocalStoreProviders {
     const providersMap = new Map<StoreName, Provider[]>([['list', provideListStore()]]);
 
     return providersMap.get(storeName) as LocalStoreProviders;
