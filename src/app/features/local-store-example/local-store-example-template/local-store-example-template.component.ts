@@ -1,15 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NgClass, NgFor, NgIf } from '@angular/common';
 
-import { ConsultantLocalModel, PaginationMetadata } from '@app/store/local';
+import { ConsultantLocalModel, PageOptions } from '@app/store/local';
 import { itemIn } from './local-store-example-template.animations';
-
-export type PageOptions = {
-  searchKey: string;
-  isPreviousDisabled: boolean;
-  isNextDisabled: boolean;
-  paginationMetadata: PaginationMetadata;
-};
 
 export type PropertyChangeArgs = { id: string; value: Partial<ConsultantLocalModel> };
 

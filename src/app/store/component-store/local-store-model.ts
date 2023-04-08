@@ -1,28 +1,19 @@
 import { ClassProvider, FactoryProvider } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 
-export interface LocalState<TModel extends { id: string }> {
-  list: TModel[];
-}
-
+/** Add shared store names as literal types */
+export type SharedStoreName = 'list';
 /** Add store names as literal types */
-export type StoreName = 'profile' | 'consultant' | 'add-more-here';
+export type StoreName = SharedStoreName | 'profile' | 'consultant' | 'add-more-here';
 
-export interface LocalStore<
-  TModel extends { id: string } = { id: string },
-  TState extends LocalState<TModel> = LocalState<TModel>
-> {
+export type LocalStoreProviders = [ClassProvider, FactoryProvider];
+
+export interface LocalStore<TState extends object = object> {
   readonly localState$: Observable<TState>;
-  readonly list$: Observable<TModel[]>;
 
   readonly name: StoreName;
 
+  setState(stateOrUpdaterFn: TState | ((state: TState) => TState)): void;
   initializeState(): void;
-  getItem<TResult>(id: TModel['id'] | ((s: TState) => TResult)): Observable<TResult | undefined>;
-  addItem(model: TModel): Subscription | void;
-  updateItem(id: string, model: Partial<TModel>): Subscription | void;
   updatePartial(props: Partial<TState>): Subscription | void;
-  deleteItem(id: TModel['id']): Subscription | void;
 }
-
-export type LocalStoreProviders = [ClassProvider, FactoryProvider];

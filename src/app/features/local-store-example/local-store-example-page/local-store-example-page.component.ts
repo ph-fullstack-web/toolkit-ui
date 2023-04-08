@@ -1,12 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
-import { Observable, combineLatest, map } from 'rxjs';
+import { Observable } from 'rxjs';
 
-import { ConsultantLocalModel, ConsultantStore, LocalStoreFactory, provideLocalStoreFactory } from '@app/store/local';
+import {
+  ConsultantLocalModel,
+  ConsultantStore,
+  ListStore,
+  LocalStoreFactory,
+  PageOptions,
+  provideLocalStoreFactory,
+} from '@app/store/local';
 
 import {
   LocalStoreExampleTemplateComponent,
-  PageOptions,
   PropertyChangeArgs,
 } from '../local-store-example-template/local-store-example-template.component';
 
@@ -19,59 +25,48 @@ import {
 export class LocalStoreExamplePageComponent implements OnInit {
   constructor(private readonly storeFactory: LocalStoreFactory) {}
 
-  private store!: ConsultantStore;
+  private consultantStore!: ConsultantStore;
+  private consultantListStore!: ListStore<ConsultantLocalModel>;
 
   consultants$!: Observable<ConsultantLocalModel[]>;
   pageOptions$!: Observable<PageOptions>;
   isLoading$!: Observable<boolean>;
 
   ngOnInit(): void {
-    this.store = this.storeFactory.createInstance('consultant');
-    this.store.setItemsPerPage(5);
+    this.consultantStore = this.storeFactory.createInstance('consultant');
+    this.consultantListStore = this.consultantStore.listStore;
+    this.consultantListStore.setItemsPerPage(5);
 
-    this.consultants$ = this.store.consultants$;
-    this.isLoading$ = this.store.isLoading$;
-
-    this.pageOptions$ = combineLatest([
-      this.store.searchKey$,
-      this.store.isPreviousDisabled$,
-      this.store.isNextDisabled$,
-      this.store.paginationMetadata$,
-    ]).pipe(
-      map(([searchKey, isPreviousDisabled, isNextDisabled, paginationMetadata]) => ({
-        searchKey,
-        isPreviousDisabled,
-        isNextDisabled,
-        paginationMetadata,
-      }))
-    );
+    this.consultants$ = this.consultantStore.consultants$;
+    this.isLoading$ = this.consultantStore.isLoading$;
+    this.pageOptions$ = this.consultantListStore.pageOptions$;
   }
 
   onConsultantAdd(model: ConsultantLocalModel) {
-    this.store.addConsultant(model);
+    this.consultantStore.addConsultant(model);
   }
 
   onConsultantUpdate(args: PropertyChangeArgs) {
-    this.store.updateConsultant(args.id, args.value);
+    this.consultantStore.updateConsultant(args.id, args.value);
   }
 
   onConsultantDelete(id: string) {
-    this.store.deleteConsultant(id);
+    this.consultantStore.deleteConsultant(id);
   }
 
   onPageSelect(pageNum: number) {
-    this.store.setCurrentPage(pageNum);
+    this.consultantListStore.setCurrentPage(pageNum);
   }
 
   onSearchChange(searchKey: string) {
-    this.store.setSearchKey(searchKey);
+    this.consultantListStore.setSearchKey(searchKey);
   }
 
   onPageNavigate(direction: 'previous' | 'next') {
-    if (direction === 'next') {
-      return this.store.goToNextPage();
+    if (direction === 'previous') {
+      return this.consultantListStore.goToPreviousPage();
     }
 
-    return this.store.goToPreviousPage();
+    return this.consultantListStore.goToNextPage();
   }
 }
