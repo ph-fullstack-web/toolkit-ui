@@ -2,6 +2,7 @@ import { Injectable, Injector, Provider } from '@angular/core';
 
 import {
   LocalStore,
+  LocalStoreName,
   LocalStoreProviders,
   SharedStoreName,
   StoreName,
@@ -13,38 +14,35 @@ import {
 export class LocalStoreFactory {
   constructor(private injector: Injector) {}
 
-  createInstance<TLocalStore extends LocalStore>(storeName: StoreName): TLocalStore {
-    const storeProviders = this.getStoreProviders(storeName);
+  createInstance<TLocalStore extends LocalStore>(localStoreName: LocalStoreName): TLocalStore {
     /**
      * https://github.com/ngrx/platform/blob/master/modules/component-store/src/lifecycle_hooks.ts
-     * the localStoreProviders array contains:
+     * the localStoreProviders & sharedStoreNameProviders array contain:
      * [0] - provider for the local store
      * [1] - provider for CS_WITH_HOOKS token to call the useFactory and execute the hooks.
      */
-    const [provider] = storeProviders;
+    const localStoreProviders = this.getStoreProviders(localStoreName);
+    const [localProvider] = localStoreProviders;
     /** map & get ALL shared/common stores that can be injected into local stores. */
-    const sharedStoreNameProviders = this.sharedStoreNames.map(name => this.getSharedStoreProviders(name));
+    const sharedStoreProviders = this.sharedStoreNames.map(name => this.getSharedStoreProviders(name));
     const injector = Injector.create({
       parent: this.injector,
       /**
        * There should ONLY be 1 local store that will be added to DI + the root (parent injector).
        * plus shared/common stores
        */
-      providers: [storeProviders, ...sharedStoreNameProviders],
+      providers: [localStoreProviders, ...sharedStoreProviders],
     });
-    const store = injector.get<TLocalStore>(provider.useClass);
+    const localStore = injector.get<TLocalStore>(localProvider.useClass);
 
     /** initialize local store state */
-    store.initializeState();
+    localStore.initializeState();
 
-    /** initialize shared/common stores state */
-    sharedStoreNameProviders.forEach(storeProviders => {
-      const [sharedProvider] = storeProviders;
-      const sharedStore = injector.get<TLocalStore>(sharedProvider.useClass);
-      sharedStore.initializeState();
-    });
+    /** loop through shared/common store providers & initialize state */
+    for (const [sharedProvider] of sharedStoreProviders)
+      injector.get<TLocalStore>(sharedProvider.useClass).initializeState();
 
-    return store;
+    return localStore;
   }
 
   private get sharedStoreNames(): SharedStoreName[] {

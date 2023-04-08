@@ -17,10 +17,6 @@ export abstract class BaseLocalStore<TState extends object>
     return super.setState(stateOrUpdaterFn);
   }
 
-  updatePartial(props: Partial<TState>): void | Subscription {
-    this.patchState(props);
-  }
-
   protected subscriptions: Subscription[] = [];
 
   protected unsubscribeAll(): void {
@@ -37,5 +33,13 @@ export abstract class BaseLocalStore<TState extends object>
     this.subscriptions.push(subscription);
 
     return subscription;
+  }
+
+  selectStateProperty<Result>(projector: (state: TState) => Result): Observable<Result> {
+    return this.select(projector);
+  }
+
+  updatePartial(props: Partial<TState>): void | Subscription {
+    this.patchState(props);
   }
 }

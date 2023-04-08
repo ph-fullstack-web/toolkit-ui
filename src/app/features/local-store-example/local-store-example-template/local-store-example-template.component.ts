@@ -61,7 +61,7 @@ export class LocalStoreExampleTemplateComponent {
   }
 
   private generateConsultant(): ConsultantLocalModel {
-    const id = (Math.random() + 1).toString(36).substring(10);
+    const id = (Math.random() + 1).toString(36).substring(7);
     const firstName = (Math.random() + 1).toString(36).substring(7);
     const lastName = (Math.random() + 1).toString(36).substring(7);
     const consultantEmail = `${firstName}_${lastName}@domain.com`;
