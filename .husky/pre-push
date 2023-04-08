@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-# disabled npm test for now since I don't have Chrome installed, headless can't be run as well.
-# npm run test-headless
+
+npm run test:headless
 echo "pre-push"
