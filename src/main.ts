@@ -13,6 +13,7 @@ import { tokenInterceptor } from '@interceptors';
 import { rootReducerMap, effects, RootState, provideAppStore } from '@app/store';
 
 import { APP_ROUTES } from 'app/app.routes';
+import { provideAppInitializers } from 'app/app-init-providers';
 import { AppComponent } from 'app/app.component';
 
 if (environment.production) {
@@ -25,6 +26,7 @@ const bootstrapPromise = bootstrapApplication(AppComponent, {
     provideHttpClient(withInterceptors([tokenInterceptor])),
     provideRouter(APP_ROUTES, withPreloading(PreloadAllModules)),
     provideAnimations(),
+    provideAppInitializers(),
 
     /** ngrx related providers */
     provideAppStore(),

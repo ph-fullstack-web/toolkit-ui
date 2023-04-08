@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { AppStore } from '@app/store';
-import { AuthActions } from '@app/store/auth';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 import { FooterComponent, HeaderComponent } from '@organisms';
@@ -12,10 +10,4 @@ import { FooterComponent, HeaderComponent } from '@organisms';
   standalone: true,
   imports: [FooterComponent, HeaderComponent, RouterOutlet],
 })
-export class AppComponent implements OnInit {
-  constructor(private store: AppStore) {}
-
-  ngOnInit() {
-    this.store.dispatch(AuthActions.populateUser());
-  }
-}
+export class AppComponent {}
