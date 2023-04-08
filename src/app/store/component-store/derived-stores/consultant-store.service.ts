@@ -45,7 +45,8 @@ export class ConsultantStore extends BaseLocalStore<ConsultantState, ConsultantL
     return this.select((state: ConsultantState) =>
       state.list.filter((item: ConsultantLocalModel) =>
         Object.values(item).some((value: unknown[]) => {
-          return !state.searchKey || value.toString().includes(state.searchKey);
+          const searchKeyFound = value.toString().toLocaleLowerCase().includes(state.searchKey.toLocaleLowerCase());
+          return !state.searchKey || searchKeyFound;
         })
       )
     );

@@ -52,7 +52,7 @@ export class LocalStoreExampleTemplateComponent {
   }
 
   onNavigate(direction: 'previous' | 'next') {
-    this.pageNavigate.next(direction);
+    this.pageNavigate.emit(direction);
   }
 
   onSearchKeyPress(event: KeyboardEvent) {
