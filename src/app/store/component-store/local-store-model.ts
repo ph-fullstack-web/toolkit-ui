@@ -20,7 +20,7 @@ export interface LocalStore<
   initializeState(): void;
   getItem<TResult>(id: TModel['id'] | ((s: TState) => TResult)): Observable<TResult | undefined>;
   addItem(model: TModel): Subscription | void;
-  updateItem(model: TModel): Subscription | void;
+  updateItem(id: string, model: Partial<TModel>): Subscription | void;
   updatePartial(props: Partial<TState>): Subscription | void;
   deleteItem(id: TModel['id']): Subscription | void;
 }

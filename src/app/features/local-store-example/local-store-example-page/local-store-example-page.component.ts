@@ -7,6 +7,7 @@ import { ConsultantLocalModel, ConsultantStore, LocalStoreFactory, provideLocalS
 import {
   LocalStoreExampleTemplateComponent,
   PageOptions,
+  PropertyChangeArgs,
 } from '../local-store-example-template/local-store-example-template.component';
 
 @Component({
@@ -68,5 +69,9 @@ export class LocalStoreExamplePageComponent implements OnInit {
     }
 
     return this.store.goToPreviousPage();
+  }
+
+  onpropertyChange(args: PropertyChangeArgs) {
+    this.store.updateConsultant(args.id, args.value);
   }
 }

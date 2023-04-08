@@ -41,17 +41,21 @@ export abstract class BaseLocalStore<TState extends LocalState<TModel>, TModel e
     return this.executeCommand(createSubscription.bind(this, model));
   }
 
-  updateItem(model: TModel): Subscription {
-    const createSubscription = this.updater((state: TState, item: TModel) => {
+  updateItem(id: string, model: Partial<TModel>): Subscription {
+    const createSubscription = this.updater((state: TState, args: { id: string; partialModel: Partial<TModel> }) => {
       const copiedList = state.list.slice();
-      const itemIndex = copiedList.indexOf(item);
+      const itemIndex = copiedList.findIndex(item => item.id === args.id);
+      const item = copiedList.find(i => i.id === args.id);
 
-      copiedList[itemIndex] = item;
+      copiedList[itemIndex] = {
+        ...item,
+        ...args.partialModel,
+      } as TModel;
 
       return { ...state, list: copiedList };
     });
 
-    return this.executeCommand(createSubscription.bind(this, model));
+    return this.executeCommand(createSubscription.bind(this, { id, partialModel: model }));
   }
 
   updatePartial(props: Partial<TState>): void | Subscription {

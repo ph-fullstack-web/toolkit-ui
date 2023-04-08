@@ -184,6 +184,10 @@ export class ConsultantStore extends BaseLocalStore<ConsultantState, ConsultantL
     return this.executeCommand(createSubscription.bind(this, id));
   }
 
+  updateConsultant(id: string, model: Partial<ConsultantLocalModel>) {
+    return this.updateItem(id, model);
+  }
+
   addConsultant(model: ConsultantLocalModel): Subscription {
     const createSubscription = this.effect((model$: Observable<ConsultantLocalModel>) =>
       model$.pipe(

@@ -38,9 +38,11 @@
     </thead>
     <tbody>
       <tr [@itemIn] *ngFor="let consultant of consultants" [ngClass]="{ 'table-active': consultant.isDeleting }">
-        <td>{{ consultant.consultantEmail }}</td>
-        <td>{{ consultant.firstName }}</td>
-        <td>{{ consultant.lastName }}</td>
+        <td contenteditable (blur)="onCellChange(consultant.id, 'consultantEmail', $event)">
+          {{ consultant.consultantEmail }}
+        </td>
+        <td contenteditable (blur)="onCellChange(consultant.id, 'firstName', $event)">{{ consultant.firstName }}</td>
+        <td contenteditable (blur)="onCellChange(consultant.id, 'lastName', $event)">{{ consultant.lastName }}</td>
         <td class="table-action">
           <button
             [disabled]="consultant.isDeleting"

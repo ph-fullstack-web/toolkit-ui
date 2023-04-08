@@ -11,6 +11,8 @@ export type PageOptions = {
   paginationMetadata: PaginationMetadata;
 };
 
+export type PropertyChangeArgs = { id: string; value: Partial<ConsultantLocalModel> };
+
 @Component({
   selector: 'app-local-store-example-template',
   templateUrl: './local-store-example-template.component.html',
@@ -29,6 +31,7 @@ export class LocalStoreExampleTemplateComponent {
   @Output() consultantDelete = new EventEmitter<string>();
   @Output() searchChange = new EventEmitter<string>();
   @Output() pageNavigate = new EventEmitter<'previous' | 'next'>();
+  @Output() propertyChange = new EventEmitter<PropertyChangeArgs>();
 
   pageNumbers!: { isActive: boolean; value: number }[];
 
@@ -57,6 +60,11 @@ export class LocalStoreExampleTemplateComponent {
       const input = event.target as HTMLInputElement;
       this.searchChange.emit(input.value);
     }
+  }
+
+  onCellChange(id: string, propName: keyof ConsultantLocalModel, event: Event) {
+    const propValue = (event.target as HTMLElement).innerText;
+    this.propertyChange.emit({ id, value: { [propName]: propValue } });
   }
 
   private generateConsultant(): ConsultantLocalModel {

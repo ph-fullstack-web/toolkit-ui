@@ -54,8 +54,8 @@ export class ProfileStore extends BaseLocalStore<State, ProfileLocalModel> {
     return this.executeCommand(createSubscription.bind(this, model));
   }
 
-  updateProfile(model: ProfileLocalModel): Subscription {
-    return this.updateItem(model);
+  updateProfile(id: string, model: ProfileLocalModel): Subscription {
+    return this.updateItem(id, model);
   }
 
   deleteProfile(id: string): Subscription {
