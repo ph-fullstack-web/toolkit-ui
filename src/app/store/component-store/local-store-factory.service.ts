@@ -30,8 +30,7 @@ export class LocalStoreFactory {
      */
     const localStoreProviders = this.getStoreProviders(localStoreName);
     const [localProvider] = localStoreProviders;
-    const sharedStoreNames = options?.sharedStores?.length ? options.sharedStores : this.defaultSharedStoreNames;
-
+    const sharedStoreNames = options?.sharedStores ?? [];
     /** map & get ALL shared/common stores that can be injected into local stores. */
     const sharedStoreProviders = sharedStoreNames.map(name => this.getSharedStoreProviders(name));
     const injector = Injector.create({
@@ -52,11 +51,6 @@ export class LocalStoreFactory {
       injector.get<TLocalStore>(sharedProvider.useClass).initializeState();
 
     return localStore;
-  }
-
-  private get defaultSharedStoreNames(): SharedStoreName[] {
-    /** add default shared store names here */
-    return ['list'];
   }
 
   private getStoreProviders(storeName: StoreName): LocalStoreProviders {

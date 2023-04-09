@@ -33,7 +33,7 @@ export class LocalStoreExamplePageComponent implements OnInit {
   isLoading$!: Observable<boolean>;
 
   ngOnInit(): void {
-    this.consultantStore = this.storeFactory.createInstance('consultant');
+    this.consultantStore = this.storeFactory.createInstance('consultant', { sharedStores: ['list'] });
     this.consultantListStore = this.consultantStore.listStore;
 
     this.consultantListStore.setItemsPerPage(5);
