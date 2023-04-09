@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { Observable, Subscription, exhaustMap, filter, tap } from 'rxjs';
-import { tapResponse } from '@ngrx/component-store';
+import { OnStoreInit, tapResponse } from '@ngrx/component-store';
 
 import { BaseLocalStore, IConsultantStore, IListStore, LIST_STORE_TOKEN, StoreName } from '@app/store/local';
 import { Consultant } from '@models';
@@ -14,7 +14,7 @@ export interface ConsultantState {
 }
 
 @Injectable()
-export class ConsultantStore extends BaseLocalStore<ConsultantState> implements IConsultantStore {
+export class ConsultantStore extends BaseLocalStore<ConsultantState> implements IConsultantStore, OnStoreInit {
   constructor(@Inject(LIST_STORE_TOKEN) public readonly listStore: IListStore<ConsultantLocalModel>) {
     super();
   }
@@ -36,6 +36,10 @@ export class ConsultantStore extends BaseLocalStore<ConsultantState> implements 
 
   get isLoading$(): Observable<boolean> {
     return this.select((state: ConsultantState) => state.isLoading);
+  }
+
+  ngrxOnStoreInit() {
+    console.log('On init consultant store');
   }
 
   /** these methods below will update the local state */

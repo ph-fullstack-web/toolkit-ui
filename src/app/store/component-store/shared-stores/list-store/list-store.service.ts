@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
+import { OnStoreInit } from '@ngrx/component-store';
 
 import { BaseLocalStore, StoreName, IListStore } from '@app/store/local';
 
@@ -25,11 +26,15 @@ export type PageOptions = {
 @Injectable()
 export class ListStore<TModel extends { id: string }>
   extends BaseLocalStore<ListState<TModel>>
-  implements IListStore<TModel>
+  implements IListStore<TModel>, OnStoreInit
 {
   override name: StoreName = 'list';
   override initializeState(): void {
     this.setState({ currentPage: 1, itemsPerPage: 5, listItems: [], searchKey: '' });
+  }
+
+  ngrxOnStoreInit() {
+    console.log('On init list store');
   }
 
   getItem<TResult>(
