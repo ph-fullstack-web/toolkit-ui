@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Observable, Subscription, exhaustMap, filter, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/component-store';
 
-import { BaseLocalStore, IListStore, LIST_STORE_TOKEN, StoreName } from '@app/store/local';
+import { BaseLocalStore, IConsultantStore, IListStore, LIST_STORE_TOKEN, StoreName } from '@app/store/local';
 import { Consultant } from '@models';
 
 export interface ConsultantLocalModel extends Omit<Consultant, 'consultantId' | 'managerId'> {
@@ -14,7 +14,7 @@ export interface ConsultantState {
 }
 
 @Injectable()
-export class ConsultantStore extends BaseLocalStore<ConsultantState> {
+export class ConsultantStore extends BaseLocalStore<ConsultantState> implements IConsultantStore {
   constructor(@Inject(LIST_STORE_TOKEN) public readonly listStore: IListStore<ConsultantLocalModel>) {
     super();
   }

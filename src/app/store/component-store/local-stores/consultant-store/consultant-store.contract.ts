@@ -1,8 +1,8 @@
 import { Observable, Subscription } from 'rxjs';
-import { ConsultantLocalModel, ListStore, LocalStore } from '@app/store/local';
+import { ConsultantLocalModel, IListStore, LocalStore } from '@app/store/local';
 
 export interface IConsultantStore extends LocalStore {
-  readonly listStore: ListStore<ConsultantLocalModel>;
+  readonly listStore: IListStore<ConsultantLocalModel>;
   readonly consultants$: Observable<ConsultantLocalModel[]>;
 
   get isLoading$(): Observable<boolean>;
