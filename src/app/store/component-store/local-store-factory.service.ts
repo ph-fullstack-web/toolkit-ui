@@ -10,21 +10,30 @@ import {
   provideListStore,
 } from '@app/store/local';
 
+export type CreateInstanceOptions = {
+  sharedStores: SharedStoreName[];
+};
+
 @Injectable()
 export class LocalStoreFactory {
   constructor(private injector: Injector) {}
 
-  createInstance<TLocalStore extends LocalStore>(localStoreName: LocalStoreName): TLocalStore {
+  createInstance<TLocalStore extends LocalStore>(
+    localStoreName: LocalStoreName,
+    options?: CreateInstanceOptions
+  ): TLocalStore {
     /**
      * https://github.com/ngrx/platform/blob/master/modules/component-store/src/lifecycle_hooks.ts
-     * the localStoreProviders & sharedStoreNameProviders array contain:
+     * the localStoreProviders & sharedStoreNameProviders arrays contain:
      * [0] - provider for the local store
      * [1] - provider for CS_WITH_HOOKS token to call the useFactory and execute the hooks.
      */
     const localStoreProviders = this.getStoreProviders(localStoreName);
     const [localProvider] = localStoreProviders;
+    const sharedStoreNames = options?.sharedStores?.length ? options.sharedStores : this.defaultSharedStoreNames;
+
     /** map & get ALL shared/common stores that can be injected into local stores. */
-    const sharedStoreProviders = this.sharedStoreNames.map(name => this.getSharedStoreProviders(name));
+    const sharedStoreProviders = sharedStoreNames.map(name => this.getSharedStoreProviders(name));
     const injector = Injector.create({
       parent: this.injector,
       /**
@@ -45,8 +54,8 @@ export class LocalStoreFactory {
     return localStore;
   }
 
-  private get sharedStoreNames(): SharedStoreName[] {
-    /** add shared stores here */
+  private get defaultSharedStoreNames(): SharedStoreName[] {
+    /** add default shared store names here */
     return ['list'];
   }
 
@@ -60,7 +69,13 @@ export class LocalStoreFactory {
   }
 
   private getSharedStoreProviders(storeName: SharedStoreName): LocalStoreProviders {
-    const providersMap = new Map<SharedStoreName, Provider[]>([['list', provideListStore()]]);
+    const providersMap = new Map<SharedStoreName, Provider[]>([
+      ['list', provideListStore()],
+      /** shared/common store examples: */
+      //1. ['modal', provideModalStore()],
+      //2. ['metrics', provideMetricsStore()],
+      //3. ['any-duplicated-state']
+    ]);
 
     return providersMap.get(storeName) as LocalStoreProviders;
   }

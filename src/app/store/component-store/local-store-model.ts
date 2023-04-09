@@ -5,7 +5,7 @@ import { Observable, Subscription } from 'rxjs';
 export type SharedStoreName = 'list';
 /** Add store names as literal types */
 export type StoreName = SharedStoreName | 'profile' | 'consultant' | 'add-more-here';
-/** remove all shared store name literal types to local store name literal types */
+/** remove all shared store name literal types from local store name literal types */
 export type LocalStoreName = Exclude<StoreName, SharedStoreName>;
 /**
  * https://github.com/ngrx/platform/blob/master/modules/component-store/src/lifecycle_hooks.ts
