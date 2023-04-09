@@ -1,4 +1,4 @@
-import { ClassProvider, FactoryProvider } from '@angular/core';
+import { ClassProvider, FactoryProvider, InjectionToken, Provider } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 
 /** Add shared store names as literal types */
@@ -7,6 +7,7 @@ export type SharedStoreName = 'list';
 export type StoreName = SharedStoreName | 'profile' | 'consultant' | 'add-more-here';
 /** remove all shared store name literal types from local store name literal types */
 export type LocalStoreName = Exclude<StoreName, SharedStoreName>;
+
 /**
  * https://github.com/ngrx/platform/blob/master/modules/component-store/src/lifecycle_hooks.ts
  * the LocalStoreProviders array type contains:
@@ -23,4 +24,14 @@ export interface LocalStore<TState extends object = object> {
   setState(stateOrUpdaterFn: TState | ((state: TState) => TState)): void;
   initializeState(): void;
   updatePartial(props: Partial<TState>): Subscription | void;
+}
+
+export type OneOrTwoDimensionalProviders<TIsTwoDim extends boolean> = TIsTwoDim extends true
+  ? Array<[LocalStoreProviders, InjectionToken<unknown>]>
+  : [LocalStoreProviders, InjectionToken<unknown>];
+
+export function isTwoDimensionalProviders(
+  array: Array<[LocalStoreProviders, InjectionToken<unknown>]> | [LocalStoreProviders, InjectionToken<unknown>]
+): array is Array<[LocalStoreProviders, InjectionToken<unknown>]> {
+  return array[0].constructor === Array<Provider>;
 }

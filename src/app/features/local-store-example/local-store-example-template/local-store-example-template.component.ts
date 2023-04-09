@@ -26,8 +26,6 @@ export class LocalStoreExampleTemplateComponent {
   @Output() pageNavigate = new EventEmitter<'previous' | 'next'>();
   @Output() consultantUpdate = new EventEmitter<PropertyChangeArgs>();
 
-  pageNumbers!: { isActive: boolean; value: number }[];
-
   onAddConsultant() {
     this.consultantAdd.emit(this.generateConsultant());
   }

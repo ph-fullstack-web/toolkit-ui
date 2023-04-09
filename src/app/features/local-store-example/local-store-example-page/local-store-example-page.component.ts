@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 
 import {
   ConsultantLocalModel,
-  ConsultantStore,
-  ListStore,
+  IConsultantStore,
+  IListStore,
   LocalStoreFactory,
   PageOptions,
   provideLocalStoreFactory,
@@ -25,8 +25,8 @@ import {
 export class LocalStoreExamplePageComponent implements OnInit {
   constructor(private readonly storeFactory: LocalStoreFactory) {}
 
-  private consultantStore!: ConsultantStore;
-  private consultantListStore!: ListStore<ConsultantLocalModel>;
+  private consultantStore!: IConsultantStore;
+  private consultantListStore!: IListStore<ConsultantLocalModel>;
 
   consultants$!: Observable<ConsultantLocalModel[]>;
   pageOptions$!: Observable<PageOptions>;

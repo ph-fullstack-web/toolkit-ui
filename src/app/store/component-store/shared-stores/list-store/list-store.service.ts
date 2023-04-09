@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { provideComponentStore } from '@ngrx/component-store';
 
-import { BaseLocalStore, StoreName } from '@app/store/local';
+import { BaseLocalStore, StoreName, IListStore } from '@app/store/local';
 
 export interface ListState<TModel extends { id: string }> {
   currentPage: number;
@@ -24,7 +23,10 @@ export type PageOptions = {
 };
 
 @Injectable()
-export class ListStore<TModel extends { id: string }> extends BaseLocalStore<ListState<TModel>> {
+export class ListStore<TModel extends { id: string }>
+  extends BaseLocalStore<ListState<TModel>>
+  implements IListStore<TModel>
+{
   override name: StoreName = 'list';
   override initializeState(): void {
     this.setState({ currentPage: 1, itemsPerPage: 5, listItems: [], searchKey: '' });
@@ -134,19 +136,26 @@ export class ListStore<TModel extends { id: string }> extends BaseLocalStore<Lis
     return this.executeCommand(createSubscription.bind(this, itemsPerPage));
   }
 
-  setSearchKey(searchKey: string) {
+  setSearchKey(searchKey: string): Subscription | void {
     this.updatePartial({ searchKey, currentPage: 1 });
   }
+  goToNextPage(): void {
+    const updateState = this.updater((state: ListState<TModel>) => ({
+      ...state,
+      currentPage: state.currentPage + 1,
+    }));
 
-  goToNextPage = this.updater((state: ListState<TModel>) => ({
-    ...state,
-    currentPage: state.currentPage + 1,
-  }));
+    return updateState();
+  }
 
-  goToPreviousPage = this.updater((state: ListState<TModel>) => ({
-    ...state,
-    currentPage: state.currentPage - 1,
-  }));
+  goToPreviousPage(): void {
+    const updateState = this.updater((state: ListState<TModel>) => ({
+      ...state,
+      currentPage: state.currentPage - 1,
+    }));
+
+    return updateState();
+  }
 
   addItem(model: TModel): Subscription {
     const createSubscription = this.updater((state: ListState<TModel>, item: TModel) => ({
@@ -186,8 +195,4 @@ export class ListStore<TModel extends { id: string }> extends BaseLocalStore<Lis
 
     return this.executeCommand(createSubscription.bind(this, id));
   }
-}
-
-export function provideListStore() {
-  return provideComponentStore(ListStore);
 }

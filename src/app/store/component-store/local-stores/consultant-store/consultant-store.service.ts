@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Observable, Subscription, exhaustMap, filter, tap } from 'rxjs';
-import { provideComponentStore, tapResponse } from '@ngrx/component-store';
+import { tapResponse } from '@ngrx/component-store';
 
-import { BaseLocalStore, ListStore, StoreName } from '@app/store/local';
+import { BaseLocalStore, IListStore, LIST_STORE_TOKEN, StoreName } from '@app/store/local';
 import { Consultant } from '@models';
 
 export interface ConsultantLocalModel extends Omit<Consultant, 'consultantId' | 'managerId'> {
@@ -15,7 +15,7 @@ export interface ConsultantState {
 
 @Injectable()
 export class ConsultantStore extends BaseLocalStore<ConsultantState> {
-  constructor(public listStore: ListStore<ConsultantLocalModel>) {
+  constructor(@Inject(LIST_STORE_TOKEN) public readonly listStore: IListStore<ConsultantLocalModel>) {
     super();
   }
   override name: StoreName = 'consultant';
@@ -32,7 +32,7 @@ export class ConsultantStore extends BaseLocalStore<ConsultantState> {
 
   /** reactive getter methods that will listen to local state prop changes. */
 
-  consultants$: Observable<ConsultantLocalModel[]> = this.listStore.listItems$;
+  readonly consultants$: Observable<ConsultantLocalModel[]> = this.listStore.listItems$;
 
   get isLoading$(): Observable<boolean> {
     return this.select((state: ConsultantState) => state.isLoading);
@@ -84,7 +84,7 @@ export class ConsultantStore extends BaseLocalStore<ConsultantState> {
     return this.executeCommand(createSubscription.bind(this, id));
   }
 
-  updateConsultant(id: string, model: Partial<ConsultantLocalModel>) {
+  updateConsultant(id: string, model: Partial<ConsultantLocalModel>): Subscription {
     return this.listStore.updateItem(id, model);
   }
 
@@ -119,8 +119,4 @@ export class ConsultantStore extends BaseLocalStore<ConsultantState> {
 
     return this.executeCommand(createSubscription.bind(this, model));
   }
-}
-
-export function provideConsultantStore() {
-  return provideComponentStore(ConsultantStore);
 }
