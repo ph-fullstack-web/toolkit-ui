@@ -28,7 +28,7 @@ export class LocalStoreExamplePageComponent implements OnInit {
     this.consultantStore = this.storeFactory.createInstance('consultant', { sharedStores: ['list'] });
     this.consultantListStore = this.consultantStore.listStore;
 
-    this.consultantListStore.setItemsPerPage(10);
+    this.consultantListStore.setItemsPerPage(5);
 
     this.consultants$ = this.consultantStore.consultants$;
     this.isLoading$ = this.consultantStore.isLoading$;

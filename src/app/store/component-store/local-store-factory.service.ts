@@ -1,14 +1,14 @@
 import { Injectable, InjectionToken, Injector, Provider } from '@angular/core';
 
 import {
-  LIST_STORE_TOKEN,
   LocalStore,
   LocalStoreName,
   LocalStoreProviders,
+  MixedProviders,
   SharedStoreName,
   StoreName,
-  provideConsultantStore,
-  provideListStore,
+  localStoreProvidersMap,
+  sharedStoreProvidersMap,
 } from '@app/store/local';
 
 export type CreateInstanceOptions = {
@@ -32,61 +32,47 @@ export class LocalStoreFactory {
   ): TLocalStore {
     /**
      * https://github.com/ngrx/platform/blob/master/modules/component-store/src/lifecycle_hooks.ts
-     * the localStoreProviders & sharedStoreNameProviders arrays contain:
+     * the localStoreProviders array contains:
      * [0] - provider for the local store
      * [1] - provider for CS_WITH_HOOKS token to call the useFactory and execute the hooks.
      */
-    const localStoreProviders = this.getLocalStoreProviders(localStoreName);
-    const [localProvider] = localStoreProviders;
+    const localStoreProviders = this.getStoreProviders(localStoreName);
+    const [, tokenProvider] = localStoreProviders;
     const sharedStoreNames = options?.sharedStores ?? [];
     /** map & get ALL shared/common stores that can be injected into local stores. */
-    const sharedStoreProviders = sharedStoreNames.map(name => this.getSharedStoreProviders(name));
-    const injector = Injector.create({
+    const sharedStoreProviders = sharedStoreNames.map(name => this.getStoreProviders(name));
+
+    const localInjector = Injector.create({
       parent: this.injector,
-      providers: [localStoreProviders, this.buildSharedStoreProviders(sharedStoreProviders)],
+      providers: [localStoreProviders, ...sharedStoreProviders],
     });
-    const localStore = injector.get<TLocalStore>(localProvider.useClass);
+    const localStore = localInjector.get<TLocalStore>(tokenProvider.provide);
 
     /** initialize local store state */
     localStore.initializeState();
 
     /** loop through shared/common store providers & initialize state */
-    for (const [, injectionToken] of sharedStoreProviders) {
-      injector.get<TLocalStore>(injectionToken).initializeState();
+    for (const [, tokenProvider] of sharedStoreProviders) {
+      localInjector.get<TLocalStore>(tokenProvider.provide).initializeState();
     }
 
     return localStore;
   }
-
-  private getLocalStoreProviders(storeName: StoreName): LocalStoreProviders {
-    const providersMap = new Map<StoreName, Provider[]>([
-      // ['profile', provideProfileStore()],
-      ['consultant', provideConsultantStore()],
+  private getStoreProviders(storeName: StoreName): LocalStoreProviders {
+    const storeProvidersMap = new Map<StoreName, [Provider[], InjectionToken<unknown>]>([
+      ...localStoreProvidersMap,
+      ...sharedStoreProvidersMap,
     ]);
+    const mixedProviders = storeProvidersMap.get(storeName) as MixedProviders;
 
-    return providersMap.get(storeName) as LocalStoreProviders;
+    return this.buildStoreProviders(mixedProviders);
   }
 
-  private getSharedStoreProviders(storeName: SharedStoreName): [LocalStoreProviders, InjectionToken<unknown>] {
-    const providersMap = new Map<SharedStoreName, [Provider[], InjectionToken<unknown>]>([
-      /** shared/common store examples: modal, metrics, any-duplicated-state */
-      ['list', [provideListStore(), LIST_STORE_TOKEN]],
-    ]);
+  private buildStoreProviders(providers: MixedProviders): LocalStoreProviders {
+    const [localStoreProviders, injectionToken] = providers;
+    const [classProvider, factoryProvider] = localStoreProviders;
 
-    return providersMap.get(storeName) as [LocalStoreProviders, InjectionToken<unknown>];
-  }
-
-  private buildSharedStoreProviders(providers: Array<[LocalStoreProviders, InjectionToken<unknown>]>): Provider[] {
-    return providers.reduce<Provider[]>((accuProviders, currentProviders) => {
-      const [localStoreProviders, injectionToken] = currentProviders;
-      const [classProvider, factoryProvider] = localStoreProviders;
-
-      accuProviders.push(classProvider, {
-        provide: injectionToken,
-        useFactory: factoryProvider.useFactory,
-      });
-      return accuProviders;
-    }, []);
+    return [classProvider, { provide: injectionToken, useFactory: factoryProvider.useFactory }];
   }
 }
 

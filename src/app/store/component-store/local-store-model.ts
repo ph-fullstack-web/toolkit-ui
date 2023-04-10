@@ -1,4 +1,4 @@
-import { ClassProvider, FactoryProvider, InjectionToken, Provider } from '@angular/core';
+import { ClassProvider, FactoryProvider, InjectionToken } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 
 /** Add shared store names as literal types */
@@ -16,6 +16,8 @@ export type LocalStoreName = Exclude<StoreName, SharedStoreName>;
  */
 export type LocalStoreProviders = [ClassProvider, FactoryProvider];
 
+export type MixedProviders = [LocalStoreProviders, InjectionToken<unknown>];
+
 export interface LocalStore<TState extends object = object> {
   readonly localState$: Observable<TState>;
   readonly name: StoreName;
@@ -24,14 +26,4 @@ export interface LocalStore<TState extends object = object> {
   setState(stateOrUpdaterFn: TState | ((state: TState) => TState)): void;
   initializeState(): void;
   updatePartial(props: Partial<TState>): Subscription | void;
-}
-
-export type OneOrTwoDimensionalProviders<TIsTwoDim extends boolean> = TIsTwoDim extends true
-  ? Array<[LocalStoreProviders, InjectionToken<unknown>]>
-  : [LocalStoreProviders, InjectionToken<unknown>];
-
-export function isTwoDimensionalProviders(
-  array: Array<[LocalStoreProviders, InjectionToken<unknown>]> | [LocalStoreProviders, InjectionToken<unknown>]
-): array is Array<[LocalStoreProviders, InjectionToken<unknown>]> {
-  return array[0].constructor === Array<Provider>;
 }
