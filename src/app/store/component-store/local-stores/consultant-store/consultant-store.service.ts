@@ -71,7 +71,7 @@ export class ConsultantStore extends BaseLocalStore<ConsultantState> implements 
                     this.updatePartial({
                       isLoading: false,
                     });
-                    this.listStore.updatePartial({ currentPage: 1 });
+                    this.listStore.updatePartial({ searchKey: '', currentPage: 1 });
                   },
                   () => {
                     this.updatePartial({

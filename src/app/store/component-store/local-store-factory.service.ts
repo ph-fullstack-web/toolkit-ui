@@ -59,10 +59,7 @@ export class LocalStoreFactory {
     return localStore;
   }
   private getStoreProviders(storeName: StoreName): LocalStoreProviders {
-    const storeProvidersMap = new Map<StoreName, [Provider[], InjectionToken<unknown>]>([
-      ...localStoreProvidersMap,
-      ...sharedStoreProvidersMap,
-    ]);
+    const storeProvidersMap = new Map([...localStoreProvidersMap, ...sharedStoreProvidersMap]);
     const mixedProviders = storeProvidersMap.get(storeName) as MixedProviders;
 
     return this.buildStoreProviders(mixedProviders);
