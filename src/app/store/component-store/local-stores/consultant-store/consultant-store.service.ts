@@ -18,6 +18,11 @@ export class ConsultantStore extends BaseLocalStore<ConsultantState> implements 
   constructor(@Inject(LIST_STORE_TOKEN) public readonly listStore: IListStore<ConsultantLocalModel>) {
     super();
   }
+
+  ngrxOnStoreInit() {
+    console.log('On init consultant store');
+  }
+
   override name: StoreName = 'consultant';
 
   override initializeState(): void {
@@ -36,10 +41,6 @@ export class ConsultantStore extends BaseLocalStore<ConsultantState> implements 
 
   get isLoading$(): Observable<boolean> {
     return this.select((state: ConsultantState) => state.isLoading);
-  }
-
-  ngrxOnStoreInit() {
-    console.log('On init consultant store');
   }
 
   /** these methods below will update the local state */
@@ -62,8 +63,8 @@ export class ConsultantStore extends BaseLocalStore<ConsultantState> implements 
             tap(model => {
               (model as ConsultantLocalModel).isDeleting = true;
             }),
-            exhaustMap(() => {
-              return deleteConsultant$.pipe(
+            exhaustMap(() =>
+              deleteConsultant$.pipe(
                 tapResponse(
                   (id: string) => {
                     this.listStore.deleteItem(id);
@@ -78,8 +79,8 @@ export class ConsultantStore extends BaseLocalStore<ConsultantState> implements 
                     });
                   }
                 )
-              );
-            })
+              )
+            )
           );
         })
       )

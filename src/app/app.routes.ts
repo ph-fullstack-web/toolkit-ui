@@ -1,7 +1,8 @@
 import { Routes } from '@angular/router';
 
-import { NoAuthGuard } from '@guards';
+import { notAuthenticatedUser } from '@guards';
 import { HomeAuthResolver, ProfileResolver } from '@resolvers';
+import { provideLocalStoreFactory } from '@app/store/local';
 
 export const APP_ROUTES: Routes = [
   {
@@ -22,16 +23,17 @@ export const APP_ROUTES: Routes = [
       import('./features/local-store-example/local-store-example-page/local-store-example-page.component').then(
         mod => mod.LocalStoreExamplePageComponent
       ),
+    providers: [provideLocalStoreFactory()],
   },
   {
     path: 'login',
     loadComponent: () => import('./features/auth/auth-page/auth-page.component').then(mod => mod.AuthPageComponent),
-    canActivate: [NoAuthGuard],
+    canActivate: [notAuthenticatedUser],
   },
   {
     path: 'register',
     loadComponent: () => import('./features/auth/auth-page/auth-page.component').then(mod => mod.AuthPageComponent),
-    canActivate: [NoAuthGuard],
+    canActivate: [notAuthenticatedUser],
   },
   {
     path: 'settings',

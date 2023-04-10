@@ -28,13 +28,14 @@ export class ListStore<TModel extends { id: string }>
   extends BaseLocalStore<ListState<TModel>>
   implements IListStore<TModel>, OnStoreInit
 {
-  override name: StoreName = 'list';
-  override initializeState(): void {
-    this.setState({ currentPage: 1, itemsPerPage: 5, listItems: [], searchKey: '' });
-  }
-
   ngrxOnStoreInit() {
     console.log('On init list store');
+  }
+
+  override name: StoreName = 'list';
+
+  override initializeState(): void {
+    this.setState({ currentPage: 1, itemsPerPage: 5, listItems: [], searchKey: '' });
   }
 
   getItem<TResult>(

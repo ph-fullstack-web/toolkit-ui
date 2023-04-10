@@ -1,17 +1,9 @@
-import { Injectable } from '@angular/core';
-import { CanActivate } from '@angular/router';
-import { Observable, take } from 'rxjs';
+import { inject } from '@angular/core';
+import { CanActivateFn } from '@angular/router';
 
-import { AppStore } from '@app/store';
-import { AuthSelectors } from '@app/store/auth';
+import { JwtService } from '@services';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class AuthGuard implements CanActivate {
-  constructor(private store: AppStore) {}
-
-  canActivate(): Observable<boolean> {
-    return this.store.select(AuthSelectors.isAuthenticated).pipe(take(1));
-  }
-}
+export const authenticatedUser: CanActivateFn = () => {
+  const jwtService = inject(JwtService);
+  return typeof jwtService.getToken() === 'string';
+};

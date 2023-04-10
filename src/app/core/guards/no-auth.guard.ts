@@ -1,20 +1,9 @@
-import { Injectable } from '@angular/core';
-import { CanActivate } from '@angular/router';
-import { map, Observable, take } from 'rxjs';
+import { inject } from '@angular/core';
+import { CanActivateFn } from '@angular/router';
 
-import { AppStore } from '@app/store';
-import { AuthSelectors } from '@app/store/auth';
+import { JwtService } from '@services';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class NoAuthGuard implements CanActivate {
-  constructor(private store: AppStore) {}
-
-  canActivate(): Observable<boolean> {
-    return this.store.select(AuthSelectors.isAuthenticated).pipe(
-      take(1),
-      map((isAuth: boolean) => !isAuth)
-    );
-  }
-}
+export const notAuthenticatedUser: CanActivateFn = () => {
+  const jwtService = inject(JwtService);
+  return typeof jwtService.getToken() !== 'string';
+};

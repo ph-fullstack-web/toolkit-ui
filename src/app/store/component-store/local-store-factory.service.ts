@@ -79,9 +79,9 @@ export class LocalStoreFactory {
   private buildSharedStoreProviders(providers: Array<[LocalStoreProviders, InjectionToken<unknown>]>): Provider[] {
     return providers.reduce<Provider[]>((accuProviders, currentProviders) => {
       const [localStoreProviders, injectionToken] = currentProviders;
-      const [, factoryProvider] = localStoreProviders;
+      const [classProvider, factoryProvider] = localStoreProviders;
 
-      accuProviders.push(...localStoreProviders, {
+      accuProviders.push(classProvider, {
         provide: injectionToken,
         useFactory: factoryProvider.useFactory,
       });

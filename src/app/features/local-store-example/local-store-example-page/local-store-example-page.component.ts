@@ -2,14 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { Observable } from 'rxjs';
 
-import {
-  ConsultantLocalModel,
-  IConsultantStore,
-  IListStore,
-  LocalStoreFactory,
-  PageOptions,
-  provideLocalStoreFactory,
-} from '@app/store/local';
+import { ConsultantLocalModel, IConsultantStore, IListStore, LocalStoreFactory, PageOptions } from '@app/store/local';
 
 import {
   LocalStoreExampleTemplateComponent,
@@ -19,7 +12,6 @@ import {
 @Component({
   templateUrl: './local-store-example-page.component.html',
   imports: [LocalStoreExampleTemplateComponent, AsyncPipe],
-  providers: [provideLocalStoreFactory()],
   standalone: true,
 })
 export class LocalStoreExamplePageComponent implements OnInit {
@@ -36,7 +28,7 @@ export class LocalStoreExamplePageComponent implements OnInit {
     this.consultantStore = this.storeFactory.createInstance('consultant', { sharedStores: ['list'] });
     this.consultantListStore = this.consultantStore.listStore;
 
-    this.consultantListStore.setItemsPerPage(5);
+    this.consultantListStore.setItemsPerPage(10);
 
     this.consultants$ = this.consultantStore.consultants$;
     this.isLoading$ = this.consultantStore.isLoading$;

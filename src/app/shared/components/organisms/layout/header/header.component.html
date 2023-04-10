@@ -5,7 +5,7 @@
     <!-- Show this for logged out users -->
     <ul *appShowAuthed="false" class="nav navbar-nav pull-xs-right">
       <li class="nav-item">
-        <a class="nav-link" routerLink="/"> Home </a>
+        <a class="nav-link" routerLink="/"> <i class="ion-home"></i>&nbsp;Home </a>
       </li>
 
       <li class="nav-item">
@@ -15,7 +15,7 @@
           routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: true }"
         >
-          Local Store Example
+          <i class="ion-grid"></i>&nbsp;Local Store Example
         </a>
       </li>
 
@@ -32,10 +32,9 @@
     <ul *appShowAuthed="true" class="nav navbar-nav pull-xs-right">
       <li class="nav-item">
         <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-          Home
+          <i class="ion-home"></i>&nbsp;Home
         </a>
       </li>
-
       <li class="nav-item">
         <a
           class="nav-link"
@@ -43,10 +42,9 @@
           routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: true }"
         >
-          Local Store Example
+          <i class="ion-grid"></i>&nbsp;Local Store Example
         </a>
       </li>
-
       <li class="nav-item">
         <a class="nav-link" routerLink="/settings" routerLinkActive="active">
           <i class="ion-gear-a"></i>&nbsp;Settings
