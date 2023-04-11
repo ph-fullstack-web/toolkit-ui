@@ -1,4 +1,4 @@
-import { Injectable, InjectionToken, Injector, Provider } from '@angular/core';
+import { Injectable, Injector, Provider } from '@angular/core';
 
 import {
   LocalStore,

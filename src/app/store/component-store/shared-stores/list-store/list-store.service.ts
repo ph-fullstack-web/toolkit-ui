@@ -114,7 +114,7 @@ export class ListStore<TModel extends { id: string }>
 
   get paginationMetadata$(): Observable<PaginationMetadata> {
     return this.select(this.pageCount$, this.currentPage$, (pageCount, currentPage) => {
-      const metadata: PaginationMetadata = Array.from({ length: pageCount }, (...args: [unknown, number]) => {
+      const metadata: PaginationMetadata = Array.from({ length: pageCount }, (...args: [never, number]) => {
         const [, index] = args;
         const pageNumber = index + 1;
         return { pageNumber, isActive: pageNumber === currentPage };
@@ -130,7 +130,7 @@ export class ListStore<TModel extends { id: string }>
       currentPage,
     }));
 
-    return this.executeCommand(createSubscription.bind(this, currentPage));
+    return createSubscription(currentPage);
   }
 
   setItemsPerPage(itemsPerPage: number): Subscription {
@@ -139,7 +139,7 @@ export class ListStore<TModel extends { id: string }>
       itemsPerPage,
     }));
 
-    return this.executeCommand(createSubscription.bind(this, itemsPerPage));
+    return createSubscription(itemsPerPage);
   }
 
   setSearchKey(searchKey: string): Subscription | void {
@@ -169,7 +169,7 @@ export class ListStore<TModel extends { id: string }>
       listItems: [...state.listItems, item],
     }));
 
-    return this.executeCommand(createSubscription.bind(this, model));
+    return createSubscription(model);
   }
 
   updateItem(id: string, model: Partial<TModel>): Subscription {
@@ -187,7 +187,7 @@ export class ListStore<TModel extends { id: string }>
       }
     );
 
-    return this.executeCommand(createSubscription.bind(this, { id, partialModel: model }));
+    return createSubscription({ id, partialModel: model });
   }
 
   deleteItem(id: TModel['id']): Subscription {
@@ -199,6 +199,6 @@ export class ListStore<TModel extends { id: string }>
       return { ...state, list: state.listItems };
     });
 
-    return this.executeCommand(createSubscription.bind(this, id));
+    return createSubscription(id);
   }
 }

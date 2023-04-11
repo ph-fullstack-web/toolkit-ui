@@ -86,7 +86,7 @@ export class ConsultantStore extends BaseLocalStore<ConsultantState> implements 
       )
     );
 
-    return this.executeCommand(createSubscription.bind(this, id));
+    return createSubscription(id);
   }
 
   updateConsultant(id: string, model: Partial<ConsultantLocalModel>): Subscription {
@@ -122,6 +122,6 @@ export class ConsultantStore extends BaseLocalStore<ConsultantState> implements 
       )
     );
 
-    return this.executeCommand(createSubscription.bind(this, model));
+    return createSubscription(model);
   }
 }
