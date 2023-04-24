@@ -1,6 +1,6 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Observable, of } from 'rxjs';
-import { RunHelpers, TestScheduler } from 'rxjs/testing';
+import { TestScheduler } from 'rxjs/testing';
 import { provideComponentStore } from '@ngrx/component-store';
 
 import { ConsultantLocalModel, ConsultantStore, LIST_STORE_TOKEN } from '@app/store/local';
@@ -24,9 +24,6 @@ describe('ConsultantStore', () => {
     updateItem: jasmine.createSpy(),
     addItem: jasmine.createSpy(),
   };
-  const testScheduler = new TestScheduler((actual, expected) => {
-    expect(actual).toEqual(expected);
-  });
 
   let service: ConsultantStore;
 
@@ -55,9 +52,11 @@ describe('ConsultantStore', () => {
   });
 
   it('should get consultant', (done: DoneFn) => {
-    testScheduler.run((helpers: RunHelpers) => {
-      const { cold, expectObservable } = helpers;
+    const testScheduler = new TestScheduler((actual, expected) => {
+      expect(actual).toEqual(expected);
+    });
 
+    testScheduler.run(({ cold, expectObservable }) => {
       listStoreMock.getItem.withArgs(consultantId).and.returnValue(cold('a', { a: consultant }));
       expectObservable(service.getConsultant(consultantId)).toBe('a', { a: consultant });
       done();
