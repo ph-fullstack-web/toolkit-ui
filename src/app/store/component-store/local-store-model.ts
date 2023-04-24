@@ -22,7 +22,7 @@ export interface LocalStore<TState extends object = object> {
   readonly localState$: Observable<TState>;
   readonly name: StoreName;
 
-  selectStateProperty<Result>(projector: (state: TState) => Result): Observable<Result>;
+  selectStateProperty<TResult>(projector: (state: TState) => TResult): Observable<TResult>;
   setState(stateOrUpdaterFn: TState | ((state: TState) => TState)): void;
   initializeState(): void;
   updatePartial(props: Partial<TState>): Subscription | void;

@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 
 import { notAuthenticatedUser } from '@guards';
-import { HomeAuthResolver, ProfileResolver } from '@resolvers';
+import { authResolver, profileResolver } from '@resolvers';
 import { provideLocalStoreFactory } from '@app/store/local';
 
 export const APP_ROUTES: Routes = [
@@ -14,7 +14,7 @@ export const APP_ROUTES: Routes = [
     path: 'home',
     loadComponent: () => import('./features/home/home-page/home-page.component').then(mod => mod.HomePageComponent),
     resolve: {
-      isAuthenticated: HomeAuthResolver,
+      isAuthenticated: authResolver,
     },
   },
   {
@@ -45,7 +45,7 @@ export const APP_ROUTES: Routes = [
     loadComponent: () =>
       import('./features/profile/profile-page/profile-page.component').then(mod => mod.ProfilePageComponent),
     resolve: {
-      profile: ProfileResolver,
+      profile: profileResolver,
     },
   },
 ];

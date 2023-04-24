@@ -17,7 +17,7 @@ export abstract class BaseLocalStore<TState extends object>
     return super.setState(stateOrUpdaterFn);
   }
 
-  selectStateProperty<Result>(projector: (state: TState) => Result): Observable<Result> {
+  selectStateProperty<TResult>(projector: (state: TState) => TResult): Observable<TResult> {
     return this.select(projector);
   }
 
