@@ -1,9 +1,9 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Observable, of } from 'rxjs';
 import { RunHelpers, TestScheduler } from 'rxjs/testing';
+import { provideComponentStore } from '@ngrx/component-store';
 
 import { ConsultantLocalModel, ConsultantStore, LIST_STORE_TOKEN } from '@app/store/local';
-import { provideComponentStore } from '@ngrx/component-store';
 
 describe('ConsultantStore', () => {
   const consultantId = 'consultant_id';
