@@ -145,6 +145,7 @@ export class ListStore<TModel extends { id: string }>
   setSearchKey(searchKey: string): Subscription | void {
     this.updatePartial({ searchKey, currentPage: 1 });
   }
+
   goToNextPage(): void {
     const updateState = this.updater((state: ListState<TModel>) => ({
       ...state,

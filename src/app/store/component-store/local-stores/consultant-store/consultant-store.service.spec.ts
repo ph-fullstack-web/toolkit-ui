@@ -1,9 +1,9 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { provideComponentStore } from '@ngrx/component-store';
 
-import { ConsultantLocalModel, ConsultantStore, LIST_STORE_TOKEN } from '@app/store/local';
+import { ConsultantLocalModel, ConsultantStore, IListStore, LIST_STORE_TOKEN } from '@app/store/local';
 
 describe('ConsultantStore', () => {
   const consultantId = 'consultant_id';
@@ -14,18 +14,15 @@ describe('ConsultantStore', () => {
     lastName: 'Jimenez',
   };
 
-  const listStoreMock = {
-    get listItems$() {
-      return Observable;
-    },
-    getItem: jasmine.createSpy(),
-    deleteItem: jasmine.createSpy(),
-    updatePartial: jasmine.createSpy(),
-    updateItem: jasmine.createSpy(),
-    addItem: jasmine.createSpy(),
-  };
+  const listStoreSpy = jasmine.createSpyObj<IListStore<ConsultantLocalModel>>('list store', [
+    'getItem',
+    'deleteItem',
+    'updatePartial',
+    'updateItem',
+    'addItem',
+  ]);
 
-  let service: ConsultantStore;
+  let store: ConsultantStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -33,22 +30,22 @@ describe('ConsultantStore', () => {
         provideComponentStore(ConsultantStore),
         {
           provide: LIST_STORE_TOKEN,
-          useValue: listStoreMock,
+          useValue: listStoreSpy,
         },
       ],
     });
 
-    service = TestBed.inject(ConsultantStore);
+    store = TestBed.inject(ConsultantStore);
   });
 
   it('should initialize the state', () => {
-    spyOn(service, 'setState');
-    service.initializeState();
-    expect(service.setState).toHaveBeenCalledWith({ isLoading: false });
+    spyOn(store, 'setState');
+    store.initializeState();
+    expect(store.setState).toHaveBeenCalledWith({ isLoading: false });
   });
 
-  it('should set correct store name', () => {
-    expect(service.name).toBe('consultant');
+  it('should get the store name', () => {
+    expect(store.name).toBe('consultant');
   });
 
   it('should get consultant', (done: DoneFn) => {
@@ -57,47 +54,47 @@ describe('ConsultantStore', () => {
     });
 
     testScheduler.run(({ cold, expectObservable }) => {
-      listStoreMock.getItem.withArgs(consultantId).and.returnValue(cold('a', { a: consultant }));
-      expectObservable(service.getConsultant(consultantId)).toBe('a', { a: consultant });
+      listStoreSpy.getItem.withArgs(consultantId).and.returnValue(cold('a', { a: consultant }));
+      expectObservable(store.getConsultant(consultantId)).toBe('a', { a: consultant });
       done();
     });
   });
 
   it('should get loading state', (done: DoneFn) => {
-    service.setState({ isLoading: true });
-    service.isLoading$.subscribe(isLoading => {
+    store.setState({ isLoading: true });
+    store.isLoading$.subscribe(isLoading => {
       expect(isLoading).toBeTrue();
       done();
     });
   });
 
   it('should delete consultant successfully', fakeAsync(() => {
-    listStoreMock.getItem.withArgs(consultantId).and.returnValue(of(consultant));
-    spyOn(service, 'updatePartial');
+    listStoreSpy.getItem.withArgs(consultantId).and.returnValue(of(consultant));
+    spyOn(store, 'updatePartial');
 
-    service.initializeState();
-    service.deleteConsultant(consultantId);
+    store.initializeState();
+    store.deleteConsultant(consultantId);
     tick(1000);
 
-    expect(listStoreMock.deleteItem).toHaveBeenCalledWith(consultantId);
-    expect(listStoreMock.updatePartial).toHaveBeenCalledWith({ searchKey: '', currentPage: 1 });
-    expect(service.updatePartial).toHaveBeenCalledWith({ isLoading: false });
+    expect(listStoreSpy.deleteItem).toHaveBeenCalledWith(consultantId);
+    expect(listStoreSpy.updatePartial).toHaveBeenCalledWith({ searchKey: '', currentPage: 1 });
+    expect(store.updatePartial).toHaveBeenCalledWith({ isLoading: false });
   }));
 
   it('should update consultant', () => {
-    service.updateConsultant(consultantId, { firstName: 'John' });
-    expect(listStoreMock.updateItem).toHaveBeenCalledWith(consultantId, { firstName: 'John' });
+    store.updateConsultant(consultantId, { firstName: 'John' });
+    expect(listStoreSpy.updateItem).toHaveBeenCalledWith(consultantId, { firstName: 'John' });
   });
 
   it('should add consultant', fakeAsync(() => {
-    spyOn(service, 'updatePartial');
+    spyOn(store, 'updatePartial');
 
-    service.initializeState();
-    service.addConsultant(consultant);
+    store.initializeState();
+    store.addConsultant(consultant);
     tick(1000);
 
-    expect(listStoreMock.addItem).toHaveBeenCalledWith(consultant);
-    expect(listStoreMock.updatePartial).toHaveBeenCalledWith({ searchKey: '', currentPage: 1 });
-    expect(service.updatePartial).toHaveBeenCalledWith({ isLoading: false });
+    expect(listStoreSpy.addItem).toHaveBeenCalledWith(consultant);
+    expect(listStoreSpy.updatePartial).toHaveBeenCalledWith({ searchKey: '', currentPage: 1 });
+    expect(store.updatePartial).toHaveBeenCalledWith({ isLoading: false });
   }));
 });
